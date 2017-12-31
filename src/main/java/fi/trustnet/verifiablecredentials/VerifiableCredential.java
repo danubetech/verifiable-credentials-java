@@ -18,6 +18,7 @@ public class VerifiableCredential {
 
 	public static final URI URI_CLAIM = URI.create("https://w3id.org/credentials#claim");
 
+	public static final String JSONLD_TERM_ID = "id";
 	public static final String JSONLD_TERM_TYPE = "type";
 	public static final String JSONLD_TERM_ISSUER = "issuer";
 	public static final String JSONLD_TERM_ISSUED = "issued";
@@ -66,6 +67,14 @@ public class VerifiableCredential {
 	public LinkedHashMap<String, Object> getJsonLdClaimsObject() {
 
 		return getJsonLdClaimsObject(this.getJsonLdObject());
+	}
+
+	public String getSubject() {
+		return (String) this.getJsonLdClaimsObject().get(JSONLD_TERM_ID);
+	}
+
+	public void setSubject(String subject) {
+		this.getJsonLdClaimsObject().put(JSONLD_TERM_ID, subject);
 	}
 
 	public List<Object> getContext() {

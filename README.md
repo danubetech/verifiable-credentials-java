@@ -68,6 +68,7 @@ Example code:
 	verifiableCredential.setIssuer(URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD"));
 	verifiableCredential.setIssued("2018-01-01");
 	
+	verifiableCredential.setSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
 	LinkedHashMap<String, Object> jsonLdClaimsObject = verifiableCredential.getJsonLdClaimsObject();
 	LinkedHashMap<String, Object> jsonLdDriversLicenseObject = new LinkedHashMap<String, Object> ();
 	jsonLdDriversLicenseObject.put("licenseClass", "trucks");
