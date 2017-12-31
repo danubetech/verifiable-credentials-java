@@ -1,0 +1,12 @@
+[
+  {
+    "Content-Location": "https://w3id.org/security/v1",
+    "X-Classpath": "fi/trustnet/verifiablecredentials/security-v1.jsonld",
+    "Content-Type": "application/ld+json"
+  },
+  {
+    "Content-Location": "https://w3id.org/credentials/v1",
+    "X-Classpath": "fi/trustnet/verifiablecredentials/credentials-v1.jsonld",
+    "Content-Type": "application/ld+json"
+  }
+]

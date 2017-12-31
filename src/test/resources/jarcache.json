@@ -1,0 +1,7 @@
+[
+  {
+    "Content-Location": "https://trafi.fi/credentials/v1",
+    "X-Classpath": "fi/trustnet/verifiablecredentials/trafi-v1.jsonld",
+    "Content-Type": "application/ld+json"
+  }
+]
