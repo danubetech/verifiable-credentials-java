@@ -94,7 +94,9 @@ public class VerifiableCredential {
 	}
 
 	public URI getIssuer() {
-		return (URI) this.jsonLdObject.get(JSONLD_TERM_ISSUER);
+		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof URI) return (URI) this.jsonLdObject.get(JSONLD_TERM_ISSUER);
+		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof String) return URI.create((String) this.jsonLdObject.get(JSONLD_TERM_ISSUER));
+		return null;
 	}
 
 	public void setIssuer(URI issuer) {
