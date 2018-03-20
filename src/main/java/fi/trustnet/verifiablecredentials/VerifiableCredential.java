@@ -69,6 +69,16 @@ public class VerifiableCredential {
 		return getJsonLdClaimsObject(this.getJsonLdObject());
 	}
 
+	public URI getId() {
+		if (this.jsonLdObject.get(JSONLD_TERM_ID) instanceof URI) return (URI) this.jsonLdObject.get(JSONLD_TERM_ID);
+		if (this.jsonLdObject.get(JSONLD_TERM_ID) instanceof String) return URI.create((String) this.jsonLdObject.get(JSONLD_TERM_ID));
+		return null;
+	}
+
+	public void setId(URI id) {
+		this.jsonLdObject.put(JSONLD_TERM_ID, id);
+	}
+
 	public String getSubject() {
 		return (String) this.getJsonLdClaimsObject().get(JSONLD_TERM_ID);
 	}

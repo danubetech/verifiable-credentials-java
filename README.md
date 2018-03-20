@@ -63,6 +63,7 @@ Example code:
 	VerifiableCredential verifiableCredential = new VerifiableCredential();
 	verifiableCredential.getContext().add("https://trafi.fi/credentials/v1");
 	verifiableCredential.getType().add("DriversLicenseCredential");
+	verifiableCredential.setId(URI.create("urn:uuid:" + UUID.randomUUID()));
 	verifiableCredential.setIssuer(URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD"));
 	verifiableCredential.setIssued("2018-01-01");
 	
