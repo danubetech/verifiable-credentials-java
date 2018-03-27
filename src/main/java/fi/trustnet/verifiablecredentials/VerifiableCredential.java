@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.github.jsonldjava.core.JsonLdConsts;
 
+import info.weboftrust.ldsignatures.LdSignature;
+
 public class VerifiableCredential {
 
 	public static final String JSONLD_CONTEXT_CREDENTIALS = "https://w3id.org/credentials/v1";
@@ -67,6 +69,11 @@ public class VerifiableCredential {
 	public LinkedHashMap<String, Object> getJsonLdClaimsObject() {
 
 		return getJsonLdClaimsObject(this.getJsonLdObject());
+	}
+
+	public LdSignature getLdSignature() {
+
+		return LdSignature.getFromJsonLdObject(this.getJsonLdObject());
 	}
 
 	public URI getId() {
