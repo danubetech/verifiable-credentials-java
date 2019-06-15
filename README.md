@@ -49,7 +49,7 @@ Example Verifiable Credential:
 		"type": "SimpleRevocationList2017"
 	},
 	"signature": {
-		"type" : "RsaSignature2017",
+		"type" : "RsaSignature2018",
 		"creator" : "did:sov:23YD3dyHuyFvLpLC3zF58F#key1",
 		"created" : "2018-01-01T21:19:10Z",
 		"domain" : null,
@@ -78,7 +78,7 @@ Example code:
 	String domain = null;
 	String nonce = "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e";
 	
-	RsaSignature2017LdSigner signer = new RsaSignature2017LdSigner(creator, created, domain, nonce, TestUtil.testRSAPrivateKey);
+	RsaSignature2018LdSigner signer = new RsaSignature2018LdSigner(creator, created, domain, nonce, TestUtil.testRSAPrivateKey);
 	LdSignature ldSignature = signer.sign(verifiableCredential.getJsonLdObject());
 
 Example code:
@@ -86,7 +86,7 @@ Example code:
 	LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(TestUtil.read(ValidateTest.class.getResourceAsStream("verifiable-credential.test.jsonld")));
 	VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
 	
-	RsaSignature2017LdValidator validator = new RsaSignature2017LdValidator(TestUtil.testRSAPublicKey);
+	RsaSignature2018LdValidator validator = new RsaSignature2018LdValidator(TestUtil.testRSAPublicKey);
 	boolean validate = validator.validate(verifiableCredential.getJsonLdObject());
 
 ### About

@@ -3,7 +3,7 @@ import java.net.URI;
 import java.util.LinkedHashMap;
 
 import info.weboftrust.ldsignatures.LdSignature;
-import info.weboftrust.ldsignatures.signer.RsaSignature2017LdSigner;
+import info.weboftrust.ldsignatures.signer.RsaSignature2018LdSigner;
 import info.weboftrust.ldsignatures.suites.SignatureSuites;
 import junit.framework.TestCase;
 
@@ -28,10 +28,10 @@ public class SignTest extends TestCase {
 		String domain = null;
 		String nonce = "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e";
 
-		RsaSignature2017LdSigner signer = new RsaSignature2017LdSigner(creator, created, domain, nonce, TestUtil.testRSAPrivateKey);
+		RsaSignature2018LdSigner signer = new RsaSignature2018LdSigner(creator, created, domain, nonce, TestUtil.testRSAPrivateKey);
 		LdSignature ldSignature = signer.sign(verifiableCredential.getJsonLdObject());
 
-		assertEquals(SignatureSuites.SIGNATURE_SUITE_RSASIGNATURE2017.getTerm(), ldSignature.getType());
+		assertEquals(SignatureSuites.SIGNATURE_SUITE_RSASIGNATURE2018.getTerm(), ldSignature.getType());
 		assertEquals(creator, ldSignature.getCreator());
 		assertEquals(created, ldSignature.getCreated());
 		assertEquals(domain, ldSignature.getDomain());
