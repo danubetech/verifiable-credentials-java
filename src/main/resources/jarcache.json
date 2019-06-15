@@ -1,12 +1,12 @@
 [
   {
     "Content-Location": "https://w3id.org/security/v1",
-    "X-Classpath": "com/danubetech/verifiablecredentials/security-v1-custom.jsonld",
+    "X-Classpath": "info/weboftrust/ldsignatures/security-v1-custom.jsonld",
     "Content-Type": "application/ld+json"
   },
   {
     "Content-Location": "https://w3id.org/security/v2",
-    "X-Classpath": "com/danubetech/verifiablecredentials/security-v2.jsonld",
+    "X-Classpath": "info/weboftrust/ldsignatures/security-v2.jsonld",
     "Content-Type": "application/ld+json"
   },
   {
