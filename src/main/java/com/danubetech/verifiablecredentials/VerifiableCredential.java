@@ -61,14 +61,14 @@ public class VerifiableCredential {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static LinkedHashMap<String, Object> getJsonLdClaimsObject(LinkedHashMap<String, Object> jsonLdObject) {
+	public static LinkedHashMap<String, Object> getJsonLdCredentialSubject(LinkedHashMap<String, Object> jsonLdObject) {
 
 		return (LinkedHashMap<String, Object>) jsonLdObject.get(JSONLD_TERM_CREDENTIAL_SUBJECT);
 	}
 
-	public LinkedHashMap<String, Object> getJsonLdClaimsObject() {
+	public LinkedHashMap<String, Object> getJsonLdCredentialSubject() {
 
-		return getJsonLdClaimsObject(this.getJsonLdObject());
+		return getJsonLdCredentialSubject(this.getJsonLdObject());
 	}
 
 	public LdSignature getLdSignature() {
@@ -86,12 +86,12 @@ public class VerifiableCredential {
 		this.jsonLdObject.put(JSONLD_TERM_ID, id);
 	}
 
-	public String getSubject() {
-		return (String) this.getJsonLdClaimsObject().get(JSONLD_TERM_ID);
+	public String getCredentialSubject() {
+		return (String) this.getJsonLdCredentialSubject().get(JSONLD_TERM_ID);
 	}
 
-	public void setSubject(String subject) {
-		this.getJsonLdClaimsObject().put(JSONLD_TERM_ID, subject);
+	public void setCredentialSubject(String subject) {
+		this.getJsonLdCredentialSubject().put(JSONLD_TERM_ID, subject);
 	}
 
 	public List<Object> getContext() {
@@ -120,11 +120,11 @@ public class VerifiableCredential {
 		this.jsonLdObject.put(JSONLD_TERM_ISSUER, issuer);
 	}
 
-	public String getIssued() {
+	public String getIssuanceDate() {
 		return (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
 	}
 
-	public void setIssued(String issued) {
+	public void setIssuanceDate(String issued) {
 		this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, issued);
 	}
 

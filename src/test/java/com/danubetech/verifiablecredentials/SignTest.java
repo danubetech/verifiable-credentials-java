@@ -17,10 +17,10 @@ public class SignTest extends TestCase {
 		verifiableCredential.getContext().add("https://trafi.fi/credentials/v1");
 		verifiableCredential.getType().add("DriversLicenseCredential");
 		verifiableCredential.setIssuer(URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD"));
-		verifiableCredential.setIssued("2018-01-01");
+		verifiableCredential.setIssuanceDate("2018-01-01");
 
-		verifiableCredential.setSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
-		LinkedHashMap<String, Object> jsonLdClaimsObject = verifiableCredential.getJsonLdClaimsObject();
+		verifiableCredential.setCredentialSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
+		LinkedHashMap<String, Object> jsonLdClaimsObject = verifiableCredential.getJsonLdCredentialSubject();
 		LinkedHashMap<String, Object> jsonLdDriversLicenseObject = new LinkedHashMap<String, Object> ();
 		jsonLdDriversLicenseObject.put("licenseClass", "trucks");
 		jsonLdClaimsObject.put("driversLicense", jsonLdDriversLicenseObject);
