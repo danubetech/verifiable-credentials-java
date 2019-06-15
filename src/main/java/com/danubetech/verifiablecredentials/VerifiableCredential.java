@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.github.jsonldjava.core.JsonLdConsts;
 
@@ -30,9 +31,15 @@ public class VerifiableCredential {
 
 	public static final String JSONLD_TERM_CREDENTIAL_SUBJECT = "credentialSubject";
 
-	public static SimpleDateFormat ISSUANCE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+	public static final SimpleDateFormat ISSUANCE_DATE_FORMAT;
 
 	private final LinkedHashMap<String, Object> jsonLdObject;
+
+	static {
+
+		ISSUANCE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		ISSUANCE_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+	}
 
 	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject) { 
 
@@ -115,13 +122,13 @@ public class VerifiableCredential {
 		this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
 	}
 
-	public URI getIssuer() {
-		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof URI) return (URI) this.jsonLdObject.get(JSONLD_TERM_ISSUER);
-		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof String) return URI.create((String) this.jsonLdObject.get(JSONLD_TERM_ISSUER));
+	public String getIssuer() {
+		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof URI) return ((URI) this.jsonLdObject.get(JSONLD_TERM_ISSUER)).toString();
+		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof String) return (String) this.jsonLdObject.get(JSONLD_TERM_ISSUER);
 		return null;
 	}
 
-	public void setIssuer(URI issuer) {
+	public void setIssuer(String issuer) {
 		this.jsonLdObject.put(JSONLD_TERM_ISSUER, issuer);
 	}
 
