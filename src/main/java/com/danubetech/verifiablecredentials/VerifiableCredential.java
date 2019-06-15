@@ -1,7 +1,10 @@
 package com.danubetech.verifiablecredentials;
 
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -26,6 +29,8 @@ public class VerifiableCredential {
 	public static final String JSONLD_TERM_ISSUANCE_DATE = "issuanceDate";
 
 	public static final String JSONLD_TERM_CREDENTIAL_SUBJECT = "credentialSubject";
+
+	public static SimpleDateFormat ISSUANCE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
 	private final LinkedHashMap<String, Object> jsonLdObject;
 
@@ -82,7 +87,7 @@ public class VerifiableCredential {
 		return null;
 	}
 
-	public void setId(URI id) {
+	public void setId(String id) {
 		this.jsonLdObject.put(JSONLD_TERM_ID, id);
 	}
 
@@ -120,12 +125,16 @@ public class VerifiableCredential {
 		this.jsonLdObject.put(JSONLD_TERM_ISSUER, issuer);
 	}
 
-	public String getIssuanceDate() {
-		return (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
+	public Date getIssuanceDate() {
+		try {
+			return ISSUANCE_DATE_FORMAT.parse((String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE));
+		} catch (ParseException ex) {
+			throw new RuntimeException(ex.getMessage(), ex);
+		}
 	}
 
-	public void setIssuanceDate(String issued) {
-		this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, issued);
+	public void setIssuanceDate(Date issued) {
+		this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, ISSUANCE_DATE_FORMAT.format(issued));
 	}
 
 	@Override
