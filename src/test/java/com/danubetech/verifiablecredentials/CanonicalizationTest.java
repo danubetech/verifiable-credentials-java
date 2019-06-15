@@ -1,4 +1,4 @@
-package fi.trustnet.verifiablecredentials;
+package com.danubetech.verifiablecredentials;
 
 import java.util.LinkedHashMap;
 

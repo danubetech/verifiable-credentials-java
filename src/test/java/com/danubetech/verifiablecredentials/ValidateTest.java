@@ -1,6 +1,7 @@
-package fi.trustnet.verifiablecredentials;
+package com.danubetech.verifiablecredentials;
 import java.util.LinkedHashMap;
 
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.github.jsonldjava.utils.JsonUtils;
 
 import info.weboftrust.ldsignatures.validator.RsaSignature2018LdValidator;

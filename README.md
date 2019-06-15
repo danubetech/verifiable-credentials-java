@@ -19,7 +19,7 @@ After that, just run:
 Dependency:
 
 	<dependency>
-		<groupId>fi.trustnet</groupId>
+		<groupId>com.trustnet</groupId>
 		<artifactId>verifiable-credentials-java</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<scope>compile</scope>

@@ -2,21 +2,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>fi.trustnet</groupId>
+	<groupId>com.danubetech</groupId>
 	<artifactId>verifiable-credentials-java</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1-SNAPSHOT</version>
 	<name>verifiable-credentials-java</name>
 
 	<issueManagement>
-		<url>https://github.com/TrustNetFI/verifiable-credentials-java/issues</url>
+		<url>https://github.com/danubetech/verifiable-credentials-java/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 
 	<scm>
-		<url>https://github.com/TrustNetFI/verifiable-credentials-java</url>
-		<connection>scm:git:git://github.com/TrustNetFI/verifiable-credentials-java.git</connection>
-		<developerConnection>scm:git:git@github.com:TrustNetFI/verifiable-credentials-java.git</developerConnection>
+		<url>https://github.com/danubetech/verifiable-credentials-java</url>
+		<connection>scm:git:git://github.com/danubetech/verifiable-credentials-java.git</connection>
+		<developerConnection>scm:git:git@danubetech/verifiable-credentials-java.git</developerConnection>
 	</scm>
 
 	<properties>
