@@ -36,6 +36,7 @@
     "password": "sec:password",
     "privateKey": {"@id": "sec:privateKey", "@type": "@id"},
     "privateKeyPem": "sec:privateKeyPem",
+    "proof": "sec:proof",
     "publicKey": {"@id": "sec:publicKey", "@type": "@id"},
     "publicKeyBase58": "sec:publicKeyBase58",
     "publicKeyPem": "sec:publicKeyPem",

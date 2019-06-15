@@ -1,7 +1,12 @@
 [
   {
     "Content-Location": "https://w3id.org/security/v1",
-    "X-Classpath": "fi/trustnet/verifiablecredentials/security-v1.jsonld",
+    "X-Classpath": "com/danubetech/verifiablecredentials/security-v1-custom.jsonld",
+    "Content-Type": "application/ld+json"
+  },
+  {
+    "Content-Location": "https://w3id.org/security/v2",
+    "X-Classpath": "com/danubetech/verifiablecredentials/security-v2.jsonld",
     "Content-Type": "application/ld+json"
   },
   {
