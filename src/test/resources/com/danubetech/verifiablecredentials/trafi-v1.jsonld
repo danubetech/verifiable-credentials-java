@@ -5,6 +5,7 @@
 
     "trafi": "https://trafi.fi/credentials#",
     "driversLicense": "trafi:driversLicense",
-    "licenseClass": "trafi:licenseClass"
+    "licenseClass": "trafi:licenseClass",
+    "DriversLicenseCredential": "trafi:DriversLicenseCredential"
   }
 }

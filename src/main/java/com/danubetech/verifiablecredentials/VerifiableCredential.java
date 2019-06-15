@@ -12,7 +12,7 @@ import info.weboftrust.ldsignatures.LdSignature;
 public class VerifiableCredential {
 
 	public static final String JSONLD_CONTEXT_CREDENTIALS = "https://w3id.org/credentials/v1";
-	public static final String JSONLD_TYPE_CREDENTIAL = "Credential";
+	public static final String JSONLD_TYPE_VERIFIABLE_CREDENTIAL = "VerifiableCredential";
 
 	public static final URI URI_TYPE = URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 	public static final URI URI_ISSUER = URI.create("https://w3id.org/credentials#issuer");
@@ -23,9 +23,9 @@ public class VerifiableCredential {
 	public static final String JSONLD_TERM_ID = "id";
 	public static final String JSONLD_TERM_TYPE = "type";
 	public static final String JSONLD_TERM_ISSUER = "issuer";
-	public static final String JSONLD_TERM_ISSUED = "issued";
+	public static final String JSONLD_TERM_ISSUANCE_DATE = "issuanceDate";
 
-	public static final String JSONLD_TERM_CLAIM = "claim";
+	public static final String JSONLD_TERM_CREDENTIAL_SUBJECT = "credentialSubject";
 
 	private final LinkedHashMap<String, Object> jsonLdObject;
 
@@ -40,14 +40,14 @@ public class VerifiableCredential {
 		context.add(JSONLD_CONTEXT_CREDENTIALS);
 
 		ArrayList<String> type = new ArrayList<String> ();
-		type.add(JSONLD_TYPE_CREDENTIAL);
+		type.add(JSONLD_TYPE_VERIFIABLE_CREDENTIAL);
 
 		LinkedHashMap<String, Object> claim = new LinkedHashMap<String, Object> ();
 
 		this.jsonLdObject = new LinkedHashMap<String, Object> ();
 		this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
 		this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
-		this.jsonLdObject.put(JSONLD_TERM_CLAIM, claim);
+		this.jsonLdObject.put(JSONLD_TERM_CREDENTIAL_SUBJECT, claim);
 	}
 
 	public static VerifiableCredential fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject) {
@@ -63,7 +63,7 @@ public class VerifiableCredential {
 	@SuppressWarnings("unchecked")
 	public static LinkedHashMap<String, Object> getJsonLdClaimsObject(LinkedHashMap<String, Object> jsonLdObject) {
 
-		return (LinkedHashMap<String, Object>) jsonLdObject.get(JSONLD_TERM_CLAIM);
+		return (LinkedHashMap<String, Object>) jsonLdObject.get(JSONLD_TERM_CREDENTIAL_SUBJECT);
 	}
 
 	public LinkedHashMap<String, Object> getJsonLdClaimsObject() {
@@ -121,11 +121,11 @@ public class VerifiableCredential {
 	}
 
 	public String getIssued() {
-		return (String) this.jsonLdObject.get(JSONLD_TERM_ISSUED);
+		return (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
 	}
 
 	public void setIssued(String issued) {
-		this.jsonLdObject.put(JSONLD_TERM_ISSUED, issued);
+		this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, issued);
 	}
 
 	@Override
