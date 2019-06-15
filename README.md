@@ -35,26 +35,25 @@ Example Verifiable Credential:
 				"licenseClass": "trucks"
 			}
 		},
-		"id": "urn:uuid:f732d56a-88f6-4d5e-a73e-107a94c29ef7",
+		"id": "urn:uuid:163f6260-c674-4988-bc68-526cdc4fcca3",
 		"issuer": "did:sov:1yvXbmgPoUm4dl66D7KhyD",
-		"issuanceDate": "2019-06-15T20:48:15+02:00",
+		"issuanceDate": "2019-06-15T19:44:08Z",
 		"proof": {
 			"type": "RsaSignature2018",
-			"creator": "did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-11",
+			"creator": "did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1",
 			"created": "2018-01-01T21:19:10Z",
 			"domain": null,
 			"nonce": "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e",
-			"signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..M7Xcay9W_zAvQFbx9Cgjb4ObEVeuRyC9Kr1HfX-rbn-P5kxYg2V9Rx1pR1wAnLuwwgDv1xhmhhbT3ri3LEze7vc6Jflg1uaU-_mfcjQXwXsx8AEJPb5T77-1Txvj9ku3szY-SQhVd0zLhiucCcovEIYjR19ca-LhVdO3QA1w0NHNaRySWjvsp6rWdmAnl7CulM_3pfQuvF3ctBXCWXHEqaP1Qc2yWW_w2N_Zeoj4u6-fdYp_ACzS2n6RyKZaxr_TFJT55zm__Wu27rJ80YcPXEm3IVfX736Mb2T_W9fEmm_Cj06NZwfqZctjxOLwdU92zf_RjscFLkEljwUyXo9x5A"
+			"signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..ES8g88t7Y-eOxZ2kmJy35F7KABbVwmDcUeI67AtUfMgXt-ETXp4VetCA9MKWzdWgrEu_xg157unLWepdyrf8zprM3H0UNqS4PIHP7R3dK1V7n-lDd4VgcjzuJrdwrYHcHTj_oQJfGSZoC9128r0jAn5lK4DQ4YV1JKc8nogOy15Wkj9rDPlMFiuRhRJ0GHMm5gbhYCebbu8A-Gn4PFf7IZHpvcKfytGchz13P0EZIYz8qDZ79tORpp2BhiOFb4MODMqArdRs0yeePxrlWAXvH9JqppVUOWI_3Fw2jaqlxWw5R2fcJNGC61WzLv9rFbeq1FUGfKIqBAL7eHM4zYceew"
 		}
 	}
-
 Example code:
 
 	VerifiableCredential verifiableCredential = new VerifiableCredential();
 	verifiableCredential.getContext().add("https://trafi.fi/credentials/v1");
 	verifiableCredential.getType().add("DriversLicenseCredential");
 	verifiableCredential.setId("urn:uuid:" + UUID.randomUUID());
-	verifiableCredential.setIssuer(URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD"));
+	verifiableCredential.setIssuer("did:sov:1yvXbmgPoUm4dl66D7KhyD");
 	verifiableCredential.setIssuanceDate(new Date());
 	
 	verifiableCredential.setCredentialSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
@@ -63,7 +62,7 @@ Example code:
 	jsonLdDriversLicenseObject.put("licenseClass", "trucks");
 	jsonLdClaimsObject.put("driversLicense", jsonLdDriversLicenseObject);
 	
-	URI creator = URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD#key1");
+	URI creator = URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1");
 	String created = "2018-01-01T21:19:10Z";
 	String domain = null;
 	String nonce = "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e";
