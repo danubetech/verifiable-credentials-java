@@ -15,7 +15,7 @@ public class SignTest extends TestCase {
 		verifiableCredential.getContext().add("https://trafi.fi/credentials/v1");
 		verifiableCredential.getType().add("DriversLicenseCredential");
 		verifiableCredential.setIssuer("did:sov:1yvXbmgPoUm4dl66D7KhyD");
-		verifiableCredential.setIssuanceDate(VerifiableCredential.ISSUANCE_DATE_FORMAT.parse("2017-10-24T05:33:31Z"));
+		verifiableCredential.setIssuanceDate(VerifiableCredential.DATE_FORMAT.parse("2017-10-24T05:33:31Z"));
 
 		verifiableCredential.setCredentialSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
 		LinkedHashMap<String, Object> jsonLdClaimsObject = verifiableCredential.getJsonLdCredentialSubject();
