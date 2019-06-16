@@ -170,24 +170,9 @@ public class VerifiableCredential {
 	public Date getIssuanceDate() {
 
 		try {
-			return DATE_FORMAT.parse((String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE));
-		} catch (ParseException ex) {
-			throw new RuntimeException(ex.getMessage(), ex);
-		}
-	}
-
-	public void setExpirationDate(Date expirationDate) {
-
-		if (expirationDate == null)
-			this.jsonLdObject.remove(JSONLD_TERM_ISSUANCE_DATE);
-		else
-			this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, DATE_FORMAT.format(expirationDate));
-	}
-
-	public Date getExpirationDate() {
-
-		try {
-			return DATE_FORMAT.parse((String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE));
+			String issuanceDateString = (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
+			if (issuanceDateString == null) return null;
+			return DATE_FORMAT.parse(issuanceDateString);
 		} catch (ParseException ex) {
 			throw new RuntimeException(ex.getMessage(), ex);
 		}
@@ -199,6 +184,25 @@ public class VerifiableCredential {
 			this.jsonLdObject.remove(JSONLD_TERM_ISSUANCE_DATE);
 		else
 			this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, DATE_FORMAT.format(issuanceDate));
+	}
+
+	public Date getExpirationDate() {
+
+		try {
+			String expirationDateString = (String) this.jsonLdObject.get(JSONLD_TERM_EXPIRATION_DATE);
+			if (expirationDateString == null) return null;
+			return DATE_FORMAT.parse(expirationDateString);
+		} catch (ParseException ex) {
+			throw new RuntimeException(ex.getMessage(), ex);
+		}
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+
+		if (expirationDate == null)
+			this.jsonLdObject.remove(JSONLD_TERM_EXPIRATION_DATE);
+		else
+			this.jsonLdObject.put(JSONLD_TERM_EXPIRATION_DATE, DATE_FORMAT.format(expirationDate));
 	}
 
 	public String toPrettyJsonString() throws JsonGenerationException, IOException {
