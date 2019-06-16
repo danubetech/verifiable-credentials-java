@@ -32,17 +32,18 @@ public class VerifiableCredential {
 	public static final String JSONLD_TERM_TYPE = "type";
 	public static final String JSONLD_TERM_ISSUER = "issuer";
 	public static final String JSONLD_TERM_ISSUANCE_DATE = "issuanceDate";
+	public static final String JSONLD_TERM_EXPIRATION_DATE = "expirationDate";
 
 	public static final String JSONLD_TERM_CREDENTIAL_SUBJECT = "credentialSubject";
 
-	public static final SimpleDateFormat ISSUANCE_DATE_FORMAT;
+	public static final SimpleDateFormat DATE_FORMAT;
 
 	private final LinkedHashMap<String, Object> jsonLdObject;
 
 	static {
 
-		ISSUANCE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		ISSUANCE_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+		DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
 	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject) { 
@@ -169,7 +170,24 @@ public class VerifiableCredential {
 	public Date getIssuanceDate() {
 
 		try {
-			return ISSUANCE_DATE_FORMAT.parse((String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE));
+			return DATE_FORMAT.parse((String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE));
+		} catch (ParseException ex) {
+			throw new RuntimeException(ex.getMessage(), ex);
+		}
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+
+		if (expirationDate == null)
+			this.jsonLdObject.remove(JSONLD_TERM_ISSUANCE_DATE);
+		else
+			this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, DATE_FORMAT.format(expirationDate));
+	}
+
+	public Date getExpirationDate() {
+
+		try {
+			return DATE_FORMAT.parse((String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE));
 		} catch (ParseException ex) {
 			throw new RuntimeException(ex.getMessage(), ex);
 		}
@@ -180,7 +198,7 @@ public class VerifiableCredential {
 		if (issuanceDate == null)
 			this.jsonLdObject.remove(JSONLD_TERM_ISSUANCE_DATE);
 		else
-			this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, ISSUANCE_DATE_FORMAT.format(issuanceDate));
+			this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, DATE_FORMAT.format(issuanceDate));
 	}
 
 	public String toPrettyJsonString() throws JsonGenerationException, IOException {
