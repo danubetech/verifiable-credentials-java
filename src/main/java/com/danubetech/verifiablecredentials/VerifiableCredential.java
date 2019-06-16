@@ -1,5 +1,6 @@
 package com.danubetech.verifiablecredentials;
 
+import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +10,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.github.jsonldjava.core.JsonLdConsts;
+import com.github.jsonldjava.utils.JsonUtils;
 
 import info.weboftrust.ldsignatures.LdSignature;
 
@@ -54,17 +58,22 @@ public class VerifiableCredential {
 		ArrayList<String> type = new ArrayList<String> ();
 		type.add(JSONLD_TYPE_VERIFIABLE_CREDENTIAL);
 
-		LinkedHashMap<String, Object> claim = new LinkedHashMap<String, Object> ();
+		LinkedHashMap<String, Object> credentialSubject = new LinkedHashMap<String, Object> ();
 
 		this.jsonLdObject = new LinkedHashMap<String, Object> ();
 		this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
 		this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
-		this.jsonLdObject.put(JSONLD_TERM_CREDENTIAL_SUBJECT, claim);
+		this.jsonLdObject.put(JSONLD_TERM_CREDENTIAL_SUBJECT, credentialSubject);
 	}
 
 	public static VerifiableCredential fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject) {
 
 		return new VerifiableCredential(jsonLdObject);
+	}
+
+	public static VerifiableCredential fromJsonString(String jsonString) throws JsonParseException, IOException {
+
+		return fromJsonLdObject((LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString));
 	}
 
 	public LinkedHashMap<String, Object> getJsonLdObject() {
@@ -89,50 +98,76 @@ public class VerifiableCredential {
 	}
 
 	public URI getId() {
+
 		if (this.jsonLdObject.get(JSONLD_TERM_ID) instanceof URI) return (URI) this.jsonLdObject.get(JSONLD_TERM_ID);
 		if (this.jsonLdObject.get(JSONLD_TERM_ID) instanceof String) return URI.create((String) this.jsonLdObject.get(JSONLD_TERM_ID));
 		return null;
 	}
 
 	public void setId(String id) {
-		this.jsonLdObject.put(JSONLD_TERM_ID, id);
+
+		if (id == null)
+			this.jsonLdObject.remove(JSONLD_TERM_ID);
+		else
+			this.jsonLdObject.put(JSONLD_TERM_ID, id);
 	}
 
 	public String getCredentialSubject() {
+
 		return (String) this.getJsonLdCredentialSubject().get(JSONLD_TERM_ID);
 	}
 
 	public void setCredentialSubject(String subject) {
-		this.getJsonLdCredentialSubject().put(JSONLD_TERM_ID, subject);
+
+		if (subject == null)
+			this.getJsonLdCredentialSubject().remove(JSONLD_TERM_ID);
+		else
+			this.getJsonLdCredentialSubject().put(JSONLD_TERM_ID, subject);
 	}
 
 	public List<Object> getContext() {
+
 		return (List<Object>) this.jsonLdObject.get(JsonLdConsts.CONTEXT);
 	}
 
 	public void setContext(List<Object> context) {
-		this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
+
+		if (context == null)
+			this.jsonLdObject.remove(JsonLdConsts.CONTEXT);
+		else
+			this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
 	}
 
 	public List<String> getType() {
+
 		return (List<String>) this.jsonLdObject.get(JSONLD_TERM_TYPE);
 	}
 
 	public void setType(List<String> type) {
-		this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
+
+		if (type == null)
+			this.jsonLdObject.remove(JSONLD_TERM_TYPE);
+		else
+			this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
 	}
 
 	public String getIssuer() {
+
 		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof URI) return ((URI) this.jsonLdObject.get(JSONLD_TERM_ISSUER)).toString();
 		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof String) return (String) this.jsonLdObject.get(JSONLD_TERM_ISSUER);
 		return null;
 	}
 
 	public void setIssuer(String issuer) {
-		this.jsonLdObject.put(JSONLD_TERM_ISSUER, issuer);
+
+		if (issuer == null)
+			this.jsonLdObject.remove(JSONLD_TERM_ISSUER);
+		else
+			this.jsonLdObject.put(JSONLD_TERM_ISSUER, issuer);
 	}
 
 	public Date getIssuanceDate() {
+
 		try {
 			return ISSUANCE_DATE_FORMAT.parse((String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE));
 		} catch (ParseException ex) {
@@ -140,8 +175,22 @@ public class VerifiableCredential {
 		}
 	}
 
-	public void setIssuanceDate(Date issued) {
-		this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, ISSUANCE_DATE_FORMAT.format(issued));
+	public void setIssuanceDate(Date issuanceDate) {
+
+		if (issuanceDate == null)
+			this.jsonLdObject.remove(JSONLD_TERM_ISSUANCE_DATE);
+		else
+			this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, ISSUANCE_DATE_FORMAT.format(issuanceDate));
+	}
+
+	public String toPrettyJsonString() throws JsonGenerationException, IOException {
+
+		return JsonUtils.toPrettyString(this.jsonLdObject);
+	}
+
+	public String toJsonString() throws JsonGenerationException, IOException {
+
+		return JsonUtils.toString(this.jsonLdObject);
 	}
 
 	@Override
