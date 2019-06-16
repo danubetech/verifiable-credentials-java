@@ -18,10 +18,10 @@ public class SignTest extends TestCase {
 		verifiableCredential.setIssuanceDate(VerifiableCredential.DATE_FORMAT.parse("2017-10-24T05:33:31Z"));
 
 		verifiableCredential.setCredentialSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
-		LinkedHashMap<String, Object> jsonLdClaimsObject = verifiableCredential.getJsonLdCredentialSubject();
+		LinkedHashMap<String, Object> jsonLdCredentialSubject = verifiableCredential.getJsonLdCredentialSubject();
 		LinkedHashMap<String, Object> jsonLdDriversLicenseObject = new LinkedHashMap<String, Object> ();
 		jsonLdDriversLicenseObject.put("licenseClass", "trucks");
-		jsonLdClaimsObject.put("driversLicense", jsonLdDriversLicenseObject);
+		jsonLdCredentialSubject.put("driversLicense", jsonLdDriversLicenseObject);
 
 		URI creator = URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1");
 		String created = "2018-01-01T21:19:10Z";
