@@ -98,10 +98,11 @@ public class VerifiableCredential {
 		return LdSignature.getFromJsonLdObject(this.getJsonLdObject());
 	}
 
-	public URI getId() {
+	public String getId() {
 
-		if (this.jsonLdObject.get(JSONLD_TERM_ID) instanceof URI) return (URI) this.jsonLdObject.get(JSONLD_TERM_ID);
-		if (this.jsonLdObject.get(JSONLD_TERM_ID) instanceof String) return URI.create((String) this.jsonLdObject.get(JSONLD_TERM_ID));
+		Object object = this.jsonLdObject.get(JSONLD_TERM_ID);
+		if (object instanceof URI) return ((URI) object).toString();
+		if (object instanceof String) return (String) object;
 		return null;
 	}
 
@@ -115,7 +116,10 @@ public class VerifiableCredential {
 
 	public String getCredentialSubject() {
 
-		return (String) this.getJsonLdCredentialSubject().get(JSONLD_TERM_ID);
+		Object object = this.getJsonLdCredentialSubject().get(JSONLD_TERM_ID);
+		if (object instanceof URI) return ((URI) object).toString();
+		if (object instanceof String) return (String) object;
+		return null;
 	}
 
 	public void setCredentialSubject(String subject) {
@@ -154,8 +158,9 @@ public class VerifiableCredential {
 
 	public String getIssuer() {
 
-		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof URI) return ((URI) this.jsonLdObject.get(JSONLD_TERM_ISSUER)).toString();
-		if (this.jsonLdObject.get(JSONLD_TERM_ISSUER) instanceof String) return (String) this.jsonLdObject.get(JSONLD_TERM_ISSUER);
+		Object object = this.jsonLdObject.get(JSONLD_TERM_ISSUER);
+		if (object instanceof URI) return ((URI) object).toString();
+		if (object instanceof String) return (String) object;
 		return null;
 	}
 
