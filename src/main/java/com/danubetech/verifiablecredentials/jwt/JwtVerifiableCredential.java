@@ -52,7 +52,7 @@ public class JwtVerifiableCredential {
 		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential);
 	}
 
-	public static JwtVerifiableCredential fromVerifiableCredential(VerifiableCredential verifiableCredential) {
+	public static JwtVerifiableCredential fromVerifiableCredential(VerifiableCredential verifiableCredential, String aud) {
 
 		VerifiableCredential payloadVerifiableCredential;
 
@@ -96,9 +96,19 @@ public class JwtVerifiableCredential {
 			payloadVerifiableCredential.setExpirationDate(null);
 		}
 
+		if (aud != null) {
+
+			payload.setAudience(aud);
+		}
+
 		payload.setClaim(JWT_CLAIM_VC, payloadVerifiableCredential.getJsonLdObject());
 
 		return new JwtVerifiableCredential(payload, payloadVerifiableCredential);
+	}
+
+	public static JwtVerifiableCredential fromVerifiableCredential(VerifiableCredential verifiableCredential) {
+
+		return fromVerifiableCredential(verifiableCredential, null);
 	}
 
 	public JwtClaims getPayload() {
