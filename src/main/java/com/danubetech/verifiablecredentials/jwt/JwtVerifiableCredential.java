@@ -33,7 +33,7 @@ public class JwtVerifiableCredential {
 		this.payloadVerifiableCredential = payloadVerifiableCredential;
 	}
 
-	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey) throws JoseException, GeneralSecurityException, InvalidJwtException {
+	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey, boolean doValidate) throws JoseException, GeneralSecurityException, InvalidJwtException {
 
 		boolean validate;
 
@@ -41,15 +41,28 @@ public class JwtVerifiableCredential {
 		jws.setAlgorithmConstraints(new AlgorithmConstraints(AlgorithmConstraints.ConstraintType.WHITELIST, algorithm));
 		jws.setCompactSerialization(jwt);
 
-		jws.setKey(publicKey);
-		validate = jws.verifySignature();
-		if (! validate) throw new GeneralSecurityException("Invalid signature: " + jwt);
+		if (doValidate) {
+
+			jws.setKey(publicKey);
+			validate = jws.verifySignature();
+			if (! validate) throw new GeneralSecurityException("Invalid signature: " + jwt);
+
+			System.setProperty("org.jose4j.jws.getPayload-skip-verify", "false");
+		} else {
+
+			System.setProperty("org.jose4j.jws.getPayload-skip-verify", "true");
+		}
 
 		JwtClaims jwtPayload = JwtClaims.parse(jws.getPayload());
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) jwtPayload.getClaimValue(JWT_CLAIM_VC);
 		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
 
 		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential);
+	}
+
+	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey) throws JoseException, GeneralSecurityException, InvalidJwtException {
+
+		return fromJwt(jwt, algorithm, publicKey, true);
 	}
 
 	public static JwtVerifiableCredential fromVerifiableCredential(VerifiableCredential verifiableCredential, String aud) {
