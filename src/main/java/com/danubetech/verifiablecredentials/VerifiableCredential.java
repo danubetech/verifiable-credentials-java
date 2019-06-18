@@ -19,14 +19,8 @@ import info.weboftrust.ldsignatures.LdSignature;
 
 public class VerifiableCredential {
 
-	public static final String JSONLD_CONTEXT_CREDENTIALS = "https://w3id.org/credentials/v1";
+	public static final String JSONLD_CONTEXT_CREDENTIALS = "https://www.w3.org/2018/credentials/v1";
 	public static final String JSONLD_TYPE_VERIFIABLE_CREDENTIAL = "VerifiableCredential";
-
-	public static final URI URI_TYPE = URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-	public static final URI URI_ISSUER = URI.create("https://w3id.org/credentials#issuer");
-	public static final URI URI_ISSUED = URI.create("https://w3id.org/credentials#issued");
-
-	public static final URI URI_CLAIM = URI.create("https://w3id.org/credentials#claim");
 
 	public static final String JSONLD_TERM_ID = "id";
 	public static final String JSONLD_TERM_TYPE = "type";
@@ -49,6 +43,8 @@ public class VerifiableCredential {
 	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject) { 
 
 		this.jsonLdObject = jsonLdObject;
+
+		this.validate();
 	}
 
 	public VerifiableCredential() {
@@ -130,12 +126,12 @@ public class VerifiableCredential {
 			this.getJsonLdCredentialSubject().put(JSONLD_TERM_ID, subject);
 	}
 
-	public List<Object> getContext() {
+	public List<String> getContext() {
 
-		return (List<Object>) this.jsonLdObject.get(JsonLdConsts.CONTEXT);
+		return (List<String>) this.jsonLdObject.get(JsonLdConsts.CONTEXT);
 	}
 
-	public void setContext(List<Object> context) {
+	public void setContext(List<String> context) {
 
 		if (context == null)
 			this.jsonLdObject.remove(JsonLdConsts.CONTEXT);
@@ -219,6 +215,38 @@ public class VerifiableCredential {
 
 		return JsonUtils.toString(this.jsonLdObject);
 	}
+
+	/*
+	 * Validation
+	 */
+
+	private static void validateTrue(boolean valid) throws IllegalStateException {
+
+		if (! valid) throw new IllegalStateException();
+	}
+
+	private static void validateRun(Runnable runnable, String message) throws IllegalStateException {
+
+		try {
+
+			runnable.run();
+		} catch (Exception ex) {
+
+			throw new IllegalStateException(message);
+		}
+	}
+
+	public void validate() throws IllegalStateException {
+
+		validateRun(() -> { validateTrue(JSONLD_CONTEXT_CREDENTIALS.equals(this.getContext().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1");
+		validateRun(() -> { for (String context : this.getContext()) URI.create(context); }, "@context must be a valid URI");
+		validateRun(() -> { for (String type : this.getType()) URI.create(type); }, "@type must be a valid URI");
+		validateRun(() -> { this.getType().contains(JSONLD_TYPE_VERIFIABLE_CREDENTIAL); }, "@type must contain VerifiableCredential");
+	}
+
+	/*
+	 * Object methods
+	 */
 
 	@Override
 	public int hashCode() {
