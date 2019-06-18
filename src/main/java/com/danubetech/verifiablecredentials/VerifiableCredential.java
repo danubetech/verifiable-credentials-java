@@ -2,9 +2,11 @@ package com.danubetech.verifiablecredentials;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import info.weboftrust.ldsignatures.LdSignature;
 public class VerifiableCredential {
 
 	public static final String JSONLD_CONTEXT_CREDENTIALS = "https://www.w3.org/2018/credentials/v1";
+	public static final String JSONLD_CONTEXT_CREDENTIALS_NO_WWW = "https://w3.org/2018/credentials/v1";
 	public static final String JSONLD_TYPE_VERIFIABLE_CREDENTIAL = "VerifiableCredential";
 
 	public static final String JSONLD_TERM_ID = "id";
@@ -40,11 +43,11 @@ public class VerifiableCredential {
 		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
-	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject) { 
+	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject, boolean validate) { 
 
 		this.jsonLdObject = jsonLdObject;
 
-		this.validate();
+		if (validate) this.validate();
 	}
 
 	public VerifiableCredential() {
@@ -63,14 +66,24 @@ public class VerifiableCredential {
 		this.jsonLdObject.put(JSONLD_TERM_CREDENTIAL_SUBJECT, credentialSubject);
 	}
 
+	public static VerifiableCredential fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject, boolean validate) {
+
+		return new VerifiableCredential(jsonLdObject, validate);
+	}
+
 	public static VerifiableCredential fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject) {
 
-		return new VerifiableCredential(jsonLdObject);
+		return fromJsonLdObject(jsonLdObject, true);
+	}
+
+	public static VerifiableCredential fromJsonString(String jsonString, boolean validate) throws JsonParseException, IOException {
+
+		return fromJsonLdObject((LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString), validate);
 	}
 
 	public static VerifiableCredential fromJsonString(String jsonString) throws JsonParseException, IOException {
 
-		return fromJsonLdObject((LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString));
+		return fromJsonString(jsonString, true);
 	}
 
 	public LinkedHashMap<String, Object> getJsonLdObject() {
@@ -141,7 +154,10 @@ public class VerifiableCredential {
 
 	public List<String> getType() {
 
-		return (List<String>) this.jsonLdObject.get(JSONLD_TERM_TYPE);
+		Object object = this.jsonLdObject.get(JSONLD_TERM_TYPE);
+		if (object instanceof List) return (List<String>) object;
+		if (object instanceof String) return Collections.singletonList((String) object);
+		return null;
 	}
 
 	public void setType(List<String> type) {
@@ -225,6 +241,17 @@ public class VerifiableCredential {
 		if (! valid) throw new IllegalStateException();
 	}
 
+	private static void validateUrl(String uri) {
+
+		try {
+
+			if (! new URI(uri).isAbsolute()) throw new URISyntaxException("Not absolute.", uri);
+		} catch (URISyntaxException ex) {
+
+			throw new RuntimeException(ex.getMessage());
+		}
+	}
+
 	private static void validateRun(Runnable runnable, String message) throws IllegalStateException {
 
 		try {
@@ -238,10 +265,18 @@ public class VerifiableCredential {
 
 	public void validate() throws IllegalStateException {
 
-		validateRun(() -> { validateTrue(JSONLD_CONTEXT_CREDENTIALS.equals(this.getContext().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1");
-		validateRun(() -> { for (String context : this.getContext()) URI.create(context); }, "@context must be a valid URI");
-		validateRun(() -> { for (String type : this.getType()) URI.create(type); }, "@type must be a valid URI");
-		validateRun(() -> { this.getType().contains(JSONLD_TYPE_VERIFIABLE_CREDENTIAL); }, "@type must contain VerifiableCredential");
+		validateRun(() -> { validateTrue(this.getContext().size() > 0); }, "Bad or missing '@context'.");
+		validateRun(() -> { validateTrue(this.getType().size() > 0); }, "Bad or missing '@type'.");
+		validateRun(() -> { validateTrue(this.getIssuer() != null); }, "Bad or missing 'issuer'.");
+		validateRun(() -> { validateTrue(this.getIssuanceDate() != null); }, "Bad or missing 'issuanceDate'.");
+		validateRun(() -> { this.getExpirationDate(); }, "Bad 'expirationDate'.");
+		validateRun(() -> { validateTrue(this.getCredentialSubject() != null); }, "Bad or missing 'credentialSubject'.");
+
+		validateRun(() -> { if (this.getId() != null) validateUrl(this.getId()); }, "'@id' must be a valid URI.");
+		validateRun(() -> { validateUrl(this.getIssuer()); }, "'issuer' must be a valid URI.");
+		validateRun(() -> { validateTrue(JSONLD_CONTEXT_CREDENTIALS.equals(this.getContext().get(0)) || JSONLD_CONTEXT_CREDENTIALS_NO_WWW.equals(this.getContext().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1: " + this.getContext().get(0));
+		validateRun(() -> { for (String context : this.getContext()) validateUrl(context); }, "@context must be a valid URI: " + this.getContext());
+		validateRun(() -> { validateTrue(this.getType().contains(JSONLD_TYPE_VERIFIABLE_CREDENTIAL)); }, "@type must contain VerifiableCredential: " + this.getType());
 	}
 
 	/*

@@ -55,7 +55,7 @@ public class JwtVerifiableCredential {
 
 		JwtClaims jwtPayload = JwtClaims.parse(jws.getPayload());
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) jwtPayload.getClaimValue(JWT_CLAIM_VC);
-		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
+		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject, false);
 
 		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential);
 	}
@@ -153,7 +153,7 @@ public class JwtVerifiableCredential {
 
 		try {
 
-			verifiableCredential = VerifiableCredential.fromJsonString(this.getPayloadVerifiableCredential().toJsonString());
+			verifiableCredential = VerifiableCredential.fromJsonString(this.getPayloadVerifiableCredential().toJsonString(), false);
 		} catch (IOException ex) {
 
 			throw new RuntimeException(ex.getMessage(), ex);
