@@ -21,7 +21,7 @@ import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.jsonldjava.utils.JsonUtils;
 
-public class W3CTestSuite {
+public class Generator {
 
 	public static void main(String[] args) throws Exception {
 
