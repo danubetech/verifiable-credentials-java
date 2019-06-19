@@ -99,7 +99,7 @@ public class JwtVerifiableCredential {
 
 		Date issuanceDate = payloadVerifiableCredential.getIssuanceDate();
 		if (issuanceDate != null) {
-			payload.setIssuedAt(NumericDate.fromMilliseconds(issuanceDate.getTime()));
+			payload.setNotBefore(NumericDate.fromMilliseconds(issuanceDate.getTime()));
 			payloadVerifiableCredential.setIssuanceDate(null);
 		}
 
@@ -176,9 +176,9 @@ public class JwtVerifiableCredential {
 			verifiableCredential.setIssuer(issuer);
 		}
 
-		NumericDate issuedAt = payload.getIssuedAt();
-		if (issuedAt != null) {
-			verifiableCredential.setIssuanceDate(new Date(issuedAt.getValueInMillis()));
+		NumericDate notBefore = payload.getNotBefore();
+		if (notBefore != null) {
+			verifiableCredential.setIssuanceDate(new Date(notBefore.getValueInMillis()));
 		}
 
 		NumericDate expirationTime = payload.getExpirationTime();
