@@ -18,6 +18,7 @@ import org.jose4j.lang.JoseException;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
+import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.jsonldjava.utils.JsonUtils;
 
@@ -59,8 +60,6 @@ public class Generator {
 				PrivateKey privateKey = readPrivateKey(argJwt);
 				PublicKey publicKey = readPublicKey(argJwt);
 
-				if (argPresentation) throw new RuntimeException("--jwt-presentation not supported.");
-
 				if (argDecode) {
 
 					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(input, AlgorithmIdentifiers.RSA_USING_SHA256, publicKey, false);
@@ -72,12 +71,21 @@ public class Generator {
 					VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonString(input);
 					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromVerifiableCredential(verifiableCredential, argAud);
 
-					if (argNoJws) {
+					if (argPresentation) {
 
-						output = jwtVerifiableCredential.getPayload().toJson();
+						jwtVerifiableCredential.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, privateKey);
+						JwtVerifiablePresentation jwtVerifiablePresentation = JwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential, argAud);
+
+						output = jwtVerifiablePresentation.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, privateKey);
 					} else {
 
-						output = jwtVerifiableCredential.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, privateKey);
+						if (argNoJws) {
+
+							output = jwtVerifiableCredential.getPayload().toJson();
+						} else {
+
+							output = jwtVerifiableCredential.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, privateKey);
+						}
 					}
 				}
 			}

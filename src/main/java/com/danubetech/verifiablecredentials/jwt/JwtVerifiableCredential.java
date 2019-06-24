@@ -24,13 +24,16 @@ public class JwtVerifiableCredential {
 	private final JwtClaims payload;
 	private final VerifiableCredential payloadVerifiableCredential;
 
-	private JwtVerifiableCredential(JwtClaims payload, VerifiableCredential payloadVerifiableCredential) {
+	private String compactSerialization;
+
+	private JwtVerifiableCredential(JwtClaims payload, VerifiableCredential payloadVerifiableCredential, String compactSerialization) {
 
 		if (payload == null) throw new NullPointerException();
 		if (payloadVerifiableCredential == null) throw new NullPointerException();
 
 		this.payload = payload;
 		this.payloadVerifiableCredential = payloadVerifiableCredential;
+		this.compactSerialization = compactSerialization;
 	}
 
 	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey, boolean doValidate) throws JoseException, GeneralSecurityException, InvalidJwtException {
@@ -57,7 +60,7 @@ public class JwtVerifiableCredential {
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) jwtPayload.getClaimValue(JWT_CLAIM_VC);
 		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject, false);
 
-		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential);
+		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential, jwt);
 	}
 
 	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey) throws JoseException, GeneralSecurityException, InvalidJwtException {
@@ -116,7 +119,7 @@ public class JwtVerifiableCredential {
 
 		payload.setClaim(JWT_CLAIM_VC, payloadVerifiableCredential.getJsonLdObject());
 
-		return new JwtVerifiableCredential(payload, payloadVerifiableCredential);
+		return new JwtVerifiableCredential(payload, payloadVerifiableCredential, null);
 	}
 
 	public static JwtVerifiableCredential fromVerifiableCredential(VerifiableCredential verifiableCredential) {
@@ -134,6 +137,11 @@ public class JwtVerifiableCredential {
 		return this.payloadVerifiableCredential;
 	}
 
+	public String getCompactSerialization() {
+
+		return this.compactSerialization;
+	}
+
 	public String toJwt(String algorithm, PrivateKey privateKey) throws JoseException {
 
 		String payload = this.getPayload().toJson();
@@ -144,7 +152,8 @@ public class JwtVerifiableCredential {
 
 		jws.setKey(privateKey);
 
-		return jws.getCompactSerialization();
+		this.compactSerialization = jws.getCompactSerialization();
+		return compactSerialization;
 	}
 
 	public VerifiableCredential toVerifiableCredential() throws MalformedClaimException {
