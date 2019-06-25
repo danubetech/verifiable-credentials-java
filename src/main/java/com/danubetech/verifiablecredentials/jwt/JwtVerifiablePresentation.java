@@ -1,10 +1,16 @@
 package com.danubetech.verifiablecredentials.jwt;
 
+import java.io.IOException;
 import java.security.PrivateKey;
+import java.util.UUID;
 
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.lang.JoseException;
+
+import com.danubetech.verifiablecredentials.VerifiablePresentation;
+import com.fasterxml.jackson.core.JsonGenerationException;
 
 public class JwtVerifiablePresentation {
 
@@ -25,7 +31,7 @@ public class JwtVerifiablePresentation {
 		this.compactSerialization = compactSerialization;
 	}
 
-	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential, String aud) {
+	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential, String aud) throws JsonGenerationException, IOException, MalformedClaimException {
 
 		JwtVerifiableCredential payloadJwtVerifiableCredential = jwtVerifiableCredential;
 
@@ -36,12 +42,17 @@ public class JwtVerifiablePresentation {
 			payload.setAudience(aud);
 		}
 
-		payload.setClaim(JWT_CLAIM_VP, payloadJwtVerifiableCredential.getCompactSerialization());
+		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJwtVerifiableCredential(payloadJwtVerifiableCredential);
+
+		payload.setJwtId("urn:uuid:" + UUID.randomUUID().toString());
+		payload.setIssuer(jwtVerifiableCredential.getPayload().getSubject());
+		payload.setIssuedAtToNow();
+		payload.setClaim(JWT_CLAIM_VP, verifiablePresentation.getJsonLdObject());
 
 		return new JwtVerifiablePresentation(payload, payloadJwtVerifiableCredential, null);
 	}
 
-	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential) {
+	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential) throws JsonGenerationException, IOException, MalformedClaimException {
 
 		return fromJwtVerifiableCredential(jwtVerifiableCredential, null);
 	}

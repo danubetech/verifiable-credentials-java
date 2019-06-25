@@ -52,18 +52,18 @@ public class VerifiableCredential {
 
 	public VerifiableCredential() {
 
-		ArrayList<Object> context = new ArrayList<Object> ();
-		context.add(JSONLD_CONTEXT_CREDENTIALS);
+		ArrayList<Object> contextList = new ArrayList<Object> ();
+		contextList.add(JSONLD_CONTEXT_CREDENTIALS);
 
-		ArrayList<String> type = new ArrayList<String> ();
-		type.add(JSONLD_TYPE_VERIFIABLE_CREDENTIAL);
+		ArrayList<String> typeList = new ArrayList<String> ();
+		typeList.add(JSONLD_TYPE_VERIFIABLE_CREDENTIAL);
 
-		LinkedHashMap<String, Object> credentialSubject = new LinkedHashMap<String, Object> ();
+		LinkedHashMap<String, Object> credentialSubjectMap = new LinkedHashMap<String, Object> ();
 
 		this.jsonLdObject = new LinkedHashMap<String, Object> ();
-		this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
-		this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
-		this.jsonLdObject.put(JSONLD_TERM_CREDENTIAL_SUBJECT, credentialSubject);
+		this.jsonLdObject.put(JsonLdConsts.CONTEXT, contextList);
+		this.jsonLdObject.put(JSONLD_TERM_TYPE, typeList);
+		this.jsonLdObject.put(JSONLD_TERM_CREDENTIAL_SUBJECT, credentialSubjectMap);
 	}
 
 	public static VerifiableCredential fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject, boolean validate) {
@@ -78,7 +78,9 @@ public class VerifiableCredential {
 
 	public static VerifiableCredential fromJsonString(String jsonString, boolean validate) throws JsonParseException, IOException {
 
-		return fromJsonLdObject((LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString), validate);
+		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString);
+
+		return fromJsonLdObject(jsonLdObject, validate);
 	}
 
 	public static VerifiableCredential fromJsonString(String jsonString) throws JsonParseException, IOException {
