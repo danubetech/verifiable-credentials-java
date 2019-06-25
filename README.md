@@ -3,7 +3,7 @@
 
 This is a work-in-progress implementation of the [Verifiable Credentials](https://w3c.github.io/vc-data-model/) data model.
 
-Highly experimental, incomplete, and not ready for production use! Use at your own risk! Pull requests welcome.
+Not ready for production use! Use at your own risk! Pull requests welcome.
 
 ### Maven
 
@@ -26,6 +26,7 @@ Dependency:
 
  * [examples-ldp.md](examples-ldp.md) - Examples of Verifiable Credentials with Linked Data Proofs
  * [examples-jwt.md](examples-jwt.md) - Examples of Verifiable Credentials with JSON Web Tokens
+ * [examples-jwt-vp.md](examples-jwt-vp.md) - Examples of Verifiable Presentations with JSON Web Tokens
 
 ### About
 
