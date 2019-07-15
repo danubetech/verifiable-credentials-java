@@ -47,6 +47,7 @@ public class JwtVerifiablePresentation {
 		payload.setJwtId("urn:uuid:" + UUID.randomUUID().toString());
 		payload.setIssuer(jwtVerifiableCredential.getPayload().getSubject());
 		payload.setIssuedAtToNow();
+		payload.setNotBefore(payload.getIssuedAt());
 		payload.setClaim(JWT_CLAIM_VP, verifiablePresentation.getJsonLdObject());
 
 		return new JwtVerifiablePresentation(payload, payloadJwtVerifiableCredential, null);

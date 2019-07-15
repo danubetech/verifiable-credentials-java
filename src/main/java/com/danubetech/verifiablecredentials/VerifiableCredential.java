@@ -112,9 +112,12 @@ public class VerifiableCredential {
 	public String getId() {
 
 		Object object = this.jsonLdObject.get(JSONLD_TERM_ID);
+		if (object == null) return null;
+
 		if (object instanceof URI) return ((URI) object).toString();
 		if (object instanceof String) return (String) object;
-		return null;
+
+		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_ID + "': " + object);
 	}
 
 	public void setId(String id) {
@@ -128,9 +131,12 @@ public class VerifiableCredential {
 	public String getCredentialSubject() {
 
 		Object object = this.getJsonLdCredentialSubject().get(JSONLD_TERM_ID);
+		if (object == null) return null;
+
 		if (object instanceof URI) return ((URI) object).toString();
 		if (object instanceof String) return (String) object;
-		return null;
+
+		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_ID + "': " + object);
 	}
 
 	public void setCredentialSubject(String subject) {
@@ -157,9 +163,12 @@ public class VerifiableCredential {
 	public List<String> getType() {
 
 		Object object = this.jsonLdObject.get(JSONLD_TERM_TYPE);
+		if (object == null) return null;
+
 		if (object instanceof List) return (List<String>) object;
 		if (object instanceof String) return Collections.singletonList((String) object);
-		return null;
+
+		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_TYPE + "': " + object);
 	}
 
 	public void setType(List<String> type) {
