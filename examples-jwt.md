@@ -12,7 +12,7 @@ JWT Payload:
 		"jti": "urn:uuid:a87bdfb8-a7df-4bd9-ae0d-d883133538fe",
 		"sub": "did:sov:21tDAKCERh95uGgKbJNHYp",
 		"iss": "did:sov:1yvXbmgPoUm4dl66D7KhyD",
-		"iat": 1560711419,
+		"nbf": 1560711419,
 		"exp": 1560797819,
 		"vc": {
 			"@context": ["https://www.w3.org/2018/credentials/v1", "https://trafi.fi/credentials/v1"],
