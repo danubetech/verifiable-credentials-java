@@ -321,6 +321,6 @@ public class VerifiableCredential {
 
 	@Override
 	public String toString() {
-		return "LdSignature [jsonLdObject=" + jsonLdObject + "]";
+		return "VerifiableCredential [jsonLdObject=" + jsonLdObject + "]";
 	}
 }
