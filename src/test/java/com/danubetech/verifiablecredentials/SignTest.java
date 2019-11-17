@@ -28,7 +28,11 @@ public class SignTest extends TestCase {
 		String domain = null;
 		String nonce = "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e";
 
-		RsaSignature2018LdSigner signer = new RsaSignature2018LdSigner(creator, created, domain, nonce, TestUtil.testRSAPrivateKey);
+		RsaSignature2018LdSigner signer = new RsaSignature2018LdSigner(TestUtil.testRSAPrivateKey);
+		signer.setCreator(creator);
+		signer.setCreated(created);
+		signer.setDomain(domain);
+		signer.setNonce(nonce);
 		LdSignature ldSignature = signer.sign(verifiableCredential.getJsonLdObject());
 
 		assertEquals(SignatureSuites.SIGNATURE_SUITE_RSASIGNATURE2018.getTerm(), ldSignature.getType());
@@ -36,6 +40,6 @@ public class SignTest extends TestCase {
 		assertEquals(created, ldSignature.getCreated());
 		assertEquals(domain, ldSignature.getDomain());
 		assertEquals(nonce, ldSignature.getNonce());
-		assertEquals("eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..TF3iVD991QkINjdF-ohHs65DBwyoWZR-I-oC7H5u5Nb6cN4hEIHoIZHMYywDJ9qDwtoLL8sTOguEtuw2urK4juzwyUAOGtwF8QnsW162D0ty6frQ0gE3dWWdvDodAp_GtU_qFevkJ9-LMB-y8axn9X3lz3-8aWPnYju8uRZlLQ9HaUV8jQI4X7_BhNttUNc5WDweWl6Gp0wn_vhEA2OlYLfyIY-S3P6su4JUWdoRaQyguqkThL6dfDGHDaSH1JIDbakdUyZfiNqOrJ38qeabw2Pm883EpEJPwU-RptGM0-cm28b0hwgRVvRwOe8mhit6xtImrZWqpDfkNUoEOa4_HQ", ldSignature.getSignatureValue());
+		assertEquals("eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJSUzI1NiJ9..O_-LVz0SghpFOlO0xU1d7dk8rXpoQXpd1dBdGuXyjqE72bSZOn_C65M-_ZasNtgt0AxDmkdEFhb1Ji5hZmkuIm9qhMnZDiMMcn6FuMd0eQyYR2OqLOcxOLVdCjgJF4s7M_Mpl7CgZ1w5QnqIEgCp3kzYskvmJrqOsib4a-VXh7xAyA4Lo9edK02wF7t5BrjO6Yz9xaHjB2V9A-Vh3UEXj8kc3cE3M7rMiPlmAiZRdKpl9lVL0ANW1Y0sMPceL3CPoOsjTomfOnGxXylfnhemnVAjpVs5HhG4NlzBf9FT-YPlxfmzVSw1P6epIGSMq4nVXuRXlWD-E_4KcG6teUD3jQ", ldSignature.getSignatureValue());
 	}
 }

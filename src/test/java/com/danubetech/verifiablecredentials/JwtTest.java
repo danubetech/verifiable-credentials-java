@@ -35,13 +35,13 @@ public class JwtTest extends TestCase {
 
 		assertNotNull(jwtString);
 
-		assertEquals(TestUtil.read(ValidateTest.class.getResourceAsStream("verifiable-credential.jwt.payload.jsonld")).trim(), jwtPayload.trim());
-		assertEquals(TestUtil.read(ValidateTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")).trim(), jwtString.trim());
+		assertEquals(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.payload.jsonld")).trim(), jwtPayload.trim());
+		assertEquals(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")).trim(), jwtString.trim());
 	}
 
 	public void testVerify() throws Exception {
 
-		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(TestUtil.read(ValidateTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")), AlgorithmIdentifiers.RSA_USING_SHA256, TestUtil.testRSAPublicKey);
+		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")), AlgorithmIdentifiers.RSA_USING_SHA256, TestUtil.testRSAPublicKey);
 
 		String jwtPayload = jwtVerifiableCredential.getPayload().toJson();
 		String jwtPayloadVerifiableCredential = jwtVerifiableCredential.getPayloadVerifiableCredential().toJsonString();
@@ -49,7 +49,7 @@ public class JwtTest extends TestCase {
 		assertNotNull(jwtPayload);
 		assertNotNull(jwtPayloadVerifiableCredential);
 
-		assertEquals(TestUtil.read(ValidateTest.class.getResourceAsStream("verifiable-credential.jwt.payload.jsonld")).trim(), jwtPayload.trim());
+		assertEquals(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.payload.jsonld")).trim(), jwtPayload.trim());
 
 		VerifiableCredential verifiableCredential = jwtVerifiableCredential.toVerifiableCredential();
 
