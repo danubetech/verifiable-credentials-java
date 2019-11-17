@@ -5,7 +5,7 @@
 	<groupId>com.danubetech</groupId>
 	<artifactId>verifiable-credentials-java</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>verifiable-credentials-java</name>
 
 	<issueManagement>
@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>info.weboftrust</groupId>
 			<artifactId>ld-signatures-java</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
