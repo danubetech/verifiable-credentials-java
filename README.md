@@ -18,7 +18,7 @@ Dependency:
 	<dependency>
 		<groupId>com.trustnet</groupId>
 		<artifactId>verifiable-credentials-java</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.2-SNAPSHOT</version>
 		<scope>compile</scope>
 	</dependency>
 
