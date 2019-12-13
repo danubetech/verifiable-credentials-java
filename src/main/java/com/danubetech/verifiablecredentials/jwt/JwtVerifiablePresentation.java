@@ -2,26 +2,28 @@ package com.danubetech.verifiablecredentials.jwt;
 
 import java.io.IOException;
 import java.security.PrivateKey;
+import java.util.Date;
 import java.util.UUID;
 
-import org.jose4j.jws.JsonWebSignature;
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.lang.JoseException;
-
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
-import com.fasterxml.jackson.core.JsonGenerationException;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 
 public class JwtVerifiablePresentation {
 
 	public static final String JWT_CLAIM_VP = "vp";
 
-	private final JwtClaims payload;
+	private final JWTClaimsSet payload;
 	private final JwtVerifiableCredential payloadJwtVerifiableCredential;
 
 	private String compactSerialization;
 
-	private JwtVerifiablePresentation(JwtClaims payload, JwtVerifiableCredential payloadJwtVerifiableCredential, String compactSerialization) {
+	private JwtVerifiablePresentation(JWTClaimsSet payload, JwtVerifiableCredential payloadJwtVerifiableCredential, String compactSerialization) {
 
 		if (payload == null) throw new NullPointerException();
 		if (payloadJwtVerifiableCredential == null) throw new NullPointerException();
@@ -31,34 +33,36 @@ public class JwtVerifiablePresentation {
 		this.compactSerialization = compactSerialization;
 	}
 
-	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential, String aud) throws JsonGenerationException, IOException, MalformedClaimException {
+	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential, String aud) throws  IOException {
 
 		JwtVerifiableCredential payloadJwtVerifiableCredential = jwtVerifiableCredential;
+		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJwtVerifiableCredential(payloadJwtVerifiableCredential);
 
-		JwtClaims payload = new JwtClaims();
+		JWTClaimsSet.Builder payloadBuilder = new JWTClaimsSet.Builder();
+
+		Date issueTime = new Date();
+		
+		payloadBuilder.jwtID("urn:uuid:" + UUID.randomUUID().toString());
+		payloadBuilder.issuer(jwtVerifiableCredential.getPayload().getSubject());
+		payloadBuilder.issueTime(issueTime);
+		payloadBuilder.notBeforeTime(issueTime);
 
 		if (aud != null) {
 
-			payload.setAudience(aud);
+			payloadBuilder.audience(aud);
 		}
 
-		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJwtVerifiableCredential(payloadJwtVerifiableCredential);
+		payloadBuilder.claim(JWT_CLAIM_VP, verifiablePresentation.getJsonLdObject());
 
-		payload.setJwtId("urn:uuid:" + UUID.randomUUID().toString());
-		payload.setIssuer(jwtVerifiableCredential.getPayload().getSubject());
-		payload.setIssuedAtToNow();
-		payload.setNotBefore(payload.getIssuedAt());
-		payload.setClaim(JWT_CLAIM_VP, verifiablePresentation.getJsonLdObject());
-
-		return new JwtVerifiablePresentation(payload, payloadJwtVerifiableCredential, null);
+		return new JwtVerifiablePresentation(payloadBuilder.build(), payloadJwtVerifiableCredential, null);
 	}
 
-	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential) throws JsonGenerationException, IOException, MalformedClaimException {
+	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential) throws IOException {
 
 		return fromJwtVerifiableCredential(jwtVerifiableCredential, null);
 	}
 
-	public JwtClaims getPayload() {
+	public JWTClaimsSet getPayload() {
 
 		return this.payload;
 	}
@@ -73,17 +77,16 @@ public class JwtVerifiablePresentation {
 		return this.compactSerialization;
 	}
 
-	public String toJwt(String algorithm, PrivateKey privateKey) throws JoseException {
+	public String toJwt(String algorithm, PrivateKey privateKey) throws JOSEException {
 
-		String payload = this.getPayload().toJson();
+		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.parse(algorithm)).build();
+		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());
 
-		JsonWebSignature jws = new JsonWebSignature();
-		jws.setAlgorithmHeaderValue(algorithm);
-		jws.setPayload(payload);
+		JWSSigner signer = new RSASSASigner(privateKey);
 
-		jws.setKey(privateKey);
+		signedJWT.sign(signer);
 
-		this.compactSerialization = jws.getCompactSerialization();
+		this.compactSerialization = signedJWT.serialize();
 		return compactSerialization;
 	}
 }

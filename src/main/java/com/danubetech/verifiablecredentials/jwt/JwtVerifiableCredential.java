@@ -4,29 +4,34 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.text.ParseException;
 import java.util.Date;
-import java.util.LinkedHashMap;
-
-import org.jose4j.jwa.AlgorithmConstraints;
-import org.jose4j.jws.JsonWebSignature;
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.NumericDate;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.lang.JoseException;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.JWSVerifier;
+import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.crypto.RSASSAVerifier;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
+
+import net.minidev.json.JSONObject;
 
 public class JwtVerifiableCredential {
 
 	public static final String JWT_CLAIM_VC = "vc";
 
-	private final JwtClaims payload;
+	private final JWTClaimsSet payload;
 	private final VerifiableCredential payloadVerifiableCredential;
 
 	private String compactSerialization;
 
-	private JwtVerifiableCredential(JwtClaims payload, VerifiableCredential payloadVerifiableCredential, String compactSerialization) {
+	private JwtVerifiableCredential(JWTClaimsSet payload, VerifiableCredential payloadVerifiableCredential, String compactSerialization) {
 
 		if (payload == null) throw new NullPointerException();
 		if (payloadVerifiableCredential == null) throw new NullPointerException();
@@ -36,34 +41,28 @@ public class JwtVerifiableCredential {
 		this.compactSerialization = compactSerialization;
 	}
 
-	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey, boolean doValidate) throws JoseException, GeneralSecurityException, InvalidJwtException {
+	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey, boolean doValidate) throws GeneralSecurityException, ParseException, JOSEException, JsonParseException, IOException {
 
 		boolean validate;
 
-		JsonWebSignature jws = new JsonWebSignature();
-		jws.setAlgorithmConstraints(new AlgorithmConstraints(AlgorithmConstraints.ConstraintType.WHITELIST, algorithm));
-		jws.setCompactSerialization(jwt);
+		SignedJWT signedJWT = SignedJWT.parse(jwt);
 
 		if (doValidate) {
 
-			jws.setKey(publicKey);
-			validate = jws.verifySignature();
+			JWSVerifier verifier = new RSASSAVerifier((RSAPublicKey) publicKey);
+			validate = signedJWT.verify(verifier);
+
 			if (! validate) throw new GeneralSecurityException("Invalid signature: " + jwt);
-
-			System.setProperty("org.jose4j.jws.getPayload-skip-verify", "false");
-		} else {
-
-			System.setProperty("org.jose4j.jws.getPayload-skip-verify", "true");
 		}
 
-		JwtClaims jwtPayload = JwtClaims.parse(jws.getPayload());
-		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) jwtPayload.getClaimValue(JWT_CLAIM_VC);
-		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject, false);
+		JWTClaimsSet jwtPayload = signedJWT.getJWTClaimsSet();
+		JSONObject jsonLdObject = (JSONObject) jwtPayload.getClaims().get(JWT_CLAIM_VC);
+		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJsonString(jsonLdObject.toJSONString(), false);
 
 		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential, jwt);
 	}
 
-	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey) throws JoseException, GeneralSecurityException, InvalidJwtException {
+	public static JwtVerifiableCredential fromJwt(String jwt, String algorithm, PublicKey publicKey) throws GeneralSecurityException, ParseException, JOSEException, JsonParseException, IOException {
 
 		return fromJwt(jwt, algorithm, publicKey, true);
 	}
@@ -80,46 +79,46 @@ public class JwtVerifiableCredential {
 			throw new RuntimeException(ex.getMessage(), ex);
 		}
 
-		JwtClaims payload = new JwtClaims();
+		JWTClaimsSet.Builder payloadBuilder = new JWTClaimsSet.Builder();
 
 		String id = payloadVerifiableCredential.getId();
 		if (id != null) {
-			payload.setJwtId(id);
+			payloadBuilder.jwtID(id);
 			payloadVerifiableCredential.setId(null);
 		}
 
 		String credentialSubject = payloadVerifiableCredential.getCredentialSubject();
 		if (credentialSubject != null) {
-			payload.setSubject(credentialSubject);
+			payloadBuilder.subject(credentialSubject);
 			payloadVerifiableCredential.setCredentialSubject(null);
 		}
 
 		String issuer = payloadVerifiableCredential.getIssuer();
 		if (issuer != null) {
-			payload.setIssuer(issuer);
+			payloadBuilder.issuer(issuer);
 			payloadVerifiableCredential.setIssuer(null);
 		}
 
 		Date issuanceDate = payloadVerifiableCredential.getIssuanceDate();
 		if (issuanceDate != null) {
-			payload.setNotBefore(NumericDate.fromMilliseconds(issuanceDate.getTime()));
+			payloadBuilder.notBeforeTime(issuanceDate);
 			payloadVerifiableCredential.setIssuanceDate(null);
 		}
 
 		Date expirationDate = payloadVerifiableCredential.getExpirationDate();
 		if (expirationDate != null) {
-			payload.setExpirationTime(NumericDate.fromMilliseconds(expirationDate.getTime()));
+			payloadBuilder.expirationTime(expirationDate);
 			payloadVerifiableCredential.setExpirationDate(null);
 		}
 
 		if (aud != null) {
 
-			payload.setAudience(aud);
+			payloadBuilder.audience(aud);
 		}
 
-		payload.setClaim(JWT_CLAIM_VC, payloadVerifiableCredential.getJsonLdObject());
+		payloadBuilder.claim(JWT_CLAIM_VC, payloadVerifiableCredential.getJsonLdObject());
 
-		return new JwtVerifiableCredential(payload, payloadVerifiableCredential, null);
+		return new JwtVerifiableCredential(payloadBuilder.build(), payloadVerifiableCredential, null);
 	}
 
 	public static JwtVerifiableCredential fromVerifiableCredential(VerifiableCredential verifiableCredential) {
@@ -127,7 +126,7 @@ public class JwtVerifiableCredential {
 		return fromVerifiableCredential(verifiableCredential, null);
 	}
 
-	public JwtClaims getPayload() {
+	public JWTClaimsSet getPayload() {
 
 		return this.payload;
 	}
@@ -142,21 +141,20 @@ public class JwtVerifiableCredential {
 		return this.compactSerialization;
 	}
 
-	public String toJwt(String algorithm, PrivateKey privateKey) throws JoseException {
+	public String toJwt(String algorithm, PrivateKey privateKey) throws JOSEException {
 
-		String payload = this.getPayload().toJson();
+		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.parse(algorithm)).build();
+		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());
 
-		JsonWebSignature jws = new JsonWebSignature();
-		jws.setAlgorithmHeaderValue(algorithm);
-		jws.setPayload(payload);
+		JWSSigner signer = new RSASSASigner(privateKey);
 
-		jws.setKey(privateKey);
+		signedJWT.sign(signer);
 
-		this.compactSerialization = jws.getCompactSerialization();
+		this.compactSerialization = signedJWT.serialize();
 		return compactSerialization;
 	}
 
-	public VerifiableCredential toVerifiableCredential() throws MalformedClaimException {
+	public VerifiableCredential toVerifiableCredential() {
 
 		VerifiableCredential verifiableCredential;
 
@@ -168,9 +166,9 @@ public class JwtVerifiableCredential {
 			throw new RuntimeException(ex.getMessage(), ex);
 		}
 
-		JwtClaims payload = this.getPayload();
+		JWTClaimsSet payload = this.getPayload();
 
-		String jwtId = payload.getJwtId();
+		String jwtId = payload.getJWTID();
 		if (jwtId != null) {
 			verifiableCredential.setId(jwtId);
 		}
@@ -185,14 +183,14 @@ public class JwtVerifiableCredential {
 			verifiableCredential.setIssuer(issuer);
 		}
 
-		NumericDate notBefore = payload.getNotBefore();
-		if (notBefore != null) {
-			verifiableCredential.setIssuanceDate(new Date(notBefore.getValueInMillis()));
+		Date notBeforeTime = payload.getNotBeforeTime();
+		if (notBeforeTime != null) {
+			verifiableCredential.setIssuanceDate(notBeforeTime);
 		}
 
-		NumericDate expirationTime = payload.getExpirationTime();
+		Date expirationTime = payload.getExpirationTime();
 		if (expirationTime != null) {
-			verifiableCredential.setExpirationDate(new Date(expirationTime.getValueInMillis()));
+			verifiableCredential.setExpirationDate(expirationTime);
 		}
 
 		return verifiableCredential;

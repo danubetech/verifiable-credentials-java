@@ -1,9 +1,8 @@
 package com.danubetech.verifiablecredentials;
 import java.util.LinkedHashMap;
 
-import org.jose4j.jws.AlgorithmIdentifiers;
-
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
+import com.nimbusds.jose.JWSAlgorithm;
 
 import junit.framework.TestCase;
 
@@ -27,11 +26,11 @@ public class JwtTest extends TestCase {
 
 		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromVerifiableCredential(verifiableCredential);
 
-		String jwtPayload = jwtVerifiableCredential.getPayload().toJson();
+		String jwtPayload = jwtVerifiableCredential.getPayload().toJSONObject().toJSONString();
 
 		assertNotNull(jwtPayload);
 
-		String jwtString = jwtVerifiableCredential.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, TestUtil.testRSAPrivateKey);
+		String jwtString = jwtVerifiableCredential.toJwt(JWSAlgorithm.RS256.getName(), TestUtil.testRSAPrivateKey);
 
 		assertNotNull(jwtString);
 
@@ -41,9 +40,9 @@ public class JwtTest extends TestCase {
 
 	public void testVerify() throws Exception {
 
-		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")), AlgorithmIdentifiers.RSA_USING_SHA256, TestUtil.testRSAPublicKey);
+		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")), JWSAlgorithm.RS256.getName(), TestUtil.testRSAPublicKey);
 
-		String jwtPayload = jwtVerifiableCredential.getPayload().toJson();
+		String jwtPayload = jwtVerifiableCredential.getPayload().toJSONObject().toJSONString();
 		String jwtPayloadVerifiableCredential = jwtVerifiableCredential.getPayloadVerifiableCredential().toJsonString();
 
 		assertNotNull(jwtPayload);

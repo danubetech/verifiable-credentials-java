@@ -3,24 +3,24 @@ package com.danubetech.verifiablecredentials.w3ctestsuite;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.text.ParseException;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
-import org.jose4j.jwk.JsonWebKey;
-import org.jose4j.jwk.RsaJsonWebKey;
-import org.jose4j.jws.AlgorithmIdentifiers;
-import org.jose4j.lang.JoseException;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.github.jsonldjava.utils.JsonUtils;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.util.JSONObjectUtils;
+
+import net.minidev.json.JSONObject;
 
 public class Generator {
 
@@ -62,7 +62,7 @@ public class Generator {
 
 				if (argDecode) {
 
-					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(input, AlgorithmIdentifiers.RSA_USING_SHA256, publicKey, false);
+					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(input, JWSAlgorithm.RS256.getName(), publicKey, false);
 					VerifiableCredential verifiableCredential = jwtVerifiableCredential.toVerifiableCredential();
 
 					output = verifiableCredential.toJsonString();
@@ -73,18 +73,18 @@ public class Generator {
 
 					if (argPresentation) {
 
-						jwtVerifiableCredential.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, privateKey);
+						jwtVerifiableCredential.toJwt(JWSAlgorithm.RS256.getName(), privateKey);
 						JwtVerifiablePresentation jwtVerifiablePresentation = JwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential, argAud);
 
-						output = jwtVerifiablePresentation.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, privateKey);
+						output = jwtVerifiablePresentation.toJwt(JWSAlgorithm.RS256.getName(), privateKey);
 					} else {
 
 						if (argNoJws) {
 
-							output = jwtVerifiableCredential.getPayload().toJson();
+							output = jwtVerifiableCredential.getPayload().toJSONObject().toJSONString();
 						} else {
 
-							output = jwtVerifiableCredential.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, privateKey);
+							output = jwtVerifiableCredential.toJwt(JWSAlgorithm.RS256.getName(), privateKey);
 						}
 					}
 				}
@@ -136,24 +136,24 @@ public class Generator {
 		return argsList.get(argsList.size()-1);
 	}
 
-	static PrivateKey readPrivateKey(String jwt) throws JoseException, JsonParseException, IOException {
+	static PrivateKey readPrivateKey(String jwt) throws ParseException, JOSEException {
 
-		LinkedHashMap<String, Object> jsonObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(new String(Base64.decodeBase64(jwt)));
-		LinkedHashMap<String, Object> rs256PrivateKeyJwk = (LinkedHashMap<String, Object>) jsonObject.get("rs256PrivateKeyJwk");
+		JSONObject jsonObject = JSONObjectUtils.parse(new String(Base64.decodeBase64(jwt)));
+		JSONObject rs256PrivateKeyJwk = (JSONObject) jsonObject.get("rs256PrivateKeyJwk");
 
-		RsaJsonWebKey jwk = (RsaJsonWebKey) JsonWebKey.Factory.newJwk(rs256PrivateKeyJwk);
+		RSAKey jwk = (RSAKey) JWK.parse(rs256PrivateKeyJwk);
 
-		return jwk.getPrivateKey();
+		return jwk.toPrivateKey();
 	}
 
-	static PublicKey readPublicKey(String jwt) throws JoseException, JsonParseException, IOException {
+	static PublicKey readPublicKey(String jwt) throws ParseException, JOSEException {
 
-		LinkedHashMap<String, Object> jsonObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(new String(Base64.decodeBase64(jwt)));
-		LinkedHashMap<String, Object> rs256PrivateKeyJwk = (LinkedHashMap<String, Object>) jsonObject.get("rs256PrivateKeyJwk");
+		JSONObject jsonObject = JSONObjectUtils.parse(new String(Base64.decodeBase64(jwt)));
+		JSONObject rs256PrivateKeyJwk = (JSONObject) jsonObject.get("rs256PrivateKeyJwk");
 
-		RsaJsonWebKey jwk = (RsaJsonWebKey) JsonWebKey.Factory.newJwk(rs256PrivateKeyJwk);
+		RSAKey jwk = (RSAKey) JWK.parse(rs256PrivateKeyJwk);
 
-		return jwk.getPublicKey();
+		return jwk.toPublicKey();
 	}
 
 	static String readInput(File input) throws Exception {
