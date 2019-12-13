@@ -1,7 +1,6 @@
 package com.danubetech.verifiablecredentials.jwt;
 
 import java.io.IOException;
-import java.security.PrivateKey;
 import java.util.Date;
 import java.util.UUID;
 
@@ -11,6 +10,7 @@ import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
@@ -77,12 +77,12 @@ public class JwtVerifiablePresentation {
 		return this.compactSerialization;
 	}
 
-	public String toJwt(String algorithm, PrivateKey privateKey) throws JOSEException {
+	public String toJwt(RSAKey rsaKey) throws JOSEException {
 
-		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.parse(algorithm)).build();
+		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256).build();
 		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());
 
-		JWSSigner signer = new RSASSASigner(privateKey);
+		JWSSigner signer = new RSASSASigner(rsaKey);
 
 		signedJWT.sign(signer);
 

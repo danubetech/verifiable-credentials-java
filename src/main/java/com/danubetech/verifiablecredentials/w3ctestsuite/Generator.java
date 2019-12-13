@@ -3,8 +3,6 @@ package com.danubetech.verifiablecredentials.w3ctestsuite;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
@@ -57,12 +55,11 @@ public class Generator {
 				output = verifiableCredential.toJsonString();
 			} else {
 
-				PrivateKey privateKey = readPrivateKey(argJwt);
-				PublicKey publicKey = readPublicKey(argJwt);
+				RSAKey rsaKey = readRSAKey(argJwt);
 
 				if (argDecode) {
 
-					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(input, JWSAlgorithm.RS256.getName(), publicKey, false);
+					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(input, JWSAlgorithm.RS256.getName(), rsaKey.toPublicKey(), false);
 					VerifiableCredential verifiableCredential = jwtVerifiableCredential.toVerifiableCredential();
 
 					output = verifiableCredential.toJsonString();
@@ -73,10 +70,10 @@ public class Generator {
 
 					if (argPresentation) {
 
-						jwtVerifiableCredential.toJwt(JWSAlgorithm.RS256.getName(), privateKey);
+						jwtVerifiableCredential.toJwt(rsaKey);
 						JwtVerifiablePresentation jwtVerifiablePresentation = JwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential, argAud);
 
-						output = jwtVerifiablePresentation.toJwt(JWSAlgorithm.RS256.getName(), privateKey);
+						output = jwtVerifiablePresentation.toJwt(rsaKey);
 					} else {
 
 						if (argNoJws) {
@@ -84,7 +81,7 @@ public class Generator {
 							output = jwtVerifiableCredential.getPayload().toJSONObject().toJSONString();
 						} else {
 
-							output = jwtVerifiableCredential.toJwt(JWSAlgorithm.RS256.getName(), privateKey);
+							output = jwtVerifiableCredential.toJwt(rsaKey);
 						}
 					}
 				}
@@ -136,24 +133,14 @@ public class Generator {
 		return argsList.get(argsList.size()-1);
 	}
 
-	static PrivateKey readPrivateKey(String jwt) throws ParseException, JOSEException {
+	static RSAKey readRSAKey(String jwt) throws ParseException, JOSEException {
 
 		JSONObject jsonObject = JSONObjectUtils.parse(new String(Base64.decodeBase64(jwt)));
 		JSONObject rs256PrivateKeyJwk = (JSONObject) jsonObject.get("rs256PrivateKeyJwk");
 
 		RSAKey jwk = (RSAKey) JWK.parse(rs256PrivateKeyJwk);
 
-		return jwk.toPrivateKey();
-	}
-
-	static PublicKey readPublicKey(String jwt) throws ParseException, JOSEException {
-
-		JSONObject jsonObject = JSONObjectUtils.parse(new String(Base64.decodeBase64(jwt)));
-		JSONObject rs256PrivateKeyJwk = (JSONObject) jsonObject.get("rs256PrivateKeyJwk");
-
-		RSAKey jwk = (RSAKey) JWK.parse(rs256PrivateKeyJwk);
-
-		return jwk.toPublicKey();
+		return jwk;
 	}
 
 	static String readInput(File input) throws Exception {

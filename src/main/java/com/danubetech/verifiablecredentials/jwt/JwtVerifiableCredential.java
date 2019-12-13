@@ -145,7 +145,7 @@ public class JwtVerifiableCredential {
 		return this.compactSerialization;
 	}
 
-	public String toJwtRSA(RSAKey rsaKey) throws JOSEException {
+	public String toJwt(RSAKey rsaKey) throws JOSEException {
 
 		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256).build();
 		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());
@@ -158,7 +158,7 @@ public class JwtVerifiableCredential {
 		return compactSerialization;
 	}
 
-	public String toJwtEd25519(OctetKeyPair octetKeyPair) throws JOSEException {
+	public String toJwt(OctetKeyPair octetKeyPair) throws JOSEException {
 
 		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.EdDSA).build();
 		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());
@@ -171,7 +171,7 @@ public class JwtVerifiableCredential {
 		return compactSerialization;
 	}
 
-	public String toJwtES256K(ECKey ecKey) throws JOSEException {
+	public String toJwt(ECKey ecKey) throws JOSEException {
 
 		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.ES256K).build();
 		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());

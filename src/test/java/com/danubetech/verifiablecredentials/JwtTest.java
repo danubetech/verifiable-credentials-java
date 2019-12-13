@@ -30,7 +30,7 @@ public class JwtTest extends TestCase {
 
 		assertNotNull(jwtPayload);
 
-		String jwtString = jwtVerifiableCredential.toJwt(JWSAlgorithm.RS256.getName(), TestUtil.testRSAPrivateKey);
+		String jwtString = jwtVerifiableCredential.toJwt(TestUtil.rsaKey);
 
 		assertNotNull(jwtString);
 

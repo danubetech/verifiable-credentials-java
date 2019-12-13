@@ -11,10 +11,13 @@ import java.security.spec.X509EncodedKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
+import com.nimbusds.jose.jwk.RSAKey;
+
 class TestUtil {
 
 	static final RSAPrivateKey testRSAPrivateKey;
 	static final RSAPublicKey testRSAPublicKey;
+	static final RSAKey rsaKey;
 
 	static {
 
@@ -49,6 +52,10 @@ class TestUtil {
 
 			throw new RuntimeException(ex.getMessage(), ex);
 		}
+
+		rsaKey = new com.nimbusds.jose.jwk.RSAKey.Builder(testRSAPublicKey)
+				.privateKey(testRSAPrivateKey)
+				.build();
 	}
 
 	static String read(InputStream inputStream) throws Exception {
