@@ -2,7 +2,6 @@ package com.danubetech.verifiablecredentials.jwt;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
@@ -15,8 +14,13 @@ import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.JWSVerifier;
+import com.nimbusds.jose.crypto.ECDSASigner;
+import com.nimbusds.jose.crypto.Ed25519Signer;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
+import com.nimbusds.jose.jwk.ECKey;
+import com.nimbusds.jose.jwk.OctetKeyPair;
+import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
@@ -141,12 +145,38 @@ public class JwtVerifiableCredential {
 		return this.compactSerialization;
 	}
 
-	public String toJwt(String algorithm, PrivateKey privateKey) throws JOSEException {
+	public String toJwtRSA(RSAKey rsaKey) throws JOSEException {
 
-		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.parse(algorithm)).build();
+		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256).build();
 		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());
 
-		JWSSigner signer = new RSASSASigner(privateKey);
+		JWSSigner signer = new RSASSASigner(rsaKey);
+
+		signedJWT.sign(signer);
+
+		this.compactSerialization = signedJWT.serialize();
+		return compactSerialization;
+	}
+
+	public String toJwtEd25519(OctetKeyPair octetKeyPair) throws JOSEException {
+
+		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.EdDSA).build();
+		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());
+
+		JWSSigner signer = new Ed25519Signer(octetKeyPair);
+
+		signedJWT.sign(signer);
+
+		this.compactSerialization = signedJWT.serialize();
+		return compactSerialization;
+	}
+
+	public String toJwtES256K(ECKey ecKey) throws JOSEException {
+
+		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.ES256K).build();
+		SignedJWT signedJWT = new SignedJWT(jwsHeader, this.getPayload());
+
+		JWSSigner signer = new ECDSASigner(ecKey);
 
 		signedJWT.sign(signer);
 
