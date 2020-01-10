@@ -1,8 +1,8 @@
 package com.danubetech.verifiablecredentials;
+import java.security.GeneralSecurityException;
 import java.util.LinkedHashMap;
 
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
-import com.nimbusds.jose.JWSAlgorithm;
 
 import junit.framework.TestCase;
 
@@ -25,25 +25,23 @@ public class JwtTest extends TestCase {
 		jsonLdCredentialSubject.put("driversLicense", jsonLdDriversLicenseObject);
 
 		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromVerifiableCredential(verifiableCredential);
-
-		String jwtPayload = jwtVerifiableCredential.getPayload().toJSONObject().toJSONString();
-
-		assertNotNull(jwtPayload);
-
-		String jwtString = jwtVerifiableCredential.toJwt(TestUtil.rsaKey);
+		String jwtString = jwtVerifiableCredential.sign_RSA_RS256(TestUtil.rsaKey);
+		String jwtPayload = jwtVerifiableCredential.getJwsObject().getPayload().toString();
 
 		assertNotNull(jwtString);
+		assertNotNull(jwtPayload);
 
-		assertEquals(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.payload.jsonld")).trim(), jwtPayload.trim());
 		assertEquals(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")).trim(), jwtString.trim());
+		assertEquals(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.payload.jsonld")).trim(), jwtPayload.trim());
 	}
 
 	public void testVerify() throws Exception {
 
-		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")), JWSAlgorithm.RS256.getName(), TestUtil.testRSAPublicKey);
+		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromCompactSerialization(TestUtil.read(VerifyTest.class.getResourceAsStream("verifiable-credential.jwt.jsonld")));
+		if (! jwtVerifiableCredential.verify_RSA_RS256(TestUtil.testRSAPublicKey)) throw new GeneralSecurityException("Invalid signature.");
 
-		String jwtPayload = jwtVerifiableCredential.getPayload().toJSONObject().toJSONString();
-		String jwtPayloadVerifiableCredential = jwtVerifiableCredential.getPayloadVerifiableCredential().toJsonString();
+		String jwtPayload = jwtVerifiableCredential.getJwsObject().getPayload().toString();
+		String jwtPayloadVerifiableCredential = jwtVerifiableCredential.getPayloadObject().toJsonString();
 
 		assertNotNull(jwtPayload);
 		assertNotNull(jwtPayloadVerifiableCredential);

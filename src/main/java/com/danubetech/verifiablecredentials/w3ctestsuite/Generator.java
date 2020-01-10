@@ -3,6 +3,7 @@ package com.danubetech.verifiablecredentials.w3ctestsuite;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +14,6 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
 import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.util.JSONObjectUtils;
@@ -59,7 +59,9 @@ public class Generator {
 
 				if (argDecode) {
 
-					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromJwt(input, JWSAlgorithm.RS256.getName(), rsaKey.toPublicKey(), false);
+					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromCompactSerialization(input);
+					if (! jwtVerifiableCredential.verify_RSA_RS256(rsaKey.toPublicJWK())) throw new GeneralSecurityException("Invalid signature.");
+
 					VerifiableCredential verifiableCredential = jwtVerifiableCredential.toVerifiableCredential();
 
 					output = verifiableCredential.toJsonString();
@@ -70,10 +72,10 @@ public class Generator {
 
 					if (argPresentation) {
 
-						jwtVerifiableCredential.toJwt(rsaKey);
-						JwtVerifiablePresentation jwtVerifiablePresentation = JwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential, argAud);
+						jwtVerifiableCredential.sign_RSA_RS256(rsaKey);
 
-						output = jwtVerifiablePresentation.toJwt(rsaKey);
+						JwtVerifiablePresentation jwtVerifiablePresentation = JwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential, argAud);
+						output = jwtVerifiablePresentation.sign_RSA_RS256(rsaKey);
 					} else {
 
 						if (argNoJws) {
@@ -81,7 +83,7 @@ public class Generator {
 							output = jwtVerifiableCredential.getPayload().toJSONObject().toJSONString();
 						} else {
 
-							output = jwtVerifiableCredential.toJwt(rsaKey);
+							output = jwtVerifiableCredential.sign_RSA_RS256(rsaKey);
 						}
 					}
 				}
