@@ -4,12 +4,14 @@ import java.util.LinkedHashMap;
 import com.github.jsonldjava.utils.JsonUtils;
 
 import info.weboftrust.ldsignatures.verifier.RsaSignature2018LdVerifier;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class VerifyTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.*;
 
-	@SuppressWarnings("unchecked")
-	public void testVerify() throws Exception {
+class VerifyTest {
+
+	@Test
+	void testVerify() throws Exception {
 
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(VerifyTest.class.getResourceAsStream("verifiable-credential.ldp.good.jsonld"));
 		VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
@@ -26,8 +28,8 @@ public class VerifyTest extends TestCase {
 		assertEquals("trucks", licenseClass);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testBadVerify() throws Exception {
+	@Test
+	void testBadVerify() throws Exception {
 
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(VerifyTest.class.getResourceAsStream("verifiable-credential.ldp.bad.jsonld"));
 		VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
