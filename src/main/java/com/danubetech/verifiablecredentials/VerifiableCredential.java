@@ -286,7 +286,7 @@ public class VerifiableCredential {
 		validateRun(() -> { if (this.getId() != null) validateUrl(this.getId()); }, "'@id' must be a valid URI.");
 		validateRun(() -> { validateUrl(this.getIssuer()); }, "'issuer' must be a valid URI.");
 		validateRun(() -> { validateTrue(JSONLD_CONTEXT_CREDENTIALS.equals(this.getContext().get(0)) || JSONLD_CONTEXT_CREDENTIALS_NO_WWW.equals(this.getContext().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1: " + this.getContext().get(0));
-		validateRun(() -> { for (String context : this.getContext()) validateUrl(context); }, "@context must be a valid URI: " + this.getContext());
+		validateRun(() -> { validateUrl(this.getContext().get(0)); }, "@context must be a valid URI: " + this.getContext().get(0));
 		validateRun(() -> { validateTrue(this.getType().contains(JSONLD_TYPE_VERIFIABLE_CREDENTIAL)); }, "@type must contain VerifiableCredential: " + this.getType());
 	}
 

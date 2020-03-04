@@ -20,10 +20,9 @@ public class VerifyTest extends TestCase {
 		assertTrue(verify);
 
 		LinkedHashMap<String, Object> jsonLdCredentialSubject = verifiableCredential.getJsonLdCredentialSubject();
-		LinkedHashMap<String, Object> jsonLdDriversLicenseObject = (LinkedHashMap<String, Object>) jsonLdCredentialSubject.get("driversLicense");
-		String licenseClass = jsonLdDriversLicenseObject == null ? null : (String) jsonLdDriversLicenseObject.get("licenseClass");
+		String givenName = jsonLdCredentialSubject == null ? null : (String) jsonLdCredentialSubject.get("givenName");
 
-		assertEquals("trucks", licenseClass);
+		assertEquals("Manu", givenName);
 	}
 
 	@SuppressWarnings("unchecked")
