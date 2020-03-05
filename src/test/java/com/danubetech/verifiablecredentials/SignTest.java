@@ -1,5 +1,6 @@
 package com.danubetech.verifiablecredentials;
 import java.net.URI;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 import com.github.jsonldjava.utils.JsonUtils;
@@ -17,7 +18,7 @@ public class SignTest extends TestCase {
 		VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
 
 		URI creator = URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1");
-		String created = "2018-01-01T21:19:10Z";
+		Date created = VerifiableCredential.DATE_FORMAT.parse("2018-01-01T21:19:10Z");
 		String domain = null;
 		String nonce = "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e";
 
@@ -26,13 +27,15 @@ public class SignTest extends TestCase {
 		signer.setCreated(created);
 		signer.setDomain(domain);
 		signer.setNonce(nonce);
-		LdSignature ldSignature = signer.sign(verifiableCredential.getJsonLdObject());
+		LdSignature ldSignature = signer.sign(verifiableCredential.getJsonLdObject(), true, false);
 
+		System.out.println(verifiableCredential.toPrettyJsonString());
+		
 		assertEquals(SignatureSuites.SIGNATURE_SUITE_RSASIGNATURE2018.getTerm(), ldSignature.getType());
 		assertEquals(creator, ldSignature.getCreator());
 		assertEquals(created, ldSignature.getCreated());
 		assertEquals(domain, ldSignature.getDomain());
 		assertEquals(nonce, ldSignature.getNonce());
-		assertEquals("eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJSUzI1NiJ9..HS8vTNT4-3L3XSygBizStCNldcP4JGWkZt2YyVtMrQzcWJCvRMe5Px-rwdEgfPxXWDx1RN9WLLPsNrB5H2m5dw5AtISqDH3Roqos8C2U6-BZqS5lC04dBWbNBwt-6rHe16PlzKfXcImTGjVLSiy6u2vDHIuUHSU3iUUAP1LyyDv66TabkbRQfd66FDvIf5dCY5CUiv96KJyDl19ORUHqQip_1HlBRtdskxnFk7rbnKAzDNPaGt019NOaFZEicsGQzB2Lu3V7O0Dzo9dHXDuHShiLg7M67w5ax92dFiPXj7f5vCvGxKBgoRMTY_GU3LC_MJBHqNuWFQxrb6eGWjcynA", ldSignature.getJws());
+		assertEquals("eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJSUzI1NiJ9..pZtcYsR_vEtm5ZLEGNJZPYuWQeD_drBG55gDrX4V-Zxe-R0ue90QzfLn9ZAheBrnWxQNobOsmc0wLBLnSNp5fMbmxHzaMuPadkMXgyqdgH6r13YHidLhtsg8OWGBU0nlFQe5NPztP8HJdgdTmK8ohQlx1pB7BQuB3-iY_cHO7PLuVJFplI616v7zINW46SNc6PE2cJ_O-dnehA_PaNCnUn7s-TfqTYC7LQ2N95XImBt9zW5DYE7NRY7ZZh1sBNaSnHweOYZay-W6u789J3zTFxgbl-hZGziFA4EOJoWUAdb1vCBzlBWasfmkD0LAxlv7UV0Fp3wG2laIFiTwgrm9eg", ldSignature.getJws());
 	}
 }

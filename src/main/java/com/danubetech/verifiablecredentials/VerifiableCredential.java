@@ -34,6 +34,7 @@ public class VerifiableCredential {
 	public static final String JSONLD_TERM_CREDENTIAL_SUBJECT = "credentialSubject";
 
 	public static final SimpleDateFormat DATE_FORMAT;
+	public static final SimpleDateFormat DATE_FORMAT_MILLIS;
 
 	private final LinkedHashMap<String, Object> jsonLdObject;
 
@@ -41,6 +42,9 @@ public class VerifiableCredential {
 
 		DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+		DATE_FORMAT_MILLIS = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+		DATE_FORMAT_MILLIS.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
 	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject, boolean validate) { 
@@ -197,12 +201,16 @@ public class VerifiableCredential {
 
 	public Date getIssuanceDate() {
 
+		String issuanceDateString = (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
+		if (issuanceDateString == null) return null;
 		try {
-			String issuanceDateString = (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
-			if (issuanceDateString == null) return null;
 			return DATE_FORMAT.parse(issuanceDateString);
 		} catch (ParseException ex) {
-			throw new RuntimeException(ex.getMessage(), ex);
+			try {
+				return DATE_FORMAT_MILLIS.parse(issuanceDateString);
+			} catch (ParseException ex2) {
+				throw new RuntimeException(ex.getMessage(), ex);
+			}
 		}
 	}
 
@@ -216,12 +224,16 @@ public class VerifiableCredential {
 
 	public Date getExpirationDate() {
 
+		String expirationDateString = (String) this.jsonLdObject.get(JSONLD_TERM_EXPIRATION_DATE);
+		if (expirationDateString == null) return null;
 		try {
-			String expirationDateString = (String) this.jsonLdObject.get(JSONLD_TERM_EXPIRATION_DATE);
-			if (expirationDateString == null) return null;
 			return DATE_FORMAT.parse(expirationDateString);
 		} catch (ParseException ex) {
-			throw new RuntimeException(ex.getMessage(), ex);
+			try {
+				return DATE_FORMAT_MILLIS.parse(expirationDateString);
+			} catch (ParseException ex2) {
+				throw new RuntimeException(ex.getMessage(), ex);
+			}
 		}
 	}
 
