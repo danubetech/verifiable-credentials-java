@@ -16,7 +16,7 @@
 	<scm>
 		<url>https://github.com/danubetech/verifiable-credentials-java</url>
 		<connection>scm:git:git://github.com/danubetech/verifiable-credentials-java.git</connection>
-		<developerConnection>scm:git:git@github.com:danubetech/verifiable-credentials-java.git</developerConnection>
+		<developerConnection>scm:git:git@danubetech/verifiable-credentials-java.git</developerConnection>
 	</scm>
 
 	<distributionManagement>
@@ -26,7 +26,7 @@
 			<url>https://maven.pkg.github.com/danubetech/verifiable-credentials-java</url>
 		</repository>
 	</distributionManagement>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<github.global.server>github</github.global.server>
