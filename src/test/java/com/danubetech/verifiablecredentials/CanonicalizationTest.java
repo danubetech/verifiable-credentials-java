@@ -12,19 +12,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CanonicalizationTest {
 
-    @SuppressWarnings("unchecked")
-    @Test
-    void testCanonicalization() throws Exception {
+	@SuppressWarnings("unchecked")
+	@Test
+	void testCanonicalization() throws Exception {
 
-        LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(CanonicalizationTest.class.getResourceAsStream("verifiable-credential.ldp.good.jsonld"));
-        String canonicalizedDocument = TestUtil.read(CanonicalizationTest.class.getResourceAsStream("verifiable-credential.canonicalized.test"));
+		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(CanonicalizationTest.class.getResourceAsStream("verifiable-credential.input.jsonld"));
+		String canonicalizedDocument = TestUtil.read(CanonicalizationTest.class.getResourceAsStream("verifiable-credential.canonicalized.test"));
 
-        assertEquals(buildCanonicalizeDocument(jsonLdObject), canonicalizedDocument);
-    }
+		assertEquals(buildCanonicalizeDocument(jsonLdObject), canonicalizedDocument);
+	}
 
-    private String buildCanonicalizeDocument(Object jsonLdObject) {
-        JsonLdOptions options = new JsonLdOptions();
-        options.format = JsonLdConsts.APPLICATION_NQUADS;
-        return (String) JsonLdProcessor.normalize(jsonLdObject, options);
-    }
+	private String buildCanonicalizeDocument(Object jsonLdObject) {
+		JsonLdOptions options = new JsonLdOptions();
+		options.format = JsonLdConsts.APPLICATION_NQUADS;
+		return (String) JsonLdProcessor.normalize(jsonLdObject, options);
+	}
 }
