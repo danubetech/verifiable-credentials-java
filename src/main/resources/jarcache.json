@@ -1,17 +1,7 @@
 [
   {
-    "Content-Location": "https://w3id.org/security/v1",
-    "X-Classpath": "info/weboftrust/ldsignatures/security-v1-custom.jsonld",
-    "Content-Type": "application/ld+json"
-  },
-  {
-    "Content-Location": "https://w3id.org/security/v2",
-    "X-Classpath": "info/weboftrust/ldsignatures/security-v2.jsonld",
-    "Content-Type": "application/ld+json"
-  },
-  {
     "Content-Location": "https://www.w3.org/2018/credentials/v1",
-    "X-Classpath": "com/danubetech/verifiablecredentials/credentials-v1.jsonld",
+    "X-Classpath": "com/danubetech/verifiablecredentials/contexts/credentials-v1-CUSTOM.jsonld",
     "Content-Type": "application/ld+json"
   }
 ]

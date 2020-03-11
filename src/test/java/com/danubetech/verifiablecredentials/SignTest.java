@@ -1,5 +1,7 @@
 package com.danubetech.verifiablecredentials;
 
+import com.github.jsonldjava.utils.JsonUtils;
+
 import info.weboftrust.ldsignatures.LdSignature;
 import info.weboftrust.ldsignatures.signer.RsaSignature2018LdSigner;
 import info.weboftrust.ldsignatures.suites.SignatureSuites;
