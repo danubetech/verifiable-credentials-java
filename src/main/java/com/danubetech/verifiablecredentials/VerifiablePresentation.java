@@ -51,6 +51,11 @@ public class VerifiablePresentation {
 		return new VerifiablePresentation(jsonLdObject, validate);
 	}
 
+	public static VerifiablePresentation fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject) {
+
+		return fromJsonLdObject(jsonLdObject, true);
+	}
+
 	public static VerifiablePresentation fromJsonString(String jsonString, boolean validate) throws JsonParseException, IOException {
 
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString);
