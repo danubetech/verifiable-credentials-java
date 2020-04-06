@@ -20,10 +20,10 @@ import info.weboftrust.ldsignatures.crypto.adapter.JWSSignerAdapter;
 import info.weboftrust.ldsignatures.crypto.adapter.JWSVerifierAdapter;
 import info.weboftrust.ldsignatures.crypto.impl.Ed25519_EdDSA_PrivateKeySigner;
 import info.weboftrust.ldsignatures.crypto.impl.Ed25519_EdDSA_PublicKeyVerifier;
-import info.weboftrust.ldsignatures.crypto.impl.P256K_ES256K_PrivateKeySigner;
-import info.weboftrust.ldsignatures.crypto.impl.P256K_ES256K_PublicKeyVerifier;
 import info.weboftrust.ldsignatures.crypto.impl.RSA_RS256_PrivateKeySigner;
 import info.weboftrust.ldsignatures.crypto.impl.RSA_RS256_PublicKeyVerifier;
+import info.weboftrust.ldsignatures.crypto.impl.secp256k1_ES256K_PrivateKeySigner;
+import info.weboftrust.ldsignatures.crypto.impl.secp256k1_ES256K_PublicKeyVerifier;
 
 abstract class JwtObject <T> {
 
@@ -98,7 +98,7 @@ abstract class JwtObject <T> {
 
 	public String sign_P256K_ES256K(ECKey privateKey) throws JOSEException {
 
-		return this.sign_P256K_ES256K(new P256K_ES256K_PrivateKeySigner(privateKey));
+		return this.sign_P256K_ES256K(new secp256k1_ES256K_PrivateKeySigner(privateKey));
 	}
 
 	public String sign_P256K_ES256K(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
@@ -152,7 +152,7 @@ abstract class JwtObject <T> {
 
 	public boolean verify_P256K_ES256K(ECKey publicKey) throws JOSEException {
 
-		return this.verify_P256K_ES256K(new P256K_ES256K_PublicKeyVerifier(publicKey));
+		return this.verify_P256K_ES256K(new secp256k1_ES256K_PublicKeyVerifier(publicKey));
 	}
 
 	public boolean verify_P256K_ES256K(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
@@ -163,7 +163,7 @@ abstract class JwtObject <T> {
 	/*
 	 * Helper class
 	 */
-	
+
 	private static class EscapedSlashWorkaroundJWSObject extends JWSObject {
 
 		public EscapedSlashWorkaroundJWSObject(final JWSHeader header, final JWTClaimsSet claimsSet) {
@@ -171,7 +171,7 @@ abstract class JwtObject <T> {
 			super(header, new Payload(claimsSet.toJSONObject().toJSONString().replace("\\/", "/")));
 		}
 	}
-	
+
 	/*
 	 * Getters
 	 */
