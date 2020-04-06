@@ -80,6 +80,7 @@ public class VerifiableCredential {
 		return fromJsonLdObject(jsonLdObject, true);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static VerifiableCredential fromJsonString(String jsonString, boolean validate) throws JsonParseException, IOException {
 
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString);
@@ -151,6 +152,7 @@ public class VerifiableCredential {
 			this.getJsonLdCredentialSubject().put(JSONLD_TERM_ID, subject);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> getContext() {
 
 		return (List<String>) this.jsonLdObject.get(JsonLdConsts.CONTEXT);
@@ -164,6 +166,7 @@ public class VerifiableCredential {
 			this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> getType() {
 
 		Object object = this.jsonLdObject.get(JSONLD_TERM_TYPE);

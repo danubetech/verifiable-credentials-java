@@ -57,6 +57,7 @@ public class VerifiablePresentation {
 		return fromJsonLdObject(jsonLdObject, true);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static VerifiablePresentation fromJsonString(String jsonString, boolean validate) throws JsonParseException, IOException {
 
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString);
@@ -121,6 +122,7 @@ public class VerifiablePresentation {
 		return fromJwtVerifiableCredential(jwtVerifiableCredential, true);
 	}
 
+	@SuppressWarnings("unchecked")
 	public VerifiableCredential getVerifiableCredential() {
 
 		Object verifiableCredentialObject = this.getJsonLdObject().get(JSONLD_TERM_VERIFIABLE_CREDENTIAL);

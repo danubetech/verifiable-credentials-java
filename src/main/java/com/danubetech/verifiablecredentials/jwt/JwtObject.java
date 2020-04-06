@@ -166,6 +166,8 @@ abstract class JwtObject <T> {
 
 	private static class EscapedSlashWorkaroundJWSObject extends JWSObject {
 
+		private static final long serialVersionUID = -587898962717783109L;
+
 		public EscapedSlashWorkaroundJWSObject(final JWSHeader header, final JWTClaimsSet claimsSet) {
 
 			super(header, new Payload(claimsSet.toJSONObject().toJSONString().replace("\\/", "/")));
