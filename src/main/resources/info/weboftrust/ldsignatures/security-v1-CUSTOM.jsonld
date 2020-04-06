@@ -30,6 +30,7 @@
     "expires": {"@id": "sec:expiration", "@type": "xsd:dateTime"},
     "initializationVector": "sec:initializationVector",
     "iterationCount": "sec:iterationCount",
+    "jws": "sec:jws",
     "nonce": "sec:nonce",
     "normalizationAlgorithm": "sec:normalizationAlgorithm",
     "owner": {"@id": "sec:owner", "@type": "@id"},
