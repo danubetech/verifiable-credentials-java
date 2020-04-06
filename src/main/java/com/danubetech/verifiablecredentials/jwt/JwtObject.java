@@ -91,17 +91,17 @@ abstract class JwtObject <T> {
 		return this.sign(new com.nimbusds.jose.crypto.Ed25519Signer(privateKey), JWSAlgorithm.EdDSA);
 	}
 
-	public String sign_P256K_ES256K(ByteSigner signer) throws JOSEException {
+	public String sign_secp256k1_ES256K(ByteSigner signer) throws JOSEException {
 
 		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.ES256K), JWSAlgorithm.ES256K);
 	}
 
-	public String sign_P256K_ES256K(ECKey privateKey) throws JOSEException {
+	public String sign_secp256k1_ES256K(ECKey privateKey) throws JOSEException {
 
-		return this.sign_P256K_ES256K(new secp256k1_ES256K_PrivateKeySigner(privateKey));
+		return this.sign_secp256k1_ES256K(new secp256k1_ES256K_PrivateKeySigner(privateKey));
 	}
 
-	public String sign_P256K_ES256K(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
+	public String sign_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
 
 		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES256K);
 	}
@@ -145,17 +145,17 @@ abstract class JwtObject <T> {
 		return this.verify(new com.nimbusds.jose.crypto.Ed25519Verifier(publicKey));
 	}
 
-	public boolean verify_P256K_ES256K(ByteVerifier verifier) throws JOSEException {
+	public boolean verify_secp256k1_ES256K(ByteVerifier verifier) throws JOSEException {
 
 		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.ES256K));
 	}
 
-	public boolean verify_P256K_ES256K(ECKey publicKey) throws JOSEException {
+	public boolean verify_secp256k1_ES256K(ECKey publicKey) throws JOSEException {
 
-		return this.verify_P256K_ES256K(new secp256k1_ES256K_PublicKeyVerifier(publicKey));
+		return this.verify_secp256k1_ES256K(new secp256k1_ES256K_PublicKeyVerifier(publicKey));
 	}
 
-	public boolean verify_P256K_ES256K(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
+	public boolean verify_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
 
 		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
 	}
