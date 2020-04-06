@@ -8,7 +8,7 @@ import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 
-public class JwtVerifiablePresentation extends JwtObject<JwtVerifiableCredential> {
+public class JwtVerifiablePresentation extends JwtWrappingObject<JwtVerifiableCredential> {
 
 	public static final String JWT_CLAIM_VP = "vp";
 

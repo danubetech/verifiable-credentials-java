@@ -25,21 +25,17 @@ import info.weboftrust.ldsignatures.crypto.impl.RSA_RS256_PublicKeyVerifier;
 import info.weboftrust.ldsignatures.crypto.impl.secp256k1_ES256K_PrivateKeySigner;
 import info.weboftrust.ldsignatures.crypto.impl.secp256k1_ES256K_PublicKeyVerifier;
 
-abstract class JwtObject <T> {
+public class JwtObject {
 
 	private final JWTClaimsSet payload;
-	private final T payloadObject;
-
 	private JWSObject jwsObject;
 	private String compactSerialization;
 
-	protected JwtObject(JWTClaimsSet payload, T payloadObject, JWSObject jwsObject, String compactSerialization) {
+	public JwtObject(JWTClaimsSet payload, JWSObject jwsObject, String compactSerialization) {
 
 		if (payload == null) throw new NullPointerException();
-		if (payloadObject == null) throw new NullPointerException();
 
 		this.payload = payload;
-		this.payloadObject = payloadObject;
 		this.jwsObject = jwsObject;
 		this.compactSerialization = compactSerialization;
 	}
@@ -181,11 +177,6 @@ abstract class JwtObject <T> {
 	public JWTClaimsSet getPayload() {
 
 		return this.payload;
-	}
-
-	public T getPayloadObject() {
-
-		return this.payloadObject;
 	}
 
 	public JWSObject getJwsObject() {

@@ -14,7 +14,7 @@ import com.nimbusds.jwt.SignedJWT;
 
 import net.minidev.json.JSONObject;
 
-public class JwtVerifiableCredential extends JwtObject<VerifiableCredential> {
+public class JwtVerifiableCredential extends JwtWrappingObject<VerifiableCredential> {
 
 	public static final String JWT_CLAIM_VC = "vc";
 
