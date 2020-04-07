@@ -4,7 +4,7 @@
 	<groupId>com.danubetech</groupId>
 	<artifactId>verifiable-credentials-java</artifactId>
 	<packaging>jar</packaging>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.2.1</version>
 	<name>verifiable-credentials-java</name>
 
 	<issueManagement>
@@ -16,7 +16,8 @@
 		<url>https://github.com/danubetech/verifiable-credentials-java</url>
 		<connection>scm:git:git://github.com/danubetech/verifiable-credentials-java.git</connection>
 		<developerConnection>scm:git:git@github.com:danubetech/verifiable-credentials-java.git</developerConnection>
-	</scm>
+	  <tag>v0.2.1</tag>
+  </scm>
 
 
 	<distributionManagement>
