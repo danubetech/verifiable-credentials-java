@@ -15,8 +15,9 @@
 	<scm>
 		<url>https://github.com/danubetech/verifiable-credentials-java</url>
 		<connection>scm:git:git://github.com/danubetech/verifiable-credentials-java.git</connection>
-		<developerConnection>scm:git:git@danubetech/verifiable-credentials-java.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:danubetech/verifiable-credentials-java.git</developerConnection>
 	</scm>
+
 
 	<distributionManagement>
 		<repository>
