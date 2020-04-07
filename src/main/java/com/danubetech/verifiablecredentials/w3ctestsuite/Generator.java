@@ -153,6 +153,8 @@ public class Generator {
 		String line;
 		while ((line = reader.readLine()) != null) buffer.append(line);
 
+		reader.close();
+
 		return buffer.toString();
 	}
 }

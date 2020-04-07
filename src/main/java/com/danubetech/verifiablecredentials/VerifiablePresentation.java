@@ -3,6 +3,7 @@ package com.danubetech.verifiablecredentials;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -51,6 +52,12 @@ public class VerifiablePresentation {
 		return new VerifiablePresentation(jsonLdObject, validate);
 	}
 
+	public static VerifiablePresentation fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject) {
+
+		return fromJsonLdObject(jsonLdObject, true);
+	}
+
+	@SuppressWarnings("unchecked")
 	public static VerifiablePresentation fromJsonString(String jsonString, boolean validate) throws JsonParseException, IOException {
 
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString);
@@ -73,8 +80,8 @@ public class VerifiablePresentation {
 		ArrayList<String> typeList = new ArrayList<String> ();
 		typeList.add(JSONLD_TYPE_VERIFIABLE_PRESENTATION);
 
-		ArrayList<String> verifiableCredentialList = new ArrayList<String> ();
-		verifiableCredentialList.add(verifiableCredential.toJsonString());
+		ArrayList<Object> verifiableCredentialList = new ArrayList<Object> ();
+		verifiableCredentialList.add(verifiableCredential.getJsonLdObject());
 
 		jsonLdObject = new LinkedHashMap<String, Object> ();
 		jsonLdObject.put(JsonLdConsts.CONTEXT, contextList);
@@ -113,6 +120,29 @@ public class VerifiablePresentation {
 	public static VerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential) {
 
 		return fromJwtVerifiableCredential(jwtVerifiableCredential, true);
+	}
+
+	@SuppressWarnings("unchecked")
+	public VerifiableCredential getVerifiableCredential() {
+
+		Object verifiableCredentialObject = this.getJsonLdObject().get(JSONLD_TERM_VERIFIABLE_CREDENTIAL);
+
+		LinkedHashMap<String, Object> jsonLdObject = null;
+
+		if (verifiableCredentialObject instanceof LinkedHashMap) {
+
+			jsonLdObject = (LinkedHashMap<String, Object>) verifiableCredentialObject;
+		} else if (verifiableCredentialObject instanceof List) {
+
+			List<?> verifiableCredentialList = (List<?>) verifiableCredentialObject;
+
+			if (verifiableCredentialList.size() == 1) {
+
+				jsonLdObject = (LinkedHashMap<String, Object>) verifiableCredentialList.get(0);
+			}
+		}
+
+		return jsonLdObject == null ? null : VerifiableCredential.fromJsonLdObject(jsonLdObject);
 	}
 
 	public LinkedHashMap<String, Object> getJsonLdObject() {

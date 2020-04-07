@@ -20,26 +20,22 @@ import info.weboftrust.ldsignatures.crypto.adapter.JWSSignerAdapter;
 import info.weboftrust.ldsignatures.crypto.adapter.JWSVerifierAdapter;
 import info.weboftrust.ldsignatures.crypto.impl.Ed25519_EdDSA_PrivateKeySigner;
 import info.weboftrust.ldsignatures.crypto.impl.Ed25519_EdDSA_PublicKeyVerifier;
-import info.weboftrust.ldsignatures.crypto.impl.P256K_ES256K_PrivateKeySigner;
-import info.weboftrust.ldsignatures.crypto.impl.P256K_ES256K_PublicKeyVerifier;
 import info.weboftrust.ldsignatures.crypto.impl.RSA_RS256_PrivateKeySigner;
 import info.weboftrust.ldsignatures.crypto.impl.RSA_RS256_PublicKeyVerifier;
+import info.weboftrust.ldsignatures.crypto.impl.secp256k1_ES256K_PrivateKeySigner;
+import info.weboftrust.ldsignatures.crypto.impl.secp256k1_ES256K_PublicKeyVerifier;
 
-abstract class JwtObject <T> {
+public class JwtObject {
 
 	private final JWTClaimsSet payload;
-	private final T payloadObject;
-
 	private JWSObject jwsObject;
 	private String compactSerialization;
 
-	protected JwtObject(JWTClaimsSet payload, T payloadObject, JWSObject jwsObject, String compactSerialization) {
+	public JwtObject(JWTClaimsSet payload, JWSObject jwsObject, String compactSerialization) {
 
 		if (payload == null) throw new NullPointerException();
-		if (payloadObject == null) throw new NullPointerException();
 
 		this.payload = payload;
-		this.payloadObject = payloadObject;
 		this.jwsObject = jwsObject;
 		this.compactSerialization = compactSerialization;
 	}
@@ -91,17 +87,17 @@ abstract class JwtObject <T> {
 		return this.sign(new com.nimbusds.jose.crypto.Ed25519Signer(privateKey), JWSAlgorithm.EdDSA);
 	}
 
-	public String sign_P256K_ES256K(ByteSigner signer) throws JOSEException {
+	public String sign_secp256k1_ES256K(ByteSigner signer) throws JOSEException {
 
 		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.ES256K), JWSAlgorithm.ES256K);
 	}
 
-	public String sign_P256K_ES256K(ECKey privateKey) throws JOSEException {
+	public String sign_secp256k1_ES256K(ECKey privateKey) throws JOSEException {
 
-		return this.sign_P256K_ES256K(new P256K_ES256K_PrivateKeySigner(privateKey));
+		return this.sign_secp256k1_ES256K(new secp256k1_ES256K_PrivateKeySigner(privateKey));
 	}
 
-	public String sign_P256K_ES256K(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
+	public String sign_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
 
 		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES256K);
 	}
@@ -145,17 +141,17 @@ abstract class JwtObject <T> {
 		return this.verify(new com.nimbusds.jose.crypto.Ed25519Verifier(publicKey));
 	}
 
-	public boolean verify_P256K_ES256K(ByteVerifier verifier) throws JOSEException {
+	public boolean verify_secp256k1_ES256K(ByteVerifier verifier) throws JOSEException {
 
 		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.ES256K));
 	}
 
-	public boolean verify_P256K_ES256K(ECKey publicKey) throws JOSEException {
+	public boolean verify_secp256k1_ES256K(ECKey publicKey) throws JOSEException {
 
-		return this.verify_P256K_ES256K(new P256K_ES256K_PublicKeyVerifier(publicKey));
+		return this.verify_secp256k1_ES256K(new secp256k1_ES256K_PublicKeyVerifier(publicKey));
 	}
 
-	public boolean verify_P256K_ES256K(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
+	public boolean verify_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
 
 		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
 	}
@@ -163,15 +159,17 @@ abstract class JwtObject <T> {
 	/*
 	 * Helper class
 	 */
-	
+
 	private static class EscapedSlashWorkaroundJWSObject extends JWSObject {
+
+		private static final long serialVersionUID = -587898962717783109L;
 
 		public EscapedSlashWorkaroundJWSObject(final JWSHeader header, final JWTClaimsSet claimsSet) {
 
 			super(header, new Payload(claimsSet.toJSONObject().toJSONString().replace("\\/", "/")));
 		}
 	}
-	
+
 	/*
 	 * Getters
 	 */
@@ -179,11 +177,6 @@ abstract class JwtObject <T> {
 	public JWTClaimsSet getPayload() {
 
 		return this.payload;
-	}
-
-	public T getPayloadObject() {
-
-		return this.payloadObject;
 	}
 
 	public JWSObject getJwsObject() {

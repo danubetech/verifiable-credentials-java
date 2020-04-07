@@ -34,6 +34,7 @@ public class VerifiableCredential {
 	public static final String JSONLD_TERM_CREDENTIAL_SUBJECT = "credentialSubject";
 
 	public static final SimpleDateFormat DATE_FORMAT;
+	public static final SimpleDateFormat DATE_FORMAT_MILLIS;
 
 	private final LinkedHashMap<String, Object> jsonLdObject;
 
@@ -41,6 +42,9 @@ public class VerifiableCredential {
 
 		DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+		DATE_FORMAT_MILLIS = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+		DATE_FORMAT_MILLIS.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
 	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject, boolean validate) { 
@@ -76,6 +80,7 @@ public class VerifiableCredential {
 		return fromJsonLdObject(jsonLdObject, true);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static VerifiableCredential fromJsonString(String jsonString, boolean validate) throws JsonParseException, IOException {
 
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString);
@@ -147,6 +152,7 @@ public class VerifiableCredential {
 			this.getJsonLdCredentialSubject().put(JSONLD_TERM_ID, subject);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> getContext() {
 
 		return (List<String>) this.jsonLdObject.get(JsonLdConsts.CONTEXT);
@@ -160,6 +166,7 @@ public class VerifiableCredential {
 			this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> getType() {
 
 		Object object = this.jsonLdObject.get(JSONLD_TERM_TYPE);
@@ -197,12 +204,16 @@ public class VerifiableCredential {
 
 	public Date getIssuanceDate() {
 
+		String issuanceDateString = (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
+		if (issuanceDateString == null) return null;
 		try {
-			String issuanceDateString = (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
-			if (issuanceDateString == null) return null;
 			return DATE_FORMAT.parse(issuanceDateString);
 		} catch (ParseException ex) {
-			throw new RuntimeException(ex.getMessage(), ex);
+			try {
+				return DATE_FORMAT_MILLIS.parse(issuanceDateString);
+			} catch (ParseException ex2) {
+				throw new RuntimeException(ex.getMessage(), ex);
+			}
 		}
 	}
 
@@ -216,12 +227,16 @@ public class VerifiableCredential {
 
 	public Date getExpirationDate() {
 
+		String expirationDateString = (String) this.jsonLdObject.get(JSONLD_TERM_EXPIRATION_DATE);
+		if (expirationDateString == null) return null;
 		try {
-			String expirationDateString = (String) this.jsonLdObject.get(JSONLD_TERM_EXPIRATION_DATE);
-			if (expirationDateString == null) return null;
 			return DATE_FORMAT.parse(expirationDateString);
 		} catch (ParseException ex) {
-			throw new RuntimeException(ex.getMessage(), ex);
+			try {
+				return DATE_FORMAT_MILLIS.parse(expirationDateString);
+			} catch (ParseException ex2) {
+				throw new RuntimeException(ex.getMessage(), ex);
+			}
 		}
 	}
 
@@ -286,7 +301,7 @@ public class VerifiableCredential {
 		validateRun(() -> { if (this.getId() != null) validateUrl(this.getId()); }, "'@id' must be a valid URI.");
 		validateRun(() -> { validateUrl(this.getIssuer()); }, "'issuer' must be a valid URI.");
 		validateRun(() -> { validateTrue(JSONLD_CONTEXT_CREDENTIALS.equals(this.getContext().get(0)) || JSONLD_CONTEXT_CREDENTIALS_NO_WWW.equals(this.getContext().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1: " + this.getContext().get(0));
-		validateRun(() -> { for (String context : this.getContext()) validateUrl(context); }, "@context must be a valid URI: " + this.getContext());
+		validateRun(() -> { validateUrl(this.getContext().get(0)); }, "@context must be a valid URI: " + this.getContext().get(0));
 		validateRun(() -> { validateTrue(this.getType().contains(JSONLD_TYPE_VERIFIABLE_CREDENTIAL)); }, "@type must contain VerifiableCredential: " + this.getType());
 	}
 
