@@ -296,7 +296,7 @@ public class VerifiableCredential {
 		validateRun(() -> { validateTrue(this.getIssuer() != null); }, "Bad or missing 'issuer'.");
 		validateRun(() -> { validateTrue(this.getIssuanceDate() != null); }, "Bad or missing 'issuanceDate'.");
 		validateRun(() -> { this.getExpirationDate(); }, "Bad 'expirationDate'.");
-		validateRun(() -> { validateTrue(this.getCredentialSubject() != null); }, "Bad or missing 'credentialSubject'.");
+		validateRun(() -> { this.getCredentialSubject(); }, "Bad or missing 'credentialSubject'.");
 
 		validateRun(() -> { if (this.getId() != null) validateUrl(this.getId()); }, "'@id' must be a valid URI.");
 		validateRun(() -> { validateUrl(this.getIssuer()); }, "'issuer' must be a valid URI.");
