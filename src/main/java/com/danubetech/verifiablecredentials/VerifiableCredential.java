@@ -133,6 +133,7 @@ public class VerifiableCredential {
 			this.jsonLdObject.put(JSONLD_TERM_ID, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getCredentialSubject() {
 
 		Object object = this.getJsonLdCredentialSubject().get(JSONLD_TERM_ID);
@@ -140,6 +141,14 @@ public class VerifiableCredential {
 
 		if (object instanceof URI) return ((URI) object).toString();
 		if (object instanceof String) return (String) object;
+
+		if (object instanceof LinkedHashMap) {
+
+			Object id = ((LinkedHashMap<String, Object>) object).get(JSONLD_TERM_ID);
+
+			if (id instanceof URI) return ((URI) id).toString();
+			if (id instanceof String) return (String) id;
+		}
 
 		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_ID + "': " + object);
 	}
@@ -186,12 +195,24 @@ public class VerifiableCredential {
 			this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getIssuer() {
 
 		Object object = this.jsonLdObject.get(JSONLD_TERM_ISSUER);
+		if (object == null) return null;
+
 		if (object instanceof URI) return ((URI) object).toString();
 		if (object instanceof String) return (String) object;
-		return null;
+
+		if (object instanceof LinkedHashMap) {
+
+			Object id = ((LinkedHashMap<String, Object>) object).get(JSONLD_TERM_ID);
+
+			if (id instanceof URI) return ((URI) id).toString();
+			if (id instanceof String) return (String) id;
+		}
+
+		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_ISSUER + "': " + object);
 	}
 
 	public void setIssuer(String issuer) {
@@ -206,6 +227,7 @@ public class VerifiableCredential {
 
 		String issuanceDateString = (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
 		if (issuanceDateString == null) return null;
+
 		try {
 			return DATE_FORMAT.parse(issuanceDateString);
 		} catch (ParseException ex) {
@@ -229,6 +251,7 @@ public class VerifiableCredential {
 
 		String expirationDateString = (String) this.jsonLdObject.get(JSONLD_TERM_EXPIRATION_DATE);
 		if (expirationDateString == null) return null;
+
 		try {
 			return DATE_FORMAT.parse(expirationDateString);
 		} catch (ParseException ex) {
@@ -291,12 +314,15 @@ public class VerifiableCredential {
 
 	public void validate() throws IllegalStateException {
 
+		validateRun(() -> { validateTrue(this.getJsonLdObject() != null); }, "Missing verifiable credential.");
+		validateRun(() -> { validateTrue(this.getJsonLdCredentialSubject() != null); }, "Missing 'credentialSubject'.");
+
 		validateRun(() -> { validateTrue(this.getContext().size() > 0); }, "Bad or missing '@context'.");
 		validateRun(() -> { validateTrue(this.getType().size() > 0); }, "Bad or missing '@type'.");
 		validateRun(() -> { validateTrue(this.getIssuer() != null); }, "Bad or missing 'issuer'.");
 		validateRun(() -> { validateTrue(this.getIssuanceDate() != null); }, "Bad or missing 'issuanceDate'.");
 		validateRun(() -> { this.getExpirationDate(); }, "Bad 'expirationDate'.");
-		validateRun(() -> { this.getCredentialSubject(); }, "Bad or missing 'credentialSubject'.");
+		validateRun(() -> { this.getCredentialSubject(); }, "Bad 'credentialSubject'.");
 
 		validateRun(() -> { if (this.getId() != null) validateUrl(this.getId()); }, "'@id' must be a valid URI.");
 		validateRun(() -> { validateUrl(this.getIssuer()); }, "'issuer' must be a valid URI.");
