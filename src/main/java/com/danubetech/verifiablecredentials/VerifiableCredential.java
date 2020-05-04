@@ -314,8 +314,8 @@ public class VerifiableCredential {
 
 	public void validate() throws IllegalStateException {
 
-		validateRun(() -> { validateTrue(this.getJsonLdObject() != null); }, "Missing verifiable credential.");
-		validateRun(() -> { validateTrue(this.getJsonLdCredentialSubject() != null); }, "Missing 'credentialSubject'.");
+		validateRun(() -> { validateTrue(this.getJsonLdObject() != null); }, "Bad or missing verifiable credential.");
+		validateRun(() -> { validateTrue(this.getJsonLdCredentialSubject() != null); }, "Bad or missing 'credentialSubject'.");
 
 		validateRun(() -> { validateTrue(this.getContext().size() > 0); }, "Bad or missing '@context'.");
 		validateRun(() -> { validateTrue(this.getType().size() > 0); }, "Bad or missing '@type'.");
@@ -336,32 +336,14 @@ public class VerifiableCredential {
 	 */
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((jsonLdObject == null) ? 0 : jsonLdObject.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		VerifiableCredential other = (VerifiableCredential) obj;
-		if (jsonLdObject == null) {
-			if (other.jsonLdObject != null)
-				return false;
-		} else if (!jsonLdObject.equals(other.jsonLdObject))
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
-		return "VerifiableCredential [jsonLdObject=" + jsonLdObject + "]";
+
+		try {
+
+			return this.toJsonString();
+		} catch (IOException ex) {
+
+			return super.toString();
+		}
 	}
 }
