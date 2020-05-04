@@ -1,0 +1,48 @@
+{
+  "@context": ["https://www.w3.org/2018/credentials/v1"],
+  "type": ["VerifiablePresentation"],
+  "holder": "did:web:vc.transmute.world",
+  "verifiableCredential": [
+    {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        {        
+          "ex": "https://example.org/examples#",
+          "schema": "http://schema.org/",
+          "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+          "BachelorDegree": "ex:BachelorDegree",
+          "UniversityDegreeCredential": "ex:UniversityDegreeCredential",
+          "degree": "ex:degree",
+          "name": {"@id": "schema:name", "@type": "rdf:HTML"}
+        }      
+      ],
+      "id": "http://example.gov/credentials/3732",
+      "type": ["VerifiableCredential", "UniversityDegreeCredential"],
+      "issuer": "did:v1:test:nym:z6MkhdmzFu659ZJ4XKj31vtEDmjvsi5yDZG5L7Caz63oP39k",
+      "issuanceDate": "2020-03-10T04:24:12.164Z",
+      "credentialSubject": {
+        "id": "did:key:z6MkjRagNiMu91DduvCvgEsqLZDVzrJzFrwahc4tXLt9DoHd",
+        "degree": {
+          "type": "BachelorDegree",
+          "name": "Bachelor of Science and Arts"
+        }
+      },
+      "proof": {
+        "type": "Ed25519Signature2018",
+        "created": "2019-12-11T03:50:55Z",
+        "verificationMethod": "did:v1:test:nym:z6MkhdmzFu659ZJ4XKj31vtEDmjvsi5yDZG5L7Caz63oP39k#z6MkiukuAuQAE8ozxvmahnQGzApvtW7KT5XXKfojjwbdEomY",
+        "proofPurpose": "assertionMethod",
+        "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..uzx8px7eGewfc5Qa-GN1qjcYZH4nX3PBBaFW22x_573nnMu_Uzn6oT6ITL54QEk08XCqCE2OX2L-8ovsffXPDg"
+      }
+    }
+  ],
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2020-04-16T17:58:26Z",
+    "verificationMethod": "did:web:vc.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN",
+    "proofPurpose": "authentication",
+    "challenge": "99612b24-63d9-11ea-b99f-4f66f3e4f81a",
+    "domain": "issuer.example.com",
+    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..FtI4bekQdsVyx9OXcz4a6hL6Y2GAQ9gjA1_nQTmYXLCHenBnap-LlaLlh3DGXdATkXz7Oq5iCRcxTvc4aI7oCg"
+  }
+}

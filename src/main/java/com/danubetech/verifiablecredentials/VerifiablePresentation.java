@@ -1,7 +1,10 @@
 package com.danubetech.verifiablecredentials;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -10,6 +13,8 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.jsonldjava.core.JsonLdConsts;
 import com.github.jsonldjava.utils.JsonUtils;
+
+import info.weboftrust.ldsignatures.LdSignature;
 
 public class VerifiablePresentation {
 
@@ -33,17 +38,17 @@ public class VerifiablePresentation {
 
 	public VerifiablePresentation() {
 
-		ArrayList<Object> context = new ArrayList<Object> ();
-		context.add(JSONLD_CONTEXT_CREDENTIALS);
+		ArrayList<Object> contextList = new ArrayList<Object> ();
+		contextList.add(JSONLD_CONTEXT_CREDENTIALS);
 
-		ArrayList<String> type = new ArrayList<String> ();
-		type.add(JSONLD_TYPE_VERIFIABLE_PRESENTATION);
+		ArrayList<String> typeList = new ArrayList<String> ();
+		typeList.add(JSONLD_TYPE_VERIFIABLE_PRESENTATION);
 
 		ArrayList<String> verifiableCredential = new ArrayList<String> ();
 
 		this.jsonLdObject = new LinkedHashMap<String, Object> ();
-		this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
-		this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
+		this.jsonLdObject.put(JsonLdConsts.CONTEXT, contextList);
+		this.jsonLdObject.put(JSONLD_TERM_TYPE, typeList);
 		this.jsonLdObject.put(JSONLD_TERM_VERIFIABLE_CREDENTIAL, verifiableCredential);
 	}
 
@@ -122,6 +127,11 @@ public class VerifiablePresentation {
 		return fromJwtVerifiableCredential(jwtVerifiableCredential, true);
 	}
 
+	public LinkedHashMap<String, Object> getJsonLdObject() {
+
+		return this.jsonLdObject;
+	}
+
 	@SuppressWarnings("unchecked")
 	public VerifiableCredential getVerifiableCredential() {
 
@@ -145,9 +155,43 @@ public class VerifiablePresentation {
 		return jsonLdObject == null ? null : VerifiableCredential.fromJsonLdObject(jsonLdObject);
 	}
 
-	public LinkedHashMap<String, Object> getJsonLdObject() {
+	public LdSignature getLdSignature() {
 
-		return this.jsonLdObject;
+		return LdSignature.getFromJsonLdObject(this.getJsonLdObject());
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getContext() {
+
+		return (List<String>) this.jsonLdObject.get(JsonLdConsts.CONTEXT);
+	}
+
+	public void setContext(List<String> context) {
+
+		if (context == null)
+			this.jsonLdObject.remove(JsonLdConsts.CONTEXT);
+		else
+			this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getType() {
+
+		Object object = this.jsonLdObject.get(JSONLD_TERM_TYPE);
+		if (object == null) return null;
+
+		if (object instanceof List) return (List<String>) object;
+		if (object instanceof String) return Collections.singletonList((String) object);
+
+		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_TYPE + "': " + object);
+	}
+
+	public void setType(List<String> type) {
+
+		if (type == null)
+			this.jsonLdObject.remove(JSONLD_TERM_TYPE);
+		else
+			this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
 	}
 
 	public String toPrettyJsonString() throws JsonGenerationException, IOException {
@@ -164,7 +208,59 @@ public class VerifiablePresentation {
 	 * Validation
 	 */
 
+	private static void validateTrue(boolean valid) throws IllegalStateException {
+
+		if (! valid) throw new IllegalStateException();
+	}
+
+	private static void validateUrl(String uri) {
+
+		try {
+
+			if (! new URI(uri).isAbsolute()) throw new URISyntaxException("Not absolute.", uri);
+		} catch (URISyntaxException ex) {
+
+			throw new RuntimeException(ex.getMessage());
+		}
+	}
+
+	private static void validateRun(Runnable runnable, String message) throws IllegalStateException {
+
+		try {
+
+			runnable.run();
+		} catch (Exception ex) {
+
+			throw new IllegalStateException(message);
+		}
+	}
+
 	public void validate() throws IllegalStateException {
 
+		validateRun(() -> { validateTrue(this.getJsonLdObject() != null); }, "Bad or missing verifiable presentation.");
+		validateRun(() -> { validateTrue(this.getVerifiableCredential() != null); }, "Bad or missing 'verifiableCredential'.");
+
+		validateRun(() -> { validateTrue(this.getContext().size() > 0); }, "Bad or missing '@context'.");
+		validateRun(() -> { validateTrue(this.getType().size() > 0); }, "Bad or missing '@type'.");
+
+		validateRun(() -> { validateTrue(JSONLD_CONTEXT_CREDENTIALS.equals(this.getContext().get(0)) || JSONLD_CONTEXT_CREDENTIALS_NO_WWW.equals(this.getContext().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1: " + this.getContext().get(0));
+		validateRun(() -> { validateUrl(this.getContext().get(0)); }, "@context must be a valid URI: " + this.getContext().get(0));
+		validateRun(() -> { validateTrue(this.getType().contains(JSONLD_TYPE_VERIFIABLE_PRESENTATION)); }, "@type must contain VerifiablePresentation: " + this.getType());
+	}
+
+	/*
+	 * Object methods
+	 */
+
+	@Override
+	public String toString() {
+
+		try {
+
+			return this.toJsonString();
+		} catch (IOException ex) {
+
+			return super.toString();
+		}
 	}
 }

@@ -11,15 +11,16 @@ import java.security.spec.X509EncodedKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.ECKey;
 
 class TestUtil {
 
 	static final String testEd25519PrivateKeyString =
-			"984b589e121040156838303f107e13150be4a80fc5088ccba0b0bdc9b1d89090de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580";
+			"43bt2CEvmvm538bQ6YAnpfWTq5xisAB5Kqz7uiob9sabHsZp2HtFEFXRPGa5Mvdhw5xPEABrLduxFu5vt3AViEgF";
 
 	static final String testEd25519PublicKeyString =
-			"de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580";
+			"FyfKP2HvTKqDZQzvyL38yXH7bExmwofxHf2NR5BrcGf1";
 
 	static final String testSecp256k1PrivateKeyString =
 			"2ff4e6b73bc4c4c185c68b2c378f6b233978a88d3c8ed03df536f707f084e24e";
@@ -79,8 +80,8 @@ class TestUtil {
 
 		try {
 
-			testEd25519PrivateKey = Hex.decodeHex(testEd25519PrivateKeyString.toCharArray());
-			testEd25519PublicKey = Hex.decodeHex(testEd25519PublicKeyString.toCharArray());
+			testEd25519PrivateKey = Base58.decode(testEd25519PrivateKeyString);
+			testEd25519PublicKey = Base58.decode(testEd25519PublicKeyString);
 		} catch (Exception ex) {
 
 			throw new RuntimeException(ex.getMessage(), ex);
