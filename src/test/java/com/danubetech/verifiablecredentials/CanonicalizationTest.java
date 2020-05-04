@@ -19,10 +19,10 @@ class CanonicalizationTest {
 		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(CanonicalizationTest.class.getResourceAsStream("verifiable-credential.input.jsonld"));
 		String canonicalizedDocument = TestUtil.read(CanonicalizationTest.class.getResourceAsStream("verifiable-credential.canonicalized.test"));
 
-		assertEquals(buildCanonicalizeDocument(jsonLdObject), canonicalizedDocument);
+		assertEquals(buildCanonicalizedDocument(jsonLdObject), canonicalizedDocument);
 	}
 
-	private String buildCanonicalizeDocument(Object jsonLdObject) {
+	private String buildCanonicalizedDocument(Object jsonLdObject) {
 		JsonLdOptions options = new JsonLdOptions();
 		options.format = JsonLdConsts.APPLICATION_NQUADS;
 		return (String) JsonLdProcessor.normalize(jsonLdObject, options);
