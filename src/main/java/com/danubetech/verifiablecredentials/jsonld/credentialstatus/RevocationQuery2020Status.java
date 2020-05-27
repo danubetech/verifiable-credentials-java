@@ -101,7 +101,7 @@ public class RevocationQuery2020Status {
 
 			proofs = new ArrayList<Object> ();
 			proofs.add(credentialStatus);
-			jsonLdObject.put(JSONLD_TERM_CREDENTIALSTATUS, jsonLdCredentialStatusObject);
+			jsonLdObject.put(JSONLD_TERM_CREDENTIALSTATUS, proofs);
 		}
 
 		if (! proofs.contains(jsonLdCredentialStatusObject)) {
