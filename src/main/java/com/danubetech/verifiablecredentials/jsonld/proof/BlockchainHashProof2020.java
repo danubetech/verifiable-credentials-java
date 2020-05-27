@@ -30,7 +30,7 @@ public class BlockchainHashProof2020 extends LdSignature {
 		super();
 	}
 
-	public static BlockchainHashProof2020 fromJsonLdObject(LinkedHashMap<String, Object> jsonLdProofObject) {
+	public static BlockchainHashProof2020 fromJsonLdProofObject(LinkedHashMap<String, Object> jsonLdProofObject) {
 
 		return new BlockchainHashProof2020(jsonLdProofObject);
 	}
@@ -97,13 +97,13 @@ public class BlockchainHashProof2020 extends LdSignature {
 
 			for (LinkedHashMap<String, Object> jsonLdProofObject : jsonLdProofObjectList) {
 
-				if (JSONLD_TERM_BLOCKCHAINHASHPROOF2020.equals(jsonLdProofObject.get("type"))) return BlockchainHashProof2020.fromJsonLdObject(jsonLdProofObject);
+				if (JSONLD_TERM_BLOCKCHAINHASHPROOF2020.equals(jsonLdProofObject.get("type"))) return BlockchainHashProof2020.fromJsonLdProofObject(jsonLdProofObject);
 			}
 		} else if (jsonLdProofObjectEntry instanceof LinkedHashMap) {
 
 			LinkedHashMap<String, Object> jsonLdProofObject = (LinkedHashMap<String, Object>) jsonLdProofObjectEntry;
 
-			if (JSONLD_TERM_BLOCKCHAINHASHPROOF2020.equals(jsonLdProofObject.get("type"))) return BlockchainHashProof2020.fromJsonLdObject(jsonLdProofObject);
+			if (JSONLD_TERM_BLOCKCHAINHASHPROOF2020.equals(jsonLdProofObject.get("type"))) return BlockchainHashProof2020.fromJsonLdProofObject(jsonLdProofObject);
 		}
 
 		return null;
