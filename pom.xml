@@ -17,16 +17,29 @@
 		<connection>scm:git:git://github.com/danubetech/verifiable-credentials-java.git</connection>
 		<developerConnection>scm:git:git@github.com:danubetech/verifiable-credentials-java.git</developerConnection>
 	  <tag>HEAD</tag>
-  </scm>
-
+  	</scm>
 
 	<distributionManagement>
+		<snapshotRepository>
+			<id>danubetech-maven-snapshots</id>
+			<url>https://repo.danubetech.com/repository/maven-snapshots/</url>
+		</snapshotRepository>
 		<repository>
-			<id>github</id>
-			<name>GitHub danubetech verifiable-credentials-java</name>
-			<url>https://maven.pkg.github.com/danubetech/verifiable-credentials-java</url>
+			<id>danubetech-maven-releases</id>
+			<url>https://repo.danubetech.com/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>danubtech-maven-snapshots</id>
+			<url>https://repo.danubetech.com/repository/maven-snapshots/</url>
+		</repository>
+		<repository>
+			<id>danubtech-maven-releases</id>
+			<url>https://repo.danubetech.com/repository/maven-releases/</url>
+		</repository>
+	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -132,7 +145,7 @@
 		<dependency>
 			<groupId>info.weboftrust</groupId>
 			<artifactId>ld-signatures-java</artifactId>
-			<version>0.2.1</version>
+			<version>0.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.nimbusds</groupId>
