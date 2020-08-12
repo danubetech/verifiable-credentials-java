@@ -33,12 +33,8 @@
 
 	<repositories>
 		<repository>
-			<id>danubtech-maven-snapshots</id>
-			<url>https://repo.danubetech.com/repository/maven-snapshots/</url>
-		</repository>
-		<repository>
-			<id>danubtech-maven-releases</id>
-			<url>https://repo.danubetech.com/repository/maven-releases/</url>
+			<id>danubetech-maven-public</id>
+			<url>https://repo.danubetech.com/repository/maven-public/</url>
 		</repository>
 	</repositories>
 
