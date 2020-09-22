@@ -32,6 +32,7 @@ public class VerifiableCredential {
 	public static final String JSONLD_TERM_EXPIRATION_DATE = "expirationDate";
 
 	public static final String JSONLD_TERM_CREDENTIAL_SUBJECT = "credentialSubject";
+	public static final String JSONLD_TERM_CREDENTIAL_STATUS = "credentialStatus";
 
 	public static final SimpleDateFormat DATE_FORMAT;
 	public static final SimpleDateFormat DATE_FORMAT_MILLIS;
@@ -47,7 +48,7 @@ public class VerifiableCredential {
 		DATE_FORMAT_MILLIS.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
-	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject, boolean validate) { 
+	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject, boolean validate) {
 
 		this.jsonLdObject = jsonLdObject;
 
@@ -109,6 +110,16 @@ public class VerifiableCredential {
 		return getJsonLdCredentialSubject(this.getJsonLdObject());
 	}
 
+	public static LinkedHashMap<String, Object> getJsonLdCredentialStatus(LinkedHashMap<String, Object> jsonLdObject) {
+
+		return (LinkedHashMap<String, Object>) jsonLdObject.get(JSONLD_TERM_CREDENTIAL_STATUS);
+	}
+
+	public LinkedHashMap<String, Object> getJsonLdCredentialStatus() {
+
+		return getJsonLdCredentialStatus(this.getJsonLdObject());
+	}
+
 	public LdSignature getLdSignature() {
 
 		return LdSignature.getFromJsonLdObject(this.getJsonLdObject());
@@ -161,6 +172,16 @@ public class VerifiableCredential {
 			this.getJsonLdCredentialSubject().put(JSONLD_TERM_ID, subject);
 	}
 
+	public LinkedHashMap getCredentialStatus(){
+		LinkedHashMap credentialStatus = this.getJsonLdCredentialStatus();
+		if (credentialStatus.get("type") == null) return null;
+		return  credentialStatus;
+	}
+
+	public  void  setCredentialStatus(LinkedHashMap<String, Object> jsonLdCredentialStatusObject){
+		if(jsonLdCredentialStatusObject != null)
+			this.jsonLdObject.put(JSONLD_TERM_CREDENTIAL_STATUS,jsonLdCredentialStatusObject);
+	}
 	@SuppressWarnings("unchecked")
 	public List<String> getContext() {
 

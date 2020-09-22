@@ -79,4 +79,44 @@ class JwtTest {
 		LinkedHashMap<String, Object> jsonLdDriversLicenseObject = (LinkedHashMap<String, Object>) jsonLdCredentialSubject.get("driversLicense");
 		assertEquals("trucks", jsonLdDriversLicenseObject.get("licenseClass"));
 	}
+
+	@Test
+	void testCredentialStatus() throws Exception {
+
+		VerifiableCredential verifiableCredential = new VerifiableCredential();
+		verifiableCredential.getContext().add("https://trafi.fi/credentials/v1");
+		verifiableCredential.getType().add("DriversLicenseCredential");
+		verifiableCredential.setId("urn:uuid:a87bdfb8-a7df-4bd9-ae0d-d883133538fe");
+		verifiableCredential.setIssuer("did:sov:1yvXbmgPoUm4dl66D7KhyD");
+		verifiableCredential.setIssuanceDate(VerifiableCredential.DATE_FORMAT.parse("2019-06-16T18:56:59Z"));
+		verifiableCredential.setExpirationDate(VerifiableCredential.DATE_FORMAT.parse("2019-06-17T18:56:59Z"));
+
+		verifiableCredential.setCredentialSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
+		LinkedHashMap<String, Object> jsonLdCredentialSubject = verifiableCredential.getJsonLdCredentialSubject();
+		LinkedHashMap<String, Object> jsonLdDriversLicenseObject = new LinkedHashMap<>();
+		jsonLdDriversLicenseObject.put("licenseClass", "trucks");
+		jsonLdCredentialSubject.put("driversLicense", jsonLdDriversLicenseObject);
+
+
+		//verifiableCredential.setCredentialStatus("https://example.edu/status/24");
+		LinkedHashMap<String, Object> jsonLdCredentialStatus = new LinkedHashMap<>();
+		jsonLdCredentialStatus.put("id","https://example.edu/status/24");
+		jsonLdCredentialStatus.put("type", "CredentialStatusList2017");
+		verifiableCredential.setCredentialStatus(jsonLdCredentialStatus);
+
+
+		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromVerifiableCredential(verifiableCredential);
+		String jwtString = jwtVerifiableCredential.sign_RSA_RS256(rsaKey);
+		String jwtPayload = jwtVerifiableCredential.getJwsObject().getPayload().toString();
+
+		JwtVerifiableCredential jwt = JwtVerifiableCredential.fromCompactSerialization(jwtString);
+		VerifiableCredential vc = jwt.toVerifiableCredential();
+		LinkedHashMap credentialStatusObject = vc.getCredentialStatus();
+		assertEquals("https://example.edu/status/24",credentialStatusObject.get("id"));
+		assertEquals("CredentialStatusList2017",credentialStatusObject.get("type"));
+
+		assertNotNull(jwtString);
+		assertNotNull(jwtPayload);
+
+	}
 }
