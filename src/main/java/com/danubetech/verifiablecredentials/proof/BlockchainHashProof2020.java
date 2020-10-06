@@ -1,14 +1,12 @@
-package com.danubetech.verifiablecredentials.jsonld.proof;
+package com.danubetech.verifiablecredentials.proof;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import com.github.jsonldjava.core.JsonLdConsts;
+import info.weboftrust.ldsignatures.LdProof;
 
-import info.weboftrust.ldsignatures.LdSignature;
-
-public class BlockchainHashProof2020 extends LdSignature {
+public class BlockchainHashProof2020 extends LdProof {
 
 	public static final LinkedHashMap<String, Object> JSONLD_CONTEXT;
 
@@ -38,7 +36,7 @@ public class BlockchainHashProof2020 extends LdSignature {
 	@SuppressWarnings("unchecked")
 	public static void addContextToJsonLdObject(LinkedHashMap<String, Object> jsonLdObject) {
 
-		LdSignature.addContextToJsonLdObject(jsonLdObject);
+		LdProof.addContextToJsonLdObject(jsonLdObject);
 
 		Object context = jsonLdObject.get(JsonLdConsts.CONTEXT);
 		ArrayList<Object> contexts;

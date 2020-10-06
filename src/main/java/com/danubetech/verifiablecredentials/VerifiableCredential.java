@@ -1,349 +1,145 @@
 package com.danubetech.verifiablecredentials;
 
-import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.github.jsonldjava.core.JsonLdConsts;
-import com.github.jsonldjava.utils.JsonUtils;
+import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
+import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.danubetech.verifiablecredentials.validation.Validation;
+import foundation.identity.jsonld.JsonLDObject;
+import foundation.identity.jsonld.JsonLDUtils;
+import info.weboftrust.ldsignatures.LdProof;
+import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 
-import info.weboftrust.ldsignatures.LdSignature;
+import javax.json.Json;
+import javax.json.JsonObject;
 
-public class VerifiableCredential {
+public class VerifiableCredential extends JsonLDObject {
 
-	public static final String JSONLD_CONTEXT_CREDENTIALS = "https://www.w3.org/2018/credentials/v1";
-	public static final String JSONLD_CONTEXT_CREDENTIALS_NO_WWW = "https://w3.org/2018/credentials/v1";
-	public static final String JSONLD_TYPE_VERIFIABLE_CREDENTIAL = "VerifiableCredential";
+	public static final String DEFAULT_JSONLD_CONTEXT = "https://www.w3.org/2018/credentials/v1";
+	public static final String DEFAULT_JSONLD_TYPE = "VerifiableCredential";
 
-	public static final String JSONLD_TERM_ID = "id";
-	public static final String JSONLD_TERM_TYPE = "type";
-	public static final String JSONLD_TERM_ISSUER = "issuer";
-	public static final String JSONLD_TERM_ISSUANCE_DATE = "issuanceDate";
-	public static final String JSONLD_TERM_EXPIRATION_DATE = "expirationDate";
-
-	public static final String JSONLD_TERM_CREDENTIAL_SUBJECT = "credentialSubject";
-
-	public static final SimpleDateFormat DATE_FORMAT;
-	public static final SimpleDateFormat DATE_FORMAT_MILLIS;
-
-	private final LinkedHashMap<String, Object> jsonLdObject;
-
-	static {
-
-		DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-		DATE_FORMAT_MILLIS = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-		DATE_FORMAT_MILLIS.setTimeZone(TimeZone.getTimeZone("UTC"));
+	private VerifiableCredential() {
+		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
 	}
 
-	private VerifiableCredential(LinkedHashMap<String, Object> jsonLdObject, boolean validate) { 
-
-		this.jsonLdObject = jsonLdObject;
-
-		if (validate) this.validate();
+	private VerifiableCredential(JsonObject jsonObject, boolean validate) {
+		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
+		if (validate) Validation.validate(this);
 	}
 
-	public VerifiableCredential() {
-
-		ArrayList<Object> contextList = new ArrayList<Object> ();
-		contextList.add(JSONLD_CONTEXT_CREDENTIALS);
-
-		ArrayList<String> typeList = new ArrayList<String> ();
-		typeList.add(JSONLD_TYPE_VERIFIABLE_CREDENTIAL);
-
-		LinkedHashMap<String, Object> credentialSubjectMap = new LinkedHashMap<String, Object> ();
-
-		this.jsonLdObject = new LinkedHashMap<String, Object> ();
-		this.jsonLdObject.put(JsonLdConsts.CONTEXT, contextList);
-		this.jsonLdObject.put(JSONLD_TERM_TYPE, typeList);
-		this.jsonLdObject.put(JSONLD_TERM_CREDENTIAL_SUBJECT, credentialSubjectMap);
+	public VerifiableCredential(JsonObject jsonObject) {
+		this(jsonObject, true);
 	}
 
-	public static VerifiableCredential fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject, boolean validate) {
+	/*
+	 * Factory methods
+	 */
 
-		return new VerifiableCredential(jsonLdObject, validate);
-	}
+	public static class Builder extends JsonLDObject.Builder<Builder, VerifiableCredential> {
 
-	public static VerifiableCredential fromJsonLdObject(LinkedHashMap<String, Object> jsonLdObject) {
+		private URI issuer;
+		private Date issuanceDate;
+		private Date expirationDate;
+		private CredentialSubject credentialSubject;
+		private LdProof ldProof;
 
-		return fromJsonLdObject(jsonLdObject, true);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static VerifiableCredential fromJsonString(String jsonString, boolean validate) throws JsonParseException, IOException {
-
-		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(jsonString);
-
-		return fromJsonLdObject(jsonLdObject, validate);
-	}
-
-	public static VerifiableCredential fromJsonString(String jsonString) throws JsonParseException, IOException {
-
-		return fromJsonString(jsonString, true);
-	}
-
-	public LinkedHashMap<String, Object> getJsonLdObject() {
-
-		return this.jsonLdObject;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static LinkedHashMap<String, Object> getJsonLdCredentialSubject(LinkedHashMap<String, Object> jsonLdObject) {
-
-		return (LinkedHashMap<String, Object>) jsonLdObject.get(JSONLD_TERM_CREDENTIAL_SUBJECT);
-	}
-
-	public LinkedHashMap<String, Object> getJsonLdCredentialSubject() {
-
-		return getJsonLdCredentialSubject(this.getJsonLdObject());
-	}
-
-	public LdSignature getLdSignature() {
-
-		return LdSignature.getFromJsonLdObject(this.getJsonLdObject());
-	}
-
-	public String getId() {
-
-		Object object = this.jsonLdObject.get(JSONLD_TERM_ID);
-		if (object == null) return null;
-
-		if (object instanceof URI) return ((URI) object).toString();
-		if (object instanceof String) return (String) object;
-
-		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_ID + "': " + object);
-	}
-
-	public void setId(String id) {
-
-		if (id == null)
-			this.jsonLdObject.remove(JSONLD_TERM_ID);
-		else
-			this.jsonLdObject.put(JSONLD_TERM_ID, id);
-	}
-
-	@SuppressWarnings("unchecked")
-	public String getCredentialSubject() {
-
-		Object object = this.getJsonLdCredentialSubject().get(JSONLD_TERM_ID);
-		if (object == null) return null;
-
-		if (object instanceof URI) return ((URI) object).toString();
-		if (object instanceof String) return (String) object;
-
-		if (object instanceof LinkedHashMap) {
-
-			Object id = ((LinkedHashMap<String, Object>) object).get(JSONLD_TERM_ID);
-
-			if (id instanceof URI) return ((URI) id).toString();
-			if (id instanceof String) return (String) id;
+		public Builder() {
+			super(new VerifiableCredential());
 		}
 
-		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_ID + "': " + object);
+		public VerifiableCredential build() {
+
+			super.build();
+
+			// add JSON-LD properties
+			if (this.issuer  != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, JsonLDUtils.uriToString(this.issuer));
+			if (this.issuanceDate  != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCE_DATE, JsonLDUtils.dateToString(this.issuanceDate));
+			if (this.expirationDate != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCE_DATE, JsonLDUtils.dateToString(this.expirationDate));
+			if (this.credentialSubject != null) JsonLDUtils.jsonLdAddJsonValue(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIAL_SUBJECT, this.credentialSubject.getJsonObject());
+			if (this.ldProof != null) JsonLDUtils.jsonLdAddJsonValue(this.jsonLDObject.getJsonObjectBuilder(), LDSecurityKeywords.JSONLD_TERM_PROOF, this.ldProof.getJsonObject());
+
+			return this.jsonLDObject;
+		}
+
+		public Builder issuer(URI issuer) {
+			this.issuer = issuer;
+			return this;
+		}
+
+		public Builder issuanceDate(Date issuanceDate) {
+			this.issuanceDate = issuanceDate;
+			return this;
+		}
+
+		public Builder expirationDate(Date expirationDate) {
+			this.expirationDate = expirationDate;
+			return this;
+		}
+
+		public Builder credentialSubject(CredentialSubject credentialSubject) {
+			this.credentialSubject = credentialSubject;
+			return this;
+		}
+
+		public Builder ldProof(LdProof ldProof) {
+			this.ldProof = ldProof;
+			return this;
+		}
 	}
 
-	public void setCredentialSubject(String subject) {
+	public static Builder builder() {
 
-		if (subject == null)
-			this.getJsonLdCredentialSubject().remove(JSONLD_TERM_ID);
-		else
-			this.getJsonLdCredentialSubject().put(JSONLD_TERM_ID, subject);
+		return new Builder()
+				.context(DEFAULT_JSONLD_CONTEXT)
+				.type(DEFAULT_JSONLD_TYPE);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<String> getContext() {
+	/*
+	 * Serialization
+	 */
 
-		return (List<String>) this.jsonLdObject.get(JsonLdConsts.CONTEXT);
+	public static VerifiableCredential fromJson(Reader reader, boolean validate) {
+		JsonObject jsonObject = Json.createReader(reader).readObject();
+		return new VerifiableCredential(jsonObject, validate);
 	}
 
-	public void setContext(List<String> context) {
-
-		if (context == null)
-			this.jsonLdObject.remove(JsonLdConsts.CONTEXT);
-		else
-			this.jsonLdObject.put(JsonLdConsts.CONTEXT, context);
+	public static VerifiableCredential fromJson(String json, boolean validate) {
+		return fromJson(new StringReader(json), validate);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<String> getType() {
-
-		Object object = this.jsonLdObject.get(JSONLD_TERM_TYPE);
-		if (object == null) return null;
-
-		if (object instanceof List) return (List<String>) object;
-		if (object instanceof String) return Collections.singletonList((String) object);
-
-		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_TYPE + "': " + object);
+	public static VerifiableCredential fromJson(Reader reader) {
+		return fromJson(reader, true);
 	}
 
-	public void setType(List<String> type) {
-
-		if (type == null)
-			this.jsonLdObject.remove(JSONLD_TERM_TYPE);
-		else
-			this.jsonLdObject.put(JSONLD_TERM_TYPE, type);
+	public static VerifiableCredential fromJson(String json) {
+		return fromJson(json, true);
 	}
+
+	/*
+	 * Getters
+	 */
 
 	@SuppressWarnings("unchecked")
 	public String getIssuer() {
-
-		Object object = this.jsonLdObject.get(JSONLD_TERM_ISSUER);
-		if (object == null) return null;
-
-		if (object instanceof URI) return ((URI) object).toString();
-		if (object instanceof String) return (String) object;
-
-		if (object instanceof LinkedHashMap) {
-
-			Object id = ((LinkedHashMap<String, Object>) object).get(JSONLD_TERM_ID);
-
-			if (id instanceof URI) return ((URI) id).toString();
-			if (id instanceof String) return (String) id;
-		}
-
-		throw new IllegalStateException("Invalid object for '" + JSONLD_TERM_ISSUER + "': " + object);
-	}
-
-	public void setIssuer(String issuer) {
-
-		if (issuer == null)
-			this.jsonLdObject.remove(JSONLD_TERM_ISSUER);
-		else
-			this.jsonLdObject.put(JSONLD_TERM_ISSUER, issuer);
+		return JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
 	}
 
 	public Date getIssuanceDate() {
-
-		String issuanceDateString = (String) this.jsonLdObject.get(JSONLD_TERM_ISSUANCE_DATE);
-		if (issuanceDateString == null) return null;
-
-		try {
-			return DATE_FORMAT.parse(issuanceDateString);
-		} catch (ParseException ex) {
-			try {
-				return DATE_FORMAT_MILLIS.parse(issuanceDateString);
-			} catch (ParseException ex2) {
-				throw new RuntimeException(ex.getMessage(), ex);
-			}
-		}
-	}
-
-	public void setIssuanceDate(Date issuanceDate) {
-
-		if (issuanceDate == null)
-			this.jsonLdObject.remove(JSONLD_TERM_ISSUANCE_DATE);
-		else
-			this.jsonLdObject.put(JSONLD_TERM_ISSUANCE_DATE, DATE_FORMAT.format(issuanceDate));
+		return JsonLDUtils.stringToDate(JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCE_DATE));
 	}
 
 	public Date getExpirationDate() {
-
-		String expirationDateString = (String) this.jsonLdObject.get(JSONLD_TERM_EXPIRATION_DATE);
-		if (expirationDateString == null) return null;
-
-		try {
-			return DATE_FORMAT.parse(expirationDateString);
-		} catch (ParseException ex) {
-			try {
-				return DATE_FORMAT_MILLIS.parse(expirationDateString);
-			} catch (ParseException ex2) {
-				throw new RuntimeException(ex.getMessage(), ex);
-			}
-		}
+		return JsonLDUtils.stringToDate(JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATION_DATE));
 	}
 
-	public void setExpirationDate(Date expirationDate) {
-
-		if (expirationDate == null)
-			this.jsonLdObject.remove(JSONLD_TERM_EXPIRATION_DATE);
-		else
-			this.jsonLdObject.put(JSONLD_TERM_EXPIRATION_DATE, DATE_FORMAT.format(expirationDate));
+	public CredentialSubject getCredentialSubject() {
+		return new CredentialSubject(JsonLDUtils.jsonLdGetJsonObject(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIAL_SUBJECT));
 	}
 
-	public String toPrettyJsonString() throws JsonGenerationException, IOException {
-
-		return JsonUtils.toPrettyString(this.jsonLdObject);
-	}
-
-	public String toJsonString() throws JsonGenerationException, IOException {
-
-		return JsonUtils.toString(this.jsonLdObject);
-	}
-
-	/*
-	 * Validation
-	 */
-
-	private static void validateTrue(boolean valid) throws IllegalStateException {
-
-		if (! valid) throw new IllegalStateException();
-	}
-
-	private static void validateUrl(String uri) {
-
-		try {
-
-			if (! new URI(uri).isAbsolute()) throw new URISyntaxException("Not absolute.", uri);
-		} catch (URISyntaxException ex) {
-
-			throw new RuntimeException(ex.getMessage());
-		}
-	}
-
-	private static void validateRun(Runnable runnable, String message) throws IllegalStateException {
-
-		try {
-
-			runnable.run();
-		} catch (Exception ex) {
-
-			throw new IllegalStateException(message);
-		}
-	}
-
-	public void validate() throws IllegalStateException {
-
-		validateRun(() -> { validateTrue(this.getJsonLdObject() != null); }, "Bad or missing verifiable credential.");
-		validateRun(() -> { validateTrue(this.getJsonLdCredentialSubject() != null); }, "Bad or missing 'credentialSubject'.");
-
-		validateRun(() -> { validateTrue(this.getContext().size() > 0); }, "Bad or missing '@context'.");
-		validateRun(() -> { validateTrue(this.getType().size() > 0); }, "Bad or missing '@type'.");
-		validateRun(() -> { validateTrue(this.getIssuer() != null); }, "Bad or missing 'issuer'.");
-		validateRun(() -> { validateTrue(this.getIssuanceDate() != null); }, "Bad or missing 'issuanceDate'.");
-		validateRun(() -> { this.getExpirationDate(); }, "Bad 'expirationDate'.");
-		validateRun(() -> { this.getCredentialSubject(); }, "Bad 'credentialSubject'.");
-
-		validateRun(() -> { if (this.getId() != null) validateUrl(this.getId()); }, "'@id' must be a valid URI.");
-		validateRun(() -> { validateUrl(this.getIssuer()); }, "'issuer' must be a valid URI.");
-		validateRun(() -> { validateTrue(JSONLD_CONTEXT_CREDENTIALS.equals(this.getContext().get(0)) || JSONLD_CONTEXT_CREDENTIALS_NO_WWW.equals(this.getContext().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1: " + this.getContext().get(0));
-		validateRun(() -> { validateUrl(this.getContext().get(0)); }, "@context must be a valid URI: " + this.getContext().get(0));
-		validateRun(() -> { validateTrue(this.getType().contains(JSONLD_TYPE_VERIFIABLE_CREDENTIAL)); }, "@type must contain VerifiableCredential: " + this.getType());
-	}
-
-	/*
-	 * Object methods
-	 */
-
-	@Override
-	public String toString() {
-
-		try {
-
-			return this.toJsonString();
-		} catch (IOException ex) {
-
-			return super.toString();
-		}
+	public LdProof getLdProof() {
+		return new LdProof(JsonLDUtils.jsonLdGetJsonObject(this.getJsonObject(), LDSecurityKeywords.JSONLD_TERM_PROOF));
 	}
 }

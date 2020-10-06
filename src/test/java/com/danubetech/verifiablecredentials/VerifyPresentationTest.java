@@ -115,7 +115,7 @@ class VerifyPresentationTest {
 
 		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJsonString(verifiablePresentationGood1.toJsonString());
 
-		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getLdSignature().getJsonLdProofObject());
+		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getLdProof().getJsonLdProofObject());
 		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getJsonLdObject());
 
 		Ed25519Signature2018LdVerifier verifier = new Ed25519Signature2018LdVerifier(publicKeyPresentation1);
@@ -130,7 +130,7 @@ class VerifyPresentationTest {
 
 		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJsonString(verifiablePresentationGood2.toJsonString());
 
-		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getLdSignature().getJsonLdProofObject());
+		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getLdProof().getJsonLdProofObject());
 		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getJsonLdObject());
 
 		Ed25519Signature2018LdVerifier verifier = new Ed25519Signature2018LdVerifier(publicKeyPresentation2);
@@ -149,7 +149,7 @@ class VerifyPresentationTest {
 
 		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJsonString(verifiablePresentationBad1.toJsonString());
 
-		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getLdSignature().getJsonLdProofObject());
+		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getLdProof().getJsonLdProofObject());
 		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getJsonLdObject());
 
 		Ed25519Signature2018LdVerifier verifier = new Ed25519Signature2018LdVerifier(publicKeyPresentation1);
@@ -164,7 +164,7 @@ class VerifyPresentationTest {
 
 		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJsonString(verifiablePresentationBad2.toJsonString());
 
-		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getLdSignature().getJsonLdProofObject());
+		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getLdProof().getJsonLdProofObject());
 		CanonicalizationUtil.fixImplicitGraph(verifiablePresentation.getVerifiableCredential().getJsonLdObject());
 
 		Ed25519Signature2018LdVerifier verifier = new Ed25519Signature2018LdVerifier(publicKeyPresentation2);

@@ -175,17 +175,14 @@ public class JwtObject {
 	 */
 
 	public JWTClaimsSet getPayload() {
-
 		return this.payload;
 	}
 
 	public JWSObject getJwsObject() {
-
 		return this.jwsObject;
 	}
 
 	public String getCompactSerialization() {
-
 		return this.compactSerialization;
 	}
 }

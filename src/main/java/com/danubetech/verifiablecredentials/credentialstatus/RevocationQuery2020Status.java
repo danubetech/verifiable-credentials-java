@@ -1,4 +1,4 @@
-package com.danubetech.verifiablecredentials.jsonld.credentialstatus;
+package com.danubetech.verifiablecredentials.credentialstatus;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

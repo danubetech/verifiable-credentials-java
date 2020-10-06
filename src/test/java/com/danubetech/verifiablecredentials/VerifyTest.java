@@ -13,7 +13,7 @@ class VerifyTest {
 	@Test
 	void testVerify() throws Exception {
 
-		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(VerifyTest.class.getResourceAsStream("verifiable-credential.ldp.good.jsonld"));
+		JsonLDObject jsonLdObject = JsonLDObject.fromJson(new InputStreamReader(VerifyTest.class.getResourceAsStream("verifiable-credential.ldp.good.jsonld"));
 		VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
 
 		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
@@ -30,7 +30,7 @@ class VerifyTest {
 	@Test
 	void testBadVerify() throws Exception {
 
-		LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(VerifyTest.class.getResourceAsStream("verifiable-credential.ldp.bad.jsonld"));
+		JsonLDObject jsonLdObject = JsonLDObject.fromJson(new InputStreamReader(VerifyTest.class.getResourceAsStream("verifiable-credential.ldp.bad.jsonld"));
 		VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
 
 		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
