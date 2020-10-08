@@ -23,52 +23,56 @@ public class ToJwtConverter {
 
     public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, String aud) {
 
-        JWTClaimsSet.Builder payloadBuilder = new JWTClaimsSet.Builder();
+        JWTClaimsSet.Builder jwtPayloadBuilder = new JWTClaimsSet.Builder();
 
         VerifiableCredential.Builder payloadVerifiableCredentialBuilder = VerifiableCredential.builder()
-            .template(verifiableCredential);
+                .defaultContexts(false)
+                .defaultTypes(false)
+                .contexts(verifiableCredential.getContexts())
+                .types(verifiableCredential.getTypes());
+//            .template(verifiableCredential);
 
-        String id = verifiableCredential.getId();
+        URI id = verifiableCredential.getId();
         if (id != null) {
-            payloadBuilder.jwtID(id);
-            payloadVerifiableCredentialBuilder.id(null);
+            jwtPayloadBuilder.jwtID(id.toString());
+//            payloadVerifiableCredentialBuilder.id(null);
         }
 
         CredentialSubject credentialSubject = verifiableCredential.getCredentialSubject();
         if (credentialSubject != null) {
-            if (credentialSubject.getId() != null) payloadBuilder.subject(credentialSubject.getId());
-            payloadVerifiableCredentialBuilder.credentialSubject(null);
+            if (credentialSubject.getId() != null) jwtPayloadBuilder.subject(credentialSubject.getId().toString());
+//            payloadVerifiableCredentialBuilder.credentialSubject(null);
         }
 
-        String issuer = verifiableCredential.getIssuer();
+        URI issuer = verifiableCredential.getIssuer();
         if (issuer != null) {
-            payloadBuilder.issuer(issuer);
-            payloadVerifiableCredentialBuilder.issuer(null);
+            jwtPayloadBuilder.issuer(issuer.toString());
+//            payloadVerifiableCredentialBuilder.issuer(null);
         }
 
         Date issuanceDate = verifiableCredential.getIssuanceDate();
         if (issuanceDate != null) {
-            payloadBuilder.notBeforeTime(issuanceDate);
-            payloadVerifiableCredentialBuilder.issuanceDate(null);
+            jwtPayloadBuilder.notBeforeTime(issuanceDate);
+//            payloadVerifiableCredentialBuilder.issuanceDate(null);
         }
 
         Date expirationDate = verifiableCredential.getExpirationDate();
         if (expirationDate != null) {
-            payloadBuilder.expirationTime(expirationDate);
-            payloadVerifiableCredentialBuilder.expirationDate(null);
+            jwtPayloadBuilder.expirationTime(expirationDate);
+//            payloadVerifiableCredentialBuilder.expirationDate(null);
         }
 
         if (aud != null) {
-            payloadBuilder.audience(aud);
+            jwtPayloadBuilder.audience(aud);
         }
 
         VerifiableCredential payloadVerifiableCredential = payloadVerifiableCredentialBuilder.build();
 
-        payloadBuilder.claim(JwtKeywords.JWT_CLAIM_VC, payloadVerifiableCredential.getJsonObject());
+        jwtPayloadBuilder.claim(JwtKeywords.JWT_CLAIM_VC, payloadVerifiableCredential.getJsonObject());
 
-        JWTClaimsSet payload = payloadBuilder.build();
+        JWTClaimsSet jwtPayload = jwtPayloadBuilder.build();
 
-        return new JwtVerifiableCredential(payload, payloadVerifiableCredential, null, null);
+        return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential, null, null);
     }
 
     public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential) {

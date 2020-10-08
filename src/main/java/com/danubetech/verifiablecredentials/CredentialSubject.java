@@ -2,14 +2,24 @@ package com.danubetech.verifiablecredentials;
 
 
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
+import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
+import info.weboftrust.ldsignatures.LdProof;
+import info.weboftrust.ldsignatures.jsonld.LDSecurityContexts;
+import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import java.io.Reader;
+import java.net.URI;
 import java.util.Map;
 
 public class CredentialSubject extends JsonLDObject {
+
+	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
+	public static final String[] DEFAULT_JSONLD_TYPES = { };
+	public static final String DEFAULT_JSONLD_PREDICATE = VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSUBJECT;
 
 	private CredentialSubject() {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
@@ -27,8 +37,8 @@ public class CredentialSubject extends JsonLDObject {
 
 		private Map<String, JsonValue> claims;
 
-		public Builder() {
-			super(new CredentialSubject());
+		public Builder(CredentialSubject jsonLDObject) {
+			super(jsonLDObject);
 		}
 
 		@Override
@@ -49,8 +59,31 @@ public class CredentialSubject extends JsonLDObject {
 	}
 
 	public static Builder builder() {
+		return new Builder(new CredentialSubject());
+	}
 
-		return new Builder();
+	/*
+	 * Reading the JSON-LD object
+	 */
+
+	public static CredentialSubject fromJson(Reader reader) {
+		return JsonLDObject.fromJson(CredentialSubject.class, reader);
+	}
+
+	public static CredentialSubject fromJson(String json) {
+		return JsonLDObject.fromJson(CredentialSubject.class, json);
+	}
+
+	/*
+	 * Adding, getting, and removing the JSON-LD object
+	 */
+
+	public static CredentialSubject getFromJsonLDObject(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObject(CredentialSubject.class, jsonLdObject);
+	}
+
+	public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
+		JsonLDObject.removeFromJsonLdObject(CredentialSubject.class, jsonLdObject);
 	}
 
 	/*
@@ -58,7 +91,6 @@ public class CredentialSubject extends JsonLDObject {
 	 */
 
 	public Map<String, JsonValue> getClaims() {
-
 		return JsonLDUtils.jsonLdGetAsJsonValueMap(this.getJsonObject());
 	}
 }

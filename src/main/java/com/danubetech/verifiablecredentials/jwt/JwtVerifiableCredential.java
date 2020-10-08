@@ -26,7 +26,7 @@ public class JwtVerifiableCredential extends JwtWrappingObject<VerifiableCredent
 
 		JWTClaimsSet payload = signedJWT.getJWTClaimsSet();
 		JSONObject jsonLdObject = (JSONObject) payload.getClaims().get(JwtKeywords.JWT_CLAIM_VC);
-		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJson(jsonLdObject.toJSONString(), false);
+		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJson(jsonLdObject.toJSONString());
 
 		return new JwtVerifiableCredential(payload, payloadVerifiableCredential, signedJWT, compactSerialization);
 	}

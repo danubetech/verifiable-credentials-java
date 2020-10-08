@@ -2,6 +2,7 @@ package com.danubetech.verifiablecredentials.validation;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
+import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,11 +14,11 @@ public class Validation {
         if (! valid) throw new IllegalStateException();
     }
 
-    private static void validateUrl(String uri) {
+    private static void validateUrl(URI uri) {
 
         try {
 
-            if (! new URI(uri).isAbsolute()) throw new URISyntaxException("Not absolute.", uri);
+            if (! uri.isAbsolute()) throw new URISyntaxException("Not absolute.", uri.toString());
         } catch (URISyntaxException ex) {
 
             throw new RuntimeException(ex.getMessage());
@@ -40,11 +41,11 @@ public class Validation {
         validateRun(() -> { validateTrue(verifiableCredential.getJsonObject() != null); }, "Bad or missing JSON object.");
         validateRun(() -> { validateTrue(verifiableCredential.getContexts().size() > 0); }, "Bad or missing '@context'.");
         validateRun(() -> { validateUrl(verifiableCredential.getContexts().get(0)); }, "@context must be a valid URI: " + verifiableCredential.getContexts().get(0));
-        validateRun(() -> { validateTrue(VerifiableCredential.DEFAULT_JSONLD_CONTEXT.equals(verifiableCredential.getContexts().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1: " + verifiableCredential.getContexts().get(0));
+        validateRun(() -> { validateTrue(VerifiableCredential.DEFAULT_JSONLD_CONTEXTS[0].equals(verifiableCredential.getContexts().get(0))); }, "First value of @context must be " + VerifiableCredential.DEFAULT_JSONLD_CONTEXTS[0] + ": " + verifiableCredential.getContexts().get(0));
         validateRun(() -> { if (verifiableCredential.getId() != null) validateUrl(verifiableCredential.getId()); }, "'id' must be a valid URI.");
 
         validateRun(() -> { validateTrue(verifiableCredential.getTypes().size() > 0); }, "Bad or missing 'type'.");
-        validateRun(() -> { validateTrue(verifiableCredential.getType().contains(VerifiableCredential.DEFAULT_JSONLD_CONTEXT)); }, "'type' must contain 'VerifiableCredential': " + verifiableCredential.getType());
+        validateRun(() -> { validateTrue(verifiableCredential.getTypes().contains(VerifiableCredential.DEFAULT_JSONLD_TYPES[0])); }, "'type' must contain 'VerifiableCredential': " + verifiableCredential.getTypes());
         validateRun(() -> { validateTrue(verifiableCredential.getIssuer() != null); }, "Bad or missing 'issuer'.");
         validateRun(() -> { validateUrl(verifiableCredential.getIssuer()); }, "'issuer' must be a valid URI.");
         validateRun(() -> { validateTrue(verifiableCredential.getIssuanceDate() != null); }, "Bad or missing 'issuanceDate'.");
@@ -58,11 +59,11 @@ public class Validation {
         validateRun(() -> { validateTrue(verifiablePresentation.getJsonObject() != null); }, "Bad or missing JSON object.");
         validateRun(() -> { validateTrue(verifiablePresentation.getContexts().size() > 0); }, "Bad or missing '@context'.");
         validateRun(() -> { validateUrl(verifiablePresentation.getContexts().get(0)); }, "@context must be a valid URI: " + verifiablePresentation.getContexts().get(0));
-        validateRun(() -> { validateTrue(VerifiableCredential.DEFAULT_JSONLD_CONTEXT.equals(verifiablePresentation.getContexts().get(0))); }, "First value of @context must be https://www.w3.org/2018/credentials/v1: " + verifiablePresentation.getContexts().get(0));
+        validateRun(() -> { validateTrue(VerifiableCredential.DEFAULT_JSONLD_CONTEXTS[0].equals(verifiablePresentation.getContexts().get(0))); }, "First value of @context must be " + VerifiableCredential.DEFAULT_JSONLD_CONTEXTS[0] + ": " + verifiablePresentation.getContexts().get(0));
         validateRun(() -> { if (verifiablePresentation.getId() != null) validateUrl(verifiablePresentation.getId()); }, "'id' must be a valid URI.");
 
-        validateRun(() -> { validateTrue(verifiablePresentation.getType().size() > 0); }, "Bad or missing 'type'.");
-        validateRun(() -> { validateTrue(verifiablePresentation.getType().contains(VerifiableCredential.DEFAULT_JSONLD_CONTEXT)); }, "type must contain VerifiablePresentation: " + verifiablePresentation.getType());
+        validateRun(() -> { validateTrue(verifiablePresentation.getTypes().size() > 0); }, "Bad or missing 'type'.");
+        validateRun(() -> { validateTrue(verifiablePresentation.getTypes().contains(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])); }, "type must contain VerifiablePresentation: " + verifiablePresentation.getTypes());
         validateRun(() -> { validateTrue(verifiablePresentation.getVerifiableCredential() != null); }, "Bad or missing 'verifiableCredential'.");
     }
 }

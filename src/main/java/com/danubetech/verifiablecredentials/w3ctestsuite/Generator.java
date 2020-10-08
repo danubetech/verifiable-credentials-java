@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.danubetech.verifiablecredentials.jwt.FromJwtConverter;
+import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
 import org.apache.commons.codec.binary.Base64;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
@@ -50,9 +52,9 @@ public class Generator {
 
 			if (argJwt == null) {
 
-				VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonString(input);
+				VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(input);
 
-				output = verifiableCredential.toJsonString();
+				output = verifiableCredential.toJson();
 			} else {
 
 				RSAKey rsaKey = readRSAKey(argJwt);
@@ -62,13 +64,13 @@ public class Generator {
 					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromCompactSerialization(input);
 					if (! jwtVerifiableCredential.verify_RSA_RS256(rsaKey.toPublicJWK())) throw new GeneralSecurityException("Invalid signature.");
 
-					VerifiableCredential verifiableCredential = jwtVerifiableCredential.toVerifiableCredential();
+					VerifiableCredential verifiableCredential = FromJwtConverter.fromJwtVerifiableCredential(jwtVerifiableCredential);
 
-					output = verifiableCredential.toJsonString();
+					output = verifiableCredential.toJson();
 				} else {
 
-					VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonString(input);
-					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromVerifiableCredential(verifiableCredential, argAud);
+					VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(input);
+					JwtVerifiableCredential jwtVerifiableCredential = ToJwtConverter.toJwtVerifiableCredential(verifiableCredential, argAud);
 
 					if (argPresentation) {
 

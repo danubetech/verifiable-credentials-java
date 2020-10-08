@@ -1,37 +1,29 @@
 package com.danubetech.verifiablecredentials;
 
 import java.io.Reader;
-import java.io.StringReader;
 import java.net.URI;
-import java.util.*;
+import java.util.Date;
 
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
-import com.danubetech.verifiablecredentials.validation.Validation;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
 import info.weboftrust.ldsignatures.LdProof;
-import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 public class VerifiableCredential extends JsonLDObject {
 
-	public static final String DEFAULT_JSONLD_CONTEXT = "https://www.w3.org/2018/credentials/v1";
-	public static final String DEFAULT_JSONLD_TYPE = "VerifiableCredential";
+	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
+	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLE_CREDENTIAL };
+	public static final String DEFAULT_JSONLD_PREDICATE = VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL;
 
 	private VerifiableCredential() {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
 	}
 
-	private VerifiableCredential(JsonObject jsonObject, boolean validate) {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
-		if (validate) Validation.validate(this);
-	}
-
 	public VerifiableCredential(JsonObject jsonObject) {
-		this(jsonObject, true);
+		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
 	}
 
 	/*
@@ -46,20 +38,21 @@ public class VerifiableCredential extends JsonLDObject {
 		private CredentialSubject credentialSubject;
 		private LdProof ldProof;
 
-		public Builder() {
-			super(new VerifiableCredential());
+		public Builder(VerifiableCredential jsonLDObject) {
+			super(jsonLDObject);
 		}
 
+		@Override
 		public VerifiableCredential build() {
 
 			super.build();
 
 			// add JSON-LD properties
-			if (this.issuer  != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, JsonLDUtils.uriToString(this.issuer));
-			if (this.issuanceDate  != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCE_DATE, JsonLDUtils.dateToString(this.issuanceDate));
-			if (this.expirationDate != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCE_DATE, JsonLDUtils.dateToString(this.expirationDate));
-			if (this.credentialSubject != null) JsonLDUtils.jsonLdAddJsonValue(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIAL_SUBJECT, this.credentialSubject.getJsonObject());
-			if (this.ldProof != null) JsonLDUtils.jsonLdAddJsonValue(this.jsonLDObject.getJsonObjectBuilder(), LDSecurityKeywords.JSONLD_TERM_PROOF, this.ldProof.getJsonObject());
+			if (this.issuer != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, JsonLDUtils.uriToString(this.issuer));
+			if (this.issuanceDate != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE, JsonLDUtils.dateToString(this.issuanceDate));
+			if (this.expirationDate != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE, JsonLDUtils.dateToString(this.expirationDate));
+			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLDObject);
+			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLDObject);
 
 			return this.jsonLDObject;
 		}
@@ -91,31 +84,33 @@ public class VerifiableCredential extends JsonLDObject {
 	}
 
 	public static Builder builder() {
-
-		return new Builder()
-				.context(DEFAULT_JSONLD_CONTEXT)
-				.type(DEFAULT_JSONLD_TYPE);
+		return new Builder(new VerifiableCredential())
+				.defaultContexts(true)
+				.defaultTypes(true);
 	}
 
 	/*
-	 * Serialization
+	 * Reading the JSON-LD object
 	 */
 
-	public static VerifiableCredential fromJson(Reader reader, boolean validate) {
-		JsonObject jsonObject = Json.createReader(reader).readObject();
-		return new VerifiableCredential(jsonObject, validate);
-	}
-
-	public static VerifiableCredential fromJson(String json, boolean validate) {
-		return fromJson(new StringReader(json), validate);
-	}
-
 	public static VerifiableCredential fromJson(Reader reader) {
-		return fromJson(reader, true);
+		return JsonLDObject.fromJson(VerifiableCredential.class, reader);
 	}
 
 	public static VerifiableCredential fromJson(String json) {
-		return fromJson(json, true);
+		return JsonLDObject.fromJson(VerifiableCredential.class, json);
+	}
+
+	/*
+	 * Adding, getting, and removing the JSON-LD object
+	 */
+
+	public static VerifiableCredential getFromJsonLDObject(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObject(VerifiableCredential.class, jsonLdObject);
+	}
+
+	public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
+		JsonLDObject.removeFromJsonLdObject(VerifiableCredential.class, jsonLdObject);
 	}
 
 	/*
@@ -123,23 +118,23 @@ public class VerifiableCredential extends JsonLDObject {
 	 */
 
 	@SuppressWarnings("unchecked")
-	public String getIssuer() {
-		return JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
+	public URI getIssuer() {
+		return JsonLDUtils.stringToUri(JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER));
 	}
 
 	public Date getIssuanceDate() {
-		return JsonLDUtils.stringToDate(JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCE_DATE));
+		return JsonLDUtils.stringToDate(JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE));
 	}
 
 	public Date getExpirationDate() {
-		return JsonLDUtils.stringToDate(JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATION_DATE));
+		return JsonLDUtils.stringToDate(JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE));
 	}
 
 	public CredentialSubject getCredentialSubject() {
-		return new CredentialSubject(JsonLDUtils.jsonLdGetJsonObject(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIAL_SUBJECT));
+		return CredentialSubject.getFromJsonLDObject(this);
 	}
 
 	public LdProof getLdProof() {
-		return new LdProof(JsonLDUtils.jsonLdGetJsonObject(this.getJsonObject(), LDSecurityKeywords.JSONLD_TERM_PROOF));
+		return LdProof.getFromJsonLDObject(this);
 	}
 }

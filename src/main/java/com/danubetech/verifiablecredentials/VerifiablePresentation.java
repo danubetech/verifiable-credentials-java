@@ -1,36 +1,29 @@
 package com.danubetech.verifiablecredentials;
 
 import java.io.Reader;
-import java.io.StringReader;
+import java.net.URI;
 
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.danubetech.verifiablecredentials.validation.Validation;
 
 import foundation.identity.jsonld.JsonLDObject;
-import foundation.identity.jsonld.JsonLDUtils;
 import info.weboftrust.ldsignatures.LdProof;
-import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 public class VerifiablePresentation extends JsonLDObject {
 
-	public static final String DEFAULT_JSONLD_CONTEXT = "https://www.w3.org/2018/credentials/v1";
-	public static final String DEFAULT_JSONLD_TYPE = "VerifiablePresentation";
+	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
+	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLE_PRESENTATION };
+	public static final String DEFAULT_JSONLD_PREDICATE = null;
 
 	private VerifiablePresentation() {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
 	}
 
-	private VerifiablePresentation(JsonObject jsonObject, boolean validate) {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
-		if (validate) Validation.validate(this);
-	}
-
 	public VerifiablePresentation(JsonObject jsonObject) {
-		this(jsonObject, true);
+		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
 	}
 
 	/*
@@ -42,57 +35,61 @@ public class VerifiablePresentation extends JsonLDObject {
 		private VerifiableCredential verifiableCredential;
 		private LdProof ldProof;
 
-		public Builder() {
-			super(new VerifiablePresentation());
+		public Builder(VerifiablePresentation jsonLDObject) {
+			super(jsonLDObject);
 		}
 
+		@Override
 		public VerifiablePresentation build() {
 
 			super.build();
 
 			// add JSON-LD properties
-			if (this.verifiableCredential != null) JsonLDUtils.jsonLdAddJsonValue(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLE_CREDENTIAL, this.verifiableCredential.getJsonObject());
+			if (this.verifiableCredential != null) this.verifiableCredential.addToJsonLDObject(this.jsonLDObject);
+			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLDObject);
 
 			return this.jsonLDObject;
 		}
 
-		public VerifiablePresentation.Builder verifiableCredential(VerifiableCredential verifiableCredential) {
+		public Builder verifiableCredential(VerifiableCredential verifiableCredential) {
 			this.verifiableCredential = verifiableCredential;
 			return this;
 		}
 
-		public VerifiablePresentation.Builder ldProof(LdProof ldProof) {
+		public Builder ldProof(LdProof ldProof) {
 			this.ldProof = ldProof;
 			return this;
 		}
 	}
 
-	public static VerifiablePresentation.Builder builder() {
-
-		return new VerifiablePresentation.Builder()
-				.context(DEFAULT_JSONLD_CONTEXT)
-				.type(DEFAULT_JSONLD_TYPE);
+	public static Builder builder() {
+		return new Builder(new VerifiablePresentation())
+				.defaultContexts(true)
+				.defaultTypes(true);
 	}
 
 	/*
-	 * Serialization
+	 * Reading the JSON-LD object
 	 */
 
-	public static VerifiablePresentation fromJson(Reader reader, boolean validate) {
-		JsonObject jsonObject = Json.createReader(reader).readObject();
-		return new VerifiablePresentation(jsonObject, validate);
-	}
-
-	public static VerifiablePresentation fromJson(String json, boolean validate) {
-		return fromJson(new StringReader(json), validate);
-	}
-
 	public static VerifiablePresentation fromJson(Reader reader) {
-		return fromJson(reader, true);
+		return JsonLDObject.fromJson(VerifiablePresentation.class, reader);
 	}
 
 	public static VerifiablePresentation fromJson(String json) {
-		return fromJson(json, true);
+		return JsonLDObject.fromJson(VerifiablePresentation.class, json);
+	}
+
+	/*
+	 * Adding, getting, and removing the JSON-LD object
+	 */
+
+	public static VerifiablePresentation getFromJsonLDObject(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObject(VerifiablePresentation.class, jsonLdObject);
+	}
+
+	public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
+		JsonLDObject.removeFromJsonLdObject(VerifiablePresentation.class, jsonLdObject);
 	}
 
 	/*
@@ -123,12 +120,16 @@ public class VerifiablePresentation extends JsonLDObject {
 	}
 */
 
+	/*
+	 * Getters
+	 */
+
 	@SuppressWarnings("unchecked")
 	public VerifiableCredential getVerifiableCredential() {
-		return new VerifiableCredential(JsonLDUtils.jsonLdGetJsonObject(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLE_CREDENTIAL));
+		return VerifiableCredential.getFromJsonLDObject(this);
 	}
 
 	public LdProof getLdProof() {
-		return new LdProof(JsonLDUtils.jsonLdGetJsonObject(this.getJsonObject(), LDSecurityKeywords.JSONLD_TERM_PROOF));
+		return LdProof.getFromJsonLDObject(this);
 	}
 }
