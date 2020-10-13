@@ -14,7 +14,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.ECKey;
 
-class TestUtil {
+public class TestUtil {
 
 	static final String testEd25519PrivateKeyString =
 			"43bt2CEvmvm538bQ6YAnpfWTq5xisAB5Kqz7uiob9sabHsZp2HtFEFXRPGa5Mvdhw5xPEABrLduxFu5vt3AViEgF";

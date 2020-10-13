@@ -17,7 +17,7 @@ import info.weboftrust.ldsignatures.LdProof;
 import info.weboftrust.ldsignatures.signer.RsaSignature2018LdSigner;
 import info.weboftrust.ldsignatures.suites.SignatureSuites;
 
-class SignCredentialTest {
+public class SignCredentialTest {
 
 	@Test
 	void testSign() throws Throwable {
@@ -41,7 +41,7 @@ class SignCredentialTest {
 		assertEquals(created, ldProof.getCreated());
 		assertEquals(domain, ldProof.getDomain());
 		assertEquals(nonce, ldProof.getNonce());
-		assertEquals("eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJSUzI1NiJ9..pZtcYsR_vEtm5ZLEGNJZPYuWQeD_drBG55gDrX4V-Zxe-R0ue90QzfLn9ZAheBrnWxQNobOsmc0wLBLnSNp5fMbmxHzaMuPadkMXgyqdgH6r13YHidLhtsg8OWGBU0nlFQe5NPztP8HJdgdTmK8ohQlx1pB7BQuB3-iY_cHO7PLuVJFplI616v7zINW46SNc6PE2cJ_O-dnehA_PaNCnUn7s-TfqTYC7LQ2N95XImBt9zW5DYE7NRY7ZZh1sBNaSnHweOYZay-W6u789J3zTFxgbl-hZGziFA4EOJoWUAdb1vCBzlBWasfmkD0LAxlv7UV0Fp3wG2laIFiTwgrm9eg", ldProof.getJws());
+		assertEquals("eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..m-5V3caaBBVWldf9c83ve2gBfgDdZqVrBGQZl5flXwgskOTkBlEIODMkK0j203PeOIfHSYZUO5wj4bGCSHZ8ORaQWoJFX_znskHipBvH2wc4TBu4mgMIJefP14gl1kDGF6Vw_BtbP6EWpmm2dnhKztDo-X4XuUGpbyBJ-lVX_CGl0qftzPAZtabUEmc-dB911EfiNbslJ6qJYKd_r7D7scSVKnJtE0xXK4obrWJg2_tx-cD1KWtrJXf-wIXa43gdwlFcVLLrHvzglf-KkHezxI9Ee6RNcIP-YQNrsjNet4obRzZuwcQAJ8-pBwdF901AgDKAI0Q85cjy_LGbxqb0GA", ldProof.getJws());
 
 		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
 		boolean verify = verifier.verify(verifiableCredential);

@@ -16,7 +16,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SignPresentationTest {
+public class SignPresentationTest {
 
 	@Test
 	void testSign() throws Throwable {
@@ -40,7 +40,7 @@ class SignPresentationTest {
 		assertEquals(created, ldSignature.getCreated());
 		assertEquals(domain, ldSignature.getDomain());
 		assertEquals(nonce, ldSignature.getNonce());
-		assertEquals("eyJjcml0IjpbImI2NCJdLCJiNjQiOmZhbHNlLCJhbGciOiJSUzI1NiJ9..R1b-LuaT2_UxPDoLAUUSMrkZt3m51ukSz7nBMr8TMETIpQIaqM_o8r7aB3_NeGJk5o-U3T6WP7W7UhFU-Gkiqtk_b9CWZYVbaGt9SSztf6ElhsbJ4alxj-1j77Vhub671UYGDrRBtH1I0gG5hu4eSE6TsDlUMdTKgwC27XKzJobEwWU65VGxBWSPAywDzjbA3GERK8e6_8pxz7CrVUDcVqdJz11293bsYPYNi4-59Am59G3H5RywwwFs_La_AROTqpAD9UJasITr2N1lRvQG3IOe6vhtQd_ROAYdue-BUqrKH0sTsLmOvnRqEIYB3EnruGiB-2X5-4aAFwzkT_wx-w", ldSignature.getJws());
+		assertEquals("eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..VqTXD63c1DN1saWhkRz-RJL2VMbzNrNQSBcdkLQ82Cv04YcsdmSDJe0odqEDxk77B81zTXpIyeYxUoz8kYzL3vCtaoJTFOUmBLjztBEendyC3EJlH0XL1TEpXoAxBe5J3GLp5CVOphDEfc5SHQz0lVBP3ssX844ndxFgPzJGmLykoLTr7QmRDFkAAErJEEWDsJpTHP1V9MGLsMfbpgPIwmcLutK8mKJcDN7hnjGnHbua3nLQSb5aO6Pdduz9SSCFNk8TDqzowVymuI3wPsZjNBDePZgGIu1b016D0MkkwH7Xy0jZ2JReRPph4VX2TANSTjDeXQ4dSEupyLwd1wWljQ", ldSignature.getJws());
 
 		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
 		boolean verify = verifier.verify(verifiablePresentation);

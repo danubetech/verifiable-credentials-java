@@ -7,9 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.net.URI;
 import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import com.danubetech.verifiablecredentials.jwt.FromJwtConverter;
 import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
@@ -23,7 +21,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 
-class JwtTest {
+public class JwtTest {
 
 	static RSAKey rsaKey;
 
@@ -35,13 +33,12 @@ class JwtTest {
 	@Test
 	void testSign() throws Exception {
 
-		/*
-		 * SKIP FOR NOW
-
-		Map<String, JsonValue> claims = new HashMap<>();
+		Map<String, JsonValue> claims = new LinkedHashMap<>();
 		JsonObject jsonLdDriversLicenseObject = Json.createObjectBuilder()
-				.add("licenseClass", "trucks")
+				.add("licenseClass", Json.createValue("trucks"))
+				.add("suspended", JsonValue.FALSE)
 				.build();
+		claims.put("name", Json.createValue("M S"));
 		claims.put("driversLicense", jsonLdDriversLicenseObject);
 
 		CredentialSubject credentialSubject = CredentialSubject.builder()
@@ -68,7 +65,6 @@ class JwtTest {
 
 		assertEquals(TestUtil.read(VerifyCredentialTest.class.getResourceAsStream("jwt.vc.jsonld")).trim(), jwtString.trim());
 		assertEquals(TestUtil.read(VerifyCredentialTest.class.getResourceAsStream("jwt.payload.vc.jsonld")).trim(), jwtPayload.trim());
-		 */
 	}
 
 	@Test

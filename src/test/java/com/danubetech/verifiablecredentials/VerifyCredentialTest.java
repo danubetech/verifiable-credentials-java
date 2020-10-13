@@ -8,7 +8,7 @@ import javax.json.JsonString;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class VerifyCredentialTest {
+public class VerifyCredentialTest {
 
 	@Test
 	void testVerify() throws Throwable {

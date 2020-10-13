@@ -13,7 +13,7 @@ import info.weboftrust.ldsignatures.verifier.Ed25519Signature2018LdVerifier;
 
 import javax.json.JsonObject;
 
-class VerifyPresentationTest {
+public class VerifyPresentationTest {
 
 	final static byte[] publicKeyPresentation1;
 	final static byte[] publicKeyPresentation2;
