@@ -3,6 +3,7 @@ package com.danubetech.verifiablecredentials;
 
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import foundation.identity.jsonld.JsonLDKeywords;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
 import info.weboftrust.ldsignatures.LdProof;
@@ -13,6 +14,8 @@ import javax.json.JsonObject;
 import javax.json.JsonValue;
 import java.io.Reader;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CredentialSubject extends JsonLDObject {
@@ -47,7 +50,7 @@ public class CredentialSubject extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.claims != null) JsonLDUtils.jsonLdAddAllJsonValueMap(this.jsonLDObject.getJsonObjectBuilder(), this.claims);
+			if (this.claims != null) JsonLDUtils.jsonLdAddAllJsonValueMap(this.jsonLDObject, this.claims);
 
 			return this.jsonLDObject;
 		}
@@ -91,6 +94,8 @@ public class CredentialSubject extends JsonLDObject {
 	 */
 
 	public Map<String, JsonValue> getClaims() {
-		return JsonLDUtils.jsonLdGetAsJsonValueMap(this.getJsonObject());
+		Map<String, JsonValue> claims = new LinkedHashMap<>(JsonLDUtils.jsonLdGetAsJsonValueMap(this.getJsonObject()));
+		claims.remove(JsonLDKeywords.JSONLD_TERM_ID);
+		return claims;
 	}
 }

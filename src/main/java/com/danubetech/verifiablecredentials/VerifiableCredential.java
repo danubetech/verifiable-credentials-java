@@ -48,9 +48,9 @@ public class VerifiableCredential extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.issuer != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, JsonLDUtils.uriToString(this.issuer));
-			if (this.issuanceDate != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE, JsonLDUtils.dateToString(this.issuanceDate));
-			if (this.expirationDate != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE, JsonLDUtils.dateToString(this.expirationDate));
+			if (this.issuer != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, JsonLDUtils.uriToString(this.issuer));
+			if (this.issuanceDate != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE, JsonLDUtils.dateToString(this.issuanceDate));
+			if (this.expirationDate != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE, JsonLDUtils.dateToString(this.expirationDate));
 			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLDObject);
 			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLDObject);
 

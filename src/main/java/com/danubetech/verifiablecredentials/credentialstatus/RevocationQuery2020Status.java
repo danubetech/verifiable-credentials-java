@@ -43,8 +43,8 @@ public class RevocationQuery2020Status extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.credentialReference != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALREFERENCE, this.credentialReference);
-			if (this.revocationService != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject.getJsonObjectBuilder(), VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONSERVICE, this.revocationService);
+			if (this.credentialReference != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALREFERENCE, this.credentialReference);
+			if (this.revocationService != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONSERVICE, this.revocationService);
 
 			return this.jsonLDObject;
 		}

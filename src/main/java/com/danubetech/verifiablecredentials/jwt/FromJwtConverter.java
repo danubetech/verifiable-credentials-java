@@ -18,11 +18,13 @@ public class FromJwtConverter {
     public static VerifiableCredential fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential) {
 
         VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJson(jwtVerifiableCredential.getPayloadObject().toString());
+        CredentialSubject payloadCredentialSubject = payloadVerifiableCredential.getCredentialSubject();
+        CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
 
         VerifiableCredential.Builder verifiableCredentialBuilder = VerifiableCredential.builder()
+                .base(payloadVerifiableCredential)
                 .defaultContexts(false)
-                .defaultTypes(false)
-                .template(payloadVerifiableCredential);
+                .defaultTypes(false);
 
         JWTClaimsSet payload = jwtVerifiableCredential.getPayload();
 
@@ -34,7 +36,7 @@ public class FromJwtConverter {
         String subject = payload.getSubject();
         if (subject != null) {
             CredentialSubject credentialSubject = CredentialSubject.builder()
-                    .template(payloadVerifiableCredential.getCredentialSubject())
+                    .base(payloadCredentialSubject)
                     .id(URI.create(subject))
                     .build();
             verifiableCredentialBuilder.credentialSubject(credentialSubject);

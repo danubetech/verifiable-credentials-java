@@ -1,13 +1,13 @@
 package com.danubetech.verifiablecredentials.jwt;
 
-import java.text.ParseException;
-
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.util.JSONObjectUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
-import net.minidev.json.JSONObject;
+import java.text.ParseException;
+import java.util.Map;
 
 public class JwtVerifiableCredential extends JwtWrappingObject<VerifiableCredential> {
 
@@ -24,10 +24,10 @@ public class JwtVerifiableCredential extends JwtWrappingObject<VerifiableCredent
 
 		SignedJWT signedJWT = SignedJWT.parse(compactSerialization);
 
-		JWTClaimsSet payload = signedJWT.getJWTClaimsSet();
-		JSONObject jsonLdObject = (JSONObject) payload.getClaims().get(JwtKeywords.JWT_CLAIM_VC);
-		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJson(jsonLdObject.toJSONString());
+		JWTClaimsSet jwtPayload = signedJWT.getJWTClaimsSet();
+		Map<String, Object> jsonObject = (Map<String, Object>) jwtPayload.getClaims().get(JwtKeywords.JWT_CLAIM_VC);
+		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJson(JSONObjectUtils.toJSONString(jsonObject));
 
-		return new JwtVerifiableCredential(payload, payloadVerifiableCredential, signedJWT, compactSerialization);
+		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential, signedJWT, compactSerialization);
 	}
 }

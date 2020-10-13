@@ -2,7 +2,9 @@ package com.danubetech.verifiablecredentials.jwt;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Map;
 
+import com.nimbusds.jose.util.JSONObjectUtils;
 import org.bitcoinj.core.ECKey;
 
 import com.nimbusds.jose.JOSEException;
@@ -164,9 +166,13 @@ public class JwtObject {
 
 		private static final long serialVersionUID = -587898962717783109L;
 
-		public EscapedSlashWorkaroundJWSObject(final JWSHeader header, final JWTClaimsSet claimsSet) {
+		public EscapedSlashWorkaroundJWSObject(final JWSHeader jwsHeader, final JWTClaimsSet jwtClaimsSet) {
+			super(jwsHeader, makePayload(jwtClaimsSet));
+		}
 
-			super(header, new Payload(claimsSet.toJSONObject().toJSONString().replace("\\/", "/")));
+		private static Payload makePayload(JWTClaimsSet jwtClaimsSet) {
+			Map<String, Object> jsonObject = jwtClaimsSet.toJSONObject();
+			return new Payload(JSONObjectUtils.toJSONString(jsonObject).replace("\\/", "/"));
 		}
 	}
 
