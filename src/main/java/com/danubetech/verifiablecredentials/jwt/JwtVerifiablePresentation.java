@@ -10,17 +10,19 @@ import com.nimbusds.jwt.JWTClaimsSet;
 
 public class JwtVerifiablePresentation extends JwtWrappingObject<JwtVerifiableCredential> {
 
-	public static final String JWT_CLAIM_VP = "vp";
-
 	private JwtVerifiablePresentation(JWTClaimsSet payload, JwtVerifiableCredential payloadObject, JWSObject jwsObject, String compactSerialization) {
 
 		super(payload, payloadObject, jwsObject, compactSerialization);
 	}
 
+	/*
+	 * Factory methods
+	 */
+
 	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential, String aud) throws  IOException {
 
 		JwtVerifiableCredential payloadJwtVerifiableCredential = jwtVerifiableCredential;
-		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJwtVerifiableCredential(payloadJwtVerifiableCredential);
+		VerifiablePresentation verifiablePresentation = FromJwtConverter.fromJwtVerifiableCredentialToVerifiablePresentation(payloadJwtVerifiableCredential);
 
 		JWTClaimsSet.Builder payloadBuilder = new JWTClaimsSet.Builder();
 
@@ -30,13 +32,9 @@ public class JwtVerifiablePresentation extends JwtWrappingObject<JwtVerifiableCr
 		payloadBuilder.issuer(jwtVerifiableCredential.getPayload().getSubject());
 		payloadBuilder.issueTime(issueTime);
 		payloadBuilder.notBeforeTime(issueTime);
+		if (aud != null) payloadBuilder.audience(aud);
 
-		if (aud != null) {
-
-			payloadBuilder.audience(aud);
-		}
-
-		payloadBuilder.claim(JWT_CLAIM_VP, verifiablePresentation.getJsonLdObject());
+		payloadBuilder.claim(JwtKeywords.JWT_CLAIM_VP, verifiablePresentation.getJsonObject());
 
 		return new JwtVerifiablePresentation(payloadBuilder.build(), payloadJwtVerifiableCredential, null, null);
 	}

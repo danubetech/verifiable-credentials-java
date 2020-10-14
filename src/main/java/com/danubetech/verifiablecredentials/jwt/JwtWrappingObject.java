@@ -12,7 +12,6 @@ public abstract class JwtWrappingObject <T> extends JwtObject {
 		super(payload, jwsObject, compactSerialization);
 
 		if (payloadObject == null) throw new NullPointerException();
-		
 		this.payloadObject = payloadObject;
 	}
 
@@ -21,7 +20,6 @@ public abstract class JwtWrappingObject <T> extends JwtObject {
 	 */
 
 	public T getPayloadObject() {
-
 		return this.payloadObject;
 	}
 }

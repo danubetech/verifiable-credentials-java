@@ -1,5 +1,16 @@
 package com.danubetech.verifiablecredentials.w3ctestsuite;
 
+import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.danubetech.verifiablecredentials.jwt.FromJwtConverter;
+import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
+import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
+import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.util.JSONObjectUtils;
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,18 +18,7 @@ import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.codec.binary.Base64;
-
-import com.danubetech.verifiablecredentials.VerifiableCredential;
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.util.JSONObjectUtils;
-
-import net.minidev.json.JSONObject;
+import java.util.Map;
 
 public class Generator {
 
@@ -50,9 +50,9 @@ public class Generator {
 
 			if (argJwt == null) {
 
-				VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonString(input);
+				VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(input);
 
-				output = verifiableCredential.toJsonString();
+				output = verifiableCredential.toJson();
 			} else {
 
 				RSAKey rsaKey = readRSAKey(argJwt);
@@ -62,13 +62,13 @@ public class Generator {
 					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromCompactSerialization(input);
 					if (! jwtVerifiableCredential.verify_RSA_RS256(rsaKey.toPublicJWK())) throw new GeneralSecurityException("Invalid signature.");
 
-					VerifiableCredential verifiableCredential = jwtVerifiableCredential.toVerifiableCredential();
+					VerifiableCredential verifiableCredential = FromJwtConverter.fromJwtVerifiableCredential(jwtVerifiableCredential);
 
-					output = verifiableCredential.toJsonString();
+					output = verifiableCredential.toJson();
 				} else {
 
-					VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonString(input);
-					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromVerifiableCredential(verifiableCredential, argAud);
+					VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(input);
+					JwtVerifiableCredential jwtVerifiableCredential = ToJwtConverter.toJwtVerifiableCredential(verifiableCredential, argAud);
 
 					if (argPresentation) {
 
@@ -80,7 +80,7 @@ public class Generator {
 
 						if (argNoJws) {
 
-							output = jwtVerifiableCredential.getPayload().toJSONObject().toJSONString();
+							output = JSONObjectUtils.toJSONString(jwtVerifiableCredential.getPayload().toJSONObject());
 						} else {
 
 							output = jwtVerifiableCredential.sign_RSA_RS256(rsaKey);
@@ -137,8 +137,8 @@ public class Generator {
 
 	static RSAKey readRSAKey(String jwt) throws ParseException, JOSEException {
 
-		JSONObject jsonObject = JSONObjectUtils.parse(new String(Base64.decodeBase64(jwt)));
-		JSONObject rs256PrivateKeyJwk = (JSONObject) jsonObject.get("rs256PrivateKeyJwk");
+		Map<String, Object> jsonObject = JSONObjectUtils.parse(new String(Base64.decodeBase64(jwt)));
+		Map<String, Object> rs256PrivateKeyJwk = (Map<String, Object>) jsonObject.get("rs256PrivateKeyJwk");
 
 		RSAKey jwk = (RSAKey) JWK.parse(rs256PrivateKeyJwk);
 

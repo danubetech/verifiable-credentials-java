@@ -35,14 +35,5 @@
         "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..uzx8px7eGewfc5Qa-GN1qjcYZH4nX3PBBaFW22x_573nnMu_Uzn6oT6ITL54QEk08XCqCE2OX2L-8ovsffXPDg"
       }
     }
-  ],
-  "proof": {
-    "type": "Ed25519Signature2018",
-    "created": "2020-04-16T17:58:26Z",
-    "verificationMethod": "did:web:vc.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN",
-    "proofPurpose": "authentication",
-    "challenge": "99612b24-63d9-11ea-b99f-4f66f3e4f81a",
-    "domain": "issuer.example.com",
-    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..FtI4bekQdsVyx9OXcz4a6hL6Y2GAQ9gjA1_nQTmYXLCHenBnap-LlaLlh3DGXdATkXz7Oq5iCRcxTvc4aI7oCg"
-  }
+  ]
 }

@@ -1,7 +1,0 @@
-[
-  {
-    "Content-Location": "https://www.w3.org/2018/credentials/v1",
-    "X-Classpath": "com/danubetech/verifiablecredentials/contexts/credentials-v1-CUSTOM.jsonld",
-    "Content-Type": "application/ld+json"
-  }
-]

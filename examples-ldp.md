@@ -40,16 +40,23 @@ Verifiable Credentials with Linked Data Proofs:
 	LinkedHashMap<String, Object> jsonLdDriversLicense = new LinkedHashMap<String, Object> ();
 	jsonLdDriversLicense.put("licenseClass", "trucks");
 	jsonLdCredentialSubject.put("driversLicense", jsonLdDriversLicense);
-	
-	URI creator = URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1");
-	String created = "2018-01-01T21:19:10Z";
-	String domain = null;
-	String nonce = "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e";
-	
-	RsaSignature2018LdSigner signer = new RsaSignature2018LdSigner(creator, created, domain, nonce, TestUtil.testRSAPrivateKey);
-	LdSignature ldSignature = signer.sign(verifiableCredential.getJsonLdObject());
-	
-	System.out.println(JsonUtils.toString(verifiableCredential.getJsonLdObject()));
+
+    byte[] testEd25519PrivateKey = Hex.decodeHex("984b589e121040156838303f107e13150be4a80fc5088ccba0b0bdc9b1d89090de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580".toCharArray());
+
+    JsonLDObject jsonLdObject = JsonLDObject.fromJson(new FileReader("input.jsonld"));
+    String verificationMethod = "https://example.com/jdoe/keys/1";
+    String domain = "example.com";
+    String nonce = null;
+
+    Ed25519Signature2018LdSigner signer = new Ed25519Signature2018LdSigner(testEd25519PrivateKey);
+    signer.setCreated(new Date());
+    signer.setProofPurpose(LDSecurityKeywords.JSONLD_TERM_ASSERTIONMETHOD);
+    signer.setVerificationMethod(verificationMethod);
+    signer.setDomain(domain);
+    signer.setNonce(nonce);
+    LdProof ldProof = signer.sign(jsonLdObject);
+
+    System.out.println(ldProof.toJson(true));
 
 ### Example code (verifying)
 
