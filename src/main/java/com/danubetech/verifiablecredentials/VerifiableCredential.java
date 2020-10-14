@@ -1,7 +1,9 @@
 package com.danubetech.verifiablecredentials;
 
+import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
 import info.weboftrust.ldsignatures.LdProof;
@@ -16,20 +18,22 @@ public class VerifiableCredential extends JsonLDObject {
 	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLE_CREDENTIAL };
 	public static final String DEFAULT_JSONLD_PREDICATE = VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL;
+	public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
-	private VerifiableCredential() {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
+	@JsonCreator
+	public VerifiableCredential() {
+		super();
 	}
 
-	public VerifiableCredential(Map<String, Object> jsonObject) {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
+	protected VerifiableCredential(Map<String, Object> jsonObject) {
+		super(jsonObject);
 	}
 
 	/*
 	 * Factory methods
 	 */
 
-	public static class Builder extends JsonLDObject.Builder<Builder, VerifiableCredential> {
+	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
 
 		private URI issuer;
 		private Date issuanceDate;
@@ -39,6 +43,8 @@ public class VerifiableCredential extends JsonLDObject {
 
 		public Builder(VerifiableCredential jsonLDObject) {
 			super(jsonLDObject);
+			this.defaultContexts(true);
+			this.defaultTypes(true);
 		}
 
 		@Override
@@ -53,51 +59,49 @@ public class VerifiableCredential extends JsonLDObject {
 			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLDObject);
 			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLDObject);
 
-			return this.jsonLDObject;
+			return (VerifiableCredential) this.jsonLDObject;
 		}
 
-		public Builder issuer(URI issuer) {
+		public B issuer(URI issuer) {
 			this.issuer = issuer;
-			return this;
+			return (B) this;
 		}
 
-		public Builder issuanceDate(Date issuanceDate) {
+		public B issuanceDate(Date issuanceDate) {
 			this.issuanceDate = issuanceDate;
-			return this;
+			return (B) this;
 		}
 
-		public Builder expirationDate(Date expirationDate) {
+		public B expirationDate(Date expirationDate) {
 			this.expirationDate = expirationDate;
-			return this;
+			return (B) this;
 		}
 
-		public Builder credentialSubject(CredentialSubject credentialSubject) {
+		public B credentialSubject(CredentialSubject credentialSubject) {
 			this.credentialSubject = credentialSubject;
-			return this;
+			return (B) this;
 		}
 
-		public Builder ldProof(LdProof ldProof) {
+		public B ldProof(LdProof ldProof) {
 			this.ldProof = ldProof;
-			return this;
+			return (B) this;
 		}
 	}
 
-	public static Builder builder() {
-		return new Builder(new VerifiableCredential())
-				.defaultContexts(true)
-				.defaultTypes(true);
+	public static Builder<? extends Builder<?>> builder() {
+		return new Builder(new VerifiableCredential());
 	}
 
-	/*
-	 * Reading the JSON-LD object
-	 */
+	public static VerifiableCredential fromJsonObject(Map<String, Object> jsonObject) {
+		return new VerifiableCredential(jsonObject);
+	}
 
 	public static VerifiableCredential fromJson(Reader reader) {
-		return JsonLDObject.fromJson(VerifiableCredential.class, reader);
+		return new VerifiableCredential(readJson(reader));
 	}
 
 	public static VerifiableCredential fromJson(String json) {
-		return JsonLDObject.fromJson(VerifiableCredential.class, json);
+		return new VerifiableCredential(readJson(json));
 	}
 
 	/*

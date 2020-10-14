@@ -1,10 +1,13 @@
 package com.danubetech.verifiablecredentials.credentialstatus;
 
-import com.danubetech.verifiablecredentials.CredentialSubject;
+import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.danubetech.verifiablecredentials.proof.BlockchainHashProof2020;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
+import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
@@ -15,20 +18,22 @@ public class RevocationQuery2020Status extends JsonLDObject {
 	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_REVOCATION_QUERY_2020_STATUS };
 	public static final String DEFAULT_JSONLD_PREDICATE = VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSUBJECT;
+	public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
-	private RevocationQuery2020Status() {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
+	@JsonCreator
+	public RevocationQuery2020Status() {
+		super();
 	}
 
-	public RevocationQuery2020Status(Map<String, Object> jsonObject) {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
+	protected RevocationQuery2020Status(Map<String, Object> jsonObject) {
+		super(jsonObject);
 	}
 
 	/*
 	 * Factory methods
 	 */
 
-	public static class Builder extends JsonLDObject.Builder<Builder, RevocationQuery2020Status> {
+	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
 
 		private String credentialReference;
 		private String revocationService;
@@ -46,46 +51,46 @@ public class RevocationQuery2020Status extends JsonLDObject {
 			if (this.credentialReference != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALREFERENCE, this.credentialReference);
 			if (this.revocationService != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONSERVICE, this.revocationService);
 
-			return this.jsonLDObject;
+			return (RevocationQuery2020Status) this.jsonLDObject;
 		}
 
-		public Builder credentialReference(String credentialReference) {
+		public B credentialReference(String credentialReference) {
 			this.credentialReference = credentialReference;
-			return this;
+			return (B) this;
 		}
 
-		public Builder revocationService(String revocationService) {
+		public B revocationService(String revocationService) {
 			this.revocationService = revocationService;
-			return this;
+			return (B) this;
 		}
 	}
 
-	public static Builder builder() {
+	public static Builder<? extends Builder<?>> builder() {
 		return new Builder(new RevocationQuery2020Status());
 	}
 
-	/*
-	 * Reading the JSON-LD object
-	 */
-
-	public static CredentialSubject fromJson(Reader reader) {
-		return JsonLDObject.fromJson(CredentialSubject.class, reader);
+	public static RevocationQuery2020Status fromJsonObject(Map<String, Object> jsonObject) {
+		return new RevocationQuery2020Status(jsonObject);
 	}
 
-	public static CredentialSubject fromJson(String json) {
-		return JsonLDObject.fromJson(CredentialSubject.class, json);
+	public static RevocationQuery2020Status fromJson(Reader reader) {
+		return new RevocationQuery2020Status(readJson(reader));
+	}
+
+	public static RevocationQuery2020Status fromJson(String json) {
+		return new RevocationQuery2020Status(readJson(json));
 	}
 
 	/*
 	 * Adding, getting, and removing the JSON-LD object
 	 */
 
-	public static CredentialSubject getFromJsonLDObject(JsonLDObject jsonLdObject) {
-		return JsonLDObject.getFromJsonLDObject(CredentialSubject.class, jsonLdObject);
+	public static RevocationQuery2020Status getFromJsonLDObject(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObject(RevocationQuery2020Status.class, jsonLdObject);
 	}
 
 	public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
-		JsonLDObject.removeFromJsonLdObject(CredentialSubject.class, jsonLdObject);
+		JsonLDObject.removeFromJsonLdObject(RevocationQuery2020Status.class, jsonLdObject);
 	}
 
 	/*

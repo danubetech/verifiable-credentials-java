@@ -1,8 +1,10 @@
 package com.danubetech.verifiablecredentials;
 
 
+import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDKeywords;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
@@ -17,20 +19,22 @@ public class CredentialSubject extends JsonLDObject {
 	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { };
 	public static final String DEFAULT_JSONLD_PREDICATE = VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSUBJECT;
+	public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
-	private CredentialSubject() {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
+	@JsonCreator
+	public CredentialSubject() {
+		super();
 	}
 
-	public CredentialSubject(Map<String, Object> jsonObject) {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
+	protected CredentialSubject(Map<String, Object> jsonObject) {
+		super(jsonObject);
 	}
 
 	/*
 	 * Factory methods
 	 */
 
-	public static class Builder extends JsonLDObject.Builder<Builder, CredentialSubject> {
+	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
 
 		private Map<String, Object> claims;
 
@@ -46,29 +50,29 @@ public class CredentialSubject extends JsonLDObject {
 			// add JSON-LD properties
 			if (this.claims != null) JsonLDUtils.jsonLdAddAll(this.jsonLDObject, this.claims);
 
-			return this.jsonLDObject;
+			return (CredentialSubject) this.jsonLDObject;
 		}
 
-		public Builder claims(Map<String, Object> claims) {
+		public B claims(Map<String, Object> claims) {
 			this.claims = claims;
-			return this;
+			return (B) this;
 		}
 	}
 
-	public static Builder builder() {
+	public static Builder<? extends Builder<?>> builder() {
 		return new Builder(new CredentialSubject());
 	}
 
-	/*
-	 * Reading the JSON-LD object
-	 */
+	public static CredentialSubject fromJsonObject(Map<String, Object> jsonObject) {
+		return new CredentialSubject(jsonObject);
+	}
 
 	public static CredentialSubject fromJson(Reader reader) {
-		return JsonLDObject.fromJson(CredentialSubject.class, reader);
+		return new CredentialSubject(readJson(reader));
 	}
 
 	public static CredentialSubject fromJson(String json) {
-		return JsonLDObject.fromJson(CredentialSubject.class, json);
+		return new CredentialSubject(readJson(json));
 	}
 
 	/*

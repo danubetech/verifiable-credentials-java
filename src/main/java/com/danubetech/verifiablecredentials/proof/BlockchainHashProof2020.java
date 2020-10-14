@@ -1,37 +1,42 @@
 package com.danubetech.verifiablecredentials.proof;
 
+import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import info.weboftrust.ldsignatures.LdProof;
 import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 
-import javax.json.JsonObject;
 import java.io.Reader;
 import java.net.URI;
+import java.util.Map;
 
 public class BlockchainHashProof2020 extends LdProof {
 
 	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_BLOCKCHAIN_HASH_PROOF_2020 };
 	public static final String DEFAULT_JSONLD_PREDICATE = LDSecurityKeywords.JSONLD_TERM_PROOF;
+	public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
-	private BlockchainHashProof2020() {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
+	@JsonCreator
+	public BlockchainHashProof2020() {
+		super();
 	}
 
-	public BlockchainHashProof2020(JsonObject jsonObject) {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
+	protected BlockchainHashProof2020(Map<String, Object> jsonObject) {
+		super(jsonObject);
 	}
 
 	/*
 	 * Factory methods
 	 */
 
-	public static class Builder extends LdProof.Builder<Builder, BlockchainHashProof2020> {
+	public static class Builder<B extends Builder<B>> extends LdProof.Builder<B> {
 
-		public Builder(BlockchainHashProof2020 jsonLDObject, boolean addContexts) {
-			super(jsonLDObject, addContexts);
+		public Builder(BlockchainHashProof2020 jsonLDObject) {
+			super(jsonLDObject);
 		}
 
 		public BlockchainHashProof2020 build() {
@@ -40,28 +45,24 @@ public class BlockchainHashProof2020 extends LdProof {
 
 			// add JSON-LD properties
 
-			return this.jsonLDObject;
+			return (BlockchainHashProof2020) this.jsonLDObject;
 		}
 	}
 
-	public static Builder builder(boolean addContexts) {
-		return new Builder(new BlockchainHashProof2020(), addContexts);
+	public static Builder<? extends Builder<?>> builder() {
+		return new Builder(new BlockchainHashProof2020());
 	}
 
-	public static Builder builder() {
-		return builder(false);
+	public static BlockchainHashProof2020 fromJsonObject(Map<String, Object> jsonObject) {
+		return new BlockchainHashProof2020(jsonObject);
 	}
-
-	/*
-	 * Reading the JSON-LD object
-	 */
 
 	public static BlockchainHashProof2020 fromJson(Reader reader) {
-		return JsonLDObject.fromJson(BlockchainHashProof2020.class, reader);
+		return new BlockchainHashProof2020(readJson(reader));
 	}
 
 	public static BlockchainHashProof2020 fromJson(String json) {
-		return JsonLDObject.fromJson(BlockchainHashProof2020.class, json);
+		return new BlockchainHashProof2020(readJson(json));
 	}
 
 	/*

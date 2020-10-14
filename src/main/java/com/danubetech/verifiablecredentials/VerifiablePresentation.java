@@ -1,7 +1,9 @@
 package com.danubetech.verifiablecredentials;
 
+import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import info.weboftrust.ldsignatures.LdProof;
 
@@ -14,26 +16,30 @@ public class VerifiablePresentation extends JsonLDObject {
 	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLE_PRESENTATION };
 	public static final String DEFAULT_JSONLD_PREDICATE = null;
+	public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
-	private VerifiablePresentation() {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
+	@JsonCreator
+	public VerifiablePresentation() {
+		super();
 	}
 
-	public VerifiablePresentation(Map<String, Object> jsonObject) {
-		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
+	protected VerifiablePresentation(Map<String, Object> jsonObject) {
+		super(jsonObject);
 	}
 
 	/*
 	 * Factory methods
 	 */
 
-	public static class Builder extends JsonLDObject.Builder<VerifiablePresentation.Builder, VerifiablePresentation> {
+	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
 
 		private VerifiableCredential verifiableCredential;
 		private LdProof ldProof;
 
 		public Builder(VerifiablePresentation jsonLDObject) {
 			super(jsonLDObject);
+			this.defaultContexts(true);
+			this.defaultTypes(true);
 		}
 
 		@Override
@@ -45,36 +51,34 @@ public class VerifiablePresentation extends JsonLDObject {
 			if (this.verifiableCredential != null) this.verifiableCredential.addToJsonLDObject(this.jsonLDObject);
 			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLDObject);
 
-			return this.jsonLDObject;
+			return (VerifiablePresentation) this.jsonLDObject;
 		}
 
-		public Builder verifiableCredential(VerifiableCredential verifiableCredential) {
+		public B verifiableCredential(VerifiableCredential verifiableCredential) {
 			this.verifiableCredential = verifiableCredential;
-			return this;
+			return (B) this;
 		}
 
-		public Builder ldProof(LdProof ldProof) {
+		public B ldProof(LdProof ldProof) {
 			this.ldProof = ldProof;
-			return this;
+			return (B) this;
 		}
 	}
 
-	public static Builder builder() {
-		return new Builder(new VerifiablePresentation())
-				.defaultContexts(true)
-				.defaultTypes(true);
+	public static Builder<? extends Builder<?>> builder() {
+		return new Builder(new VerifiablePresentation());
 	}
 
-	/*
-	 * Reading the JSON-LD object
-	 */
+	public static VerifiablePresentation fromJsonObject(Map<String, Object> jsonObject) {
+		return new VerifiablePresentation(jsonObject);
+	}
 
 	public static VerifiablePresentation fromJson(Reader reader) {
-		return JsonLDObject.fromJson(VerifiablePresentation.class, reader);
+		return new VerifiablePresentation(readJson(reader));
 	}
 
 	public static VerifiablePresentation fromJson(String json) {
-		return JsonLDObject.fromJson(VerifiablePresentation.class, json);
+		return new VerifiablePresentation(readJson(json));
 	}
 
 	/*
