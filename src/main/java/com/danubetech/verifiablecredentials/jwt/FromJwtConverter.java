@@ -5,7 +5,6 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.nimbusds.jwt.JWTClaimsSet;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
 

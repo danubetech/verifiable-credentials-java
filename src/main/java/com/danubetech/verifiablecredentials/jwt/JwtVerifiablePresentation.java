@@ -1,12 +1,12 @@
 package com.danubetech.verifiablecredentials.jwt;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.UUID;
-
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.UUID;
 
 public class JwtVerifiablePresentation extends JwtWrappingObject<JwtVerifiableCredential> {
 

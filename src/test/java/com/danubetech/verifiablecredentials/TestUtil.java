@@ -1,5 +1,10 @@
 package com.danubetech.verifiablecredentials;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
+import org.bitcoinj.core.Base58;
+import org.bitcoinj.core.ECKey;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,11 +13,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
-import org.bitcoinj.core.Base58;
-import org.bitcoinj.core.ECKey;
 
 public class TestUtil {
 

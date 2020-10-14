@@ -1,10 +1,9 @@
 package com.danubetech.verifiablecredentials;
-import java.io.InputStreamReader;
 
 import info.weboftrust.ldsignatures.verifier.RsaSignature2018LdVerifier;
 import org.junit.jupiter.api.Test;
 
-import javax.json.JsonString;
+import java.io.InputStreamReader;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +20,7 @@ public class VerifyCredentialTest {
 		assertTrue(verify);
 
 		CredentialSubject credentialSubject = verifiableCredential.getCredentialSubject();
-		String givenName = credentialSubject == null ? null : ((JsonString) credentialSubject.getClaims().get("givenName")).getString();
+		String givenName = credentialSubject == null ? null : (String) credentialSubject.getClaims().get("givenName");
 
 		assertEquals("Manu", givenName);
 	}

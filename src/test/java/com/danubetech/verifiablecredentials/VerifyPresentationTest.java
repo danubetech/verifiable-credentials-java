@@ -1,17 +1,13 @@
 package com.danubetech.verifiablecredentials;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import info.weboftrust.ldsignatures.verifier.Ed25519Signature2018LdVerifier;
+import org.bitcoinj.core.Base58;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
 import java.util.Map;
 
-import org.bitcoinj.core.Base58;
-import org.junit.jupiter.api.Test;
-
-import info.weboftrust.ldsignatures.verifier.Ed25519Signature2018LdVerifier;
-
-import javax.json.JsonObject;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class VerifyPresentationTest {
 
@@ -63,7 +59,7 @@ public class VerifyPresentationTest {
 		boolean verify = verifier.verify(verifiableCredentialGood1);
 
 		assertTrue(verify);
-		assertEquals("Bachelor of Science and Arts", ((JsonObject) verifiableCredentialGood1.getCredentialSubject().getClaims().get("degree")).getString("name"));
+		assertEquals("Bachelor of Science and Arts", ((Map<String, Object>) verifiableCredentialGood1.getCredentialSubject().getClaims().get("degree")).get("name"));
 	}
 
 	@Test
@@ -73,7 +69,7 @@ public class VerifyPresentationTest {
 		boolean verify = verifier.verify(verifiableCredentialGood2);
 
 		assertTrue(verify);
-		assertEquals("Bachelor of Science and Arts", ((JsonObject) verifiableCredentialGood1.getCredentialSubject().getClaims().get("degree")).getString("name"));
+		assertEquals("Bachelor of Science and Arts", ((Map<String, Object>) verifiableCredentialGood1.getCredentialSubject().getClaims().get("degree")).get("name"));
 	}
 
 	/*
@@ -87,7 +83,7 @@ public class VerifyPresentationTest {
 		boolean verify = verifier.verify(verifiableCredentialBad1);
 
 		assertFalse(verify);
-		assertEquals("Master of Science and Arts", ((JsonObject) verifiableCredentialBad1.getCredentialSubject().getClaims().get("degree")).getString("name"));
+		assertEquals("Master of Science and Arts", ((Map<String, Object>) verifiableCredentialBad1.getCredentialSubject().getClaims().get("degree")).get("name"));
 	}
 
 	@Test
@@ -97,7 +93,7 @@ public class VerifyPresentationTest {
 		boolean verify = verifier.verify(verifiableCredentialBad2);
 
 		assertFalse(verify);
-		assertEquals("Master of Science and Arts", ((JsonObject) verifiableCredentialBad2.getCredentialSubject().getClaims().get("degree")).getString("name"));
+		assertEquals("Master of Science and Arts", ((Map<String, Object>) verifiableCredentialBad2.getCredentialSubject().getClaims().get("degree")).get("name"));
 	}
 
 	/*

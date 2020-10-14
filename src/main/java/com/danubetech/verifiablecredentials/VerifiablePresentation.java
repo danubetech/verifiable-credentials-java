@@ -1,16 +1,13 @@
 package com.danubetech.verifiablecredentials;
 
-import java.io.Reader;
-import java.net.URI;
-
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
-import com.danubetech.verifiablecredentials.validation.Validation;
-
 import foundation.identity.jsonld.JsonLDObject;
 import info.weboftrust.ldsignatures.LdProof;
 
-import javax.json.JsonObject;
+import java.io.Reader;
+import java.net.URI;
+import java.util.Map;
 
 public class VerifiablePresentation extends JsonLDObject {
 
@@ -22,7 +19,7 @@ public class VerifiablePresentation extends JsonLDObject {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
 	}
 
-	public VerifiablePresentation(JsonObject jsonObject) {
+	public VerifiablePresentation(Map<String, Object> jsonObject) {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
 	}
 

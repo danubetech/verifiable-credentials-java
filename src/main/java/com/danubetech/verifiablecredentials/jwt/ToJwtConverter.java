@@ -3,24 +3,16 @@ package com.danubetech.verifiablecredentials.jwt;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.util.JSONObjectUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import foundation.identity.jsonld.JsonLDKeywords;
 import foundation.identity.jsonld.JsonLDUtils;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
-import java.text.ParseException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import java.util.SortedMap;
 
 public class ToJwtConverter {
 

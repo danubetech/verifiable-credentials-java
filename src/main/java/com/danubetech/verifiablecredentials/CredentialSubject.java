@@ -6,15 +6,9 @@ import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import foundation.identity.jsonld.JsonLDKeywords;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
-import info.weboftrust.ldsignatures.LdProof;
-import info.weboftrust.ldsignatures.jsonld.LDSecurityContexts;
-import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
 import java.io.Reader;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,7 +22,7 @@ public class CredentialSubject extends JsonLDObject {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
 	}
 
-	public CredentialSubject(JsonObject jsonObject) {
+	public CredentialSubject(Map<String, Object> jsonObject) {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
 	}
 
@@ -38,7 +32,7 @@ public class CredentialSubject extends JsonLDObject {
 
 	public static class Builder extends JsonLDObject.Builder<Builder, CredentialSubject> {
 
-		private Map<String, JsonValue> claims;
+		private Map<String, Object> claims;
 
 		public Builder(CredentialSubject jsonLDObject) {
 			super(jsonLDObject);
@@ -50,12 +44,12 @@ public class CredentialSubject extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.claims != null) JsonLDUtils.jsonLdAddAllJsonValueMap(this.jsonLDObject, this.claims);
+			if (this.claims != null) JsonLDUtils.jsonLdAddAll(this.jsonLDObject, this.claims);
 
 			return this.jsonLDObject;
 		}
 
-		public Builder claims(Map<String, JsonValue> claims) {
+		public Builder claims(Map<String, Object> claims) {
 			this.claims = claims;
 			return this;
 		}
@@ -93,8 +87,8 @@ public class CredentialSubject extends JsonLDObject {
 	 * Getters
 	 */
 
-	public Map<String, JsonValue> getClaims() {
-		Map<String, JsonValue> claims = new LinkedHashMap<>(JsonLDUtils.jsonLdGetAsJsonValueMap(this.getJsonObject()));
+	public Map<String, Object> getClaims() {
+		Map<String, Object> claims = new LinkedHashMap<>(this.getJsonObject());
 		claims.remove(JsonLDKeywords.JSONLD_TERM_ID);
 		return claims;
 	}

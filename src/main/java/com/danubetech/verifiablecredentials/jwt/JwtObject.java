@@ -1,31 +1,18 @@
 package com.danubetech.verifiablecredentials.jwt;
 
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.Map;
-
+import com.nimbusds.jose.*;
 import com.nimbusds.jose.util.JSONObjectUtils;
-import org.bitcoinj.core.ECKey;
-
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.JWSSigner;
-import com.nimbusds.jose.JWSVerifier;
-import com.nimbusds.jose.Payload;
 import com.nimbusds.jwt.JWTClaimsSet;
-
 import info.weboftrust.ldsignatures.crypto.ByteSigner;
 import info.weboftrust.ldsignatures.crypto.ByteVerifier;
 import info.weboftrust.ldsignatures.crypto.adapter.JWSSignerAdapter;
 import info.weboftrust.ldsignatures.crypto.adapter.JWSVerifierAdapter;
-import info.weboftrust.ldsignatures.crypto.impl.Ed25519_EdDSA_PrivateKeySigner;
-import info.weboftrust.ldsignatures.crypto.impl.Ed25519_EdDSA_PublicKeyVerifier;
-import info.weboftrust.ldsignatures.crypto.impl.RSA_RS256_PrivateKeySigner;
-import info.weboftrust.ldsignatures.crypto.impl.RSA_RS256_PublicKeyVerifier;
-import info.weboftrust.ldsignatures.crypto.impl.secp256k1_ES256K_PrivateKeySigner;
-import info.weboftrust.ldsignatures.crypto.impl.secp256k1_ES256K_PublicKeyVerifier;
+import info.weboftrust.ldsignatures.crypto.impl.*;
+import org.bitcoinj.core.ECKey;
+
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.util.Map;
 
 public class JwtObject {
 

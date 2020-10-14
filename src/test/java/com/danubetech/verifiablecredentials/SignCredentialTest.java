@@ -1,21 +1,18 @@
 package com.danubetech.verifiablecredentials;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import foundation.identity.jsonld.JsonLDUtils;
+import info.weboftrust.ldsignatures.LdProof;
+import info.weboftrust.ldsignatures.signer.RsaSignature2018LdSigner;
+import info.weboftrust.ldsignatures.suites.SignatureSuites;
+import info.weboftrust.ldsignatures.verifier.RsaSignature2018LdVerifier;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Date;
 
-import foundation.identity.jsonld.JsonLDUtils;
-import info.weboftrust.ldsignatures.signer.Ed25519Signature2018LdSigner;
-import info.weboftrust.ldsignatures.verifier.Ed25519Signature2018LdVerifier;
-import info.weboftrust.ldsignatures.verifier.RsaSignature2018LdVerifier;
-import org.junit.jupiter.api.Test;
-
-import info.weboftrust.ldsignatures.LdProof;
-import info.weboftrust.ldsignatures.signer.RsaSignature2018LdSigner;
-import info.weboftrust.ldsignatures.suites.SignatureSuites;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SignCredentialTest {
 

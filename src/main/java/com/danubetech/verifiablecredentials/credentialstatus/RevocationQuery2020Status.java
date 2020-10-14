@@ -6,9 +6,9 @@ import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
 
-import javax.json.JsonObject;
 import java.io.Reader;
 import java.net.URI;
+import java.util.Map;
 
 public class RevocationQuery2020Status extends JsonLDObject {
 
@@ -20,7 +20,7 @@ public class RevocationQuery2020Status extends JsonLDObject {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER);
 	}
 
-	public RevocationQuery2020Status(JsonObject jsonObject) {
+	public RevocationQuery2020Status(Map<String, Object> jsonObject) {
 		super(VerifiableCredentialContexts.DOCUMENT_LOADER, jsonObject);
 	}
 
@@ -43,8 +43,8 @@ public class RevocationQuery2020Status extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.credentialReference != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALREFERENCE, this.credentialReference);
-			if (this.revocationService != null) JsonLDUtils.jsonLdAddString(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONSERVICE, this.revocationService);
+			if (this.credentialReference != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALREFERENCE, this.credentialReference);
+			if (this.revocationService != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONSERVICE, this.revocationService);
 
 			return this.jsonLDObject;
 		}

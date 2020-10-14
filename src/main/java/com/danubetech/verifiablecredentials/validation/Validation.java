@@ -2,7 +2,6 @@ package com.danubetech.verifiablecredentials.validation;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
-import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 
 import java.net.URI;
 import java.net.URISyntaxException;

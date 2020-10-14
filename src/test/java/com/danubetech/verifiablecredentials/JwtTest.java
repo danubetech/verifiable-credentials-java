@@ -1,25 +1,18 @@
 package com.danubetech.verifiablecredentials;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.net.URI;
-import java.security.GeneralSecurityException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import com.danubetech.verifiablecredentials.jwt.FromJwtConverter;
+import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
 import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
+import com.nimbusds.jose.jwk.RSAKey;
 import foundation.identity.jsonld.JsonLDUtils;
 import org.junit.jupiter.api.Test;
 
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
-import com.nimbusds.jose.jwk.RSAKey;
+import java.net.URI;
+import java.security.GeneralSecurityException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JwtTest {
 
@@ -33,13 +26,12 @@ public class JwtTest {
 	@Test
 	void testSign() throws Exception {
 
-		Map<String, JsonValue> claims = new LinkedHashMap<>();
-		JsonObject jsonLdDriversLicenseObject = Json.createObjectBuilder()
-				.add("licenseClass", Json.createValue("trucks"))
-				.add("suspended", JsonValue.FALSE)
-				.build();
-		claims.put("name", Json.createValue("M S"));
-		claims.put("driversLicense", jsonLdDriversLicenseObject);
+		Map<String, Object> claims = new LinkedHashMap<>();
+		Map<String, Object> driversLicense = new LinkedHashMap<String, Object>();
+		driversLicense.put("licenseClass", "trucks");
+		driversLicense.put("suspended", Boolean.FALSE);
+		claims.put("name", "M S");
+		claims.put("driversLicense", driversLicense);
 
 		CredentialSubject credentialSubject = CredentialSubject.builder()
 				.id(URI.create("did:sov:21tDAKCERh95uGgKbJNHYp"))
@@ -93,7 +85,7 @@ public class JwtTest {
 
 		CredentialSubject credentialSubject = verifiableCredential.getCredentialSubject();
 		assertEquals(URI.create("did:sov:21tDAKCERh95uGgKbJNHYp"), credentialSubject.getId());
-		JsonObject jsonLdDriversLicenseObject = JsonLDUtils.jsonLdGetJsonObject(credentialSubject.getJsonObject(), "driversLicense");
-		assertEquals("trucks", jsonLdDriversLicenseObject.getString("licenseClass"));
+		Map<String, Object> jsonLdDriversLicenseObject = JsonLDUtils.jsonLdGetJsonObject(credentialSubject.getJsonObject(), "driversLicense");
+		assertEquals("trucks", jsonLdDriversLicenseObject.get("licenseClass"));
 	}
 }
