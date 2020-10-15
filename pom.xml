@@ -36,6 +36,10 @@
 			<id>danubetech-maven-public</id>
 			<url>https://repo.danubetech.com/repository/maven-public/</url>
 		</repository>
+		<repository>
+			<id>sovrin</id>
+			<url>https://repo.sovrin.org/repository/maven-public</url>
+		</repository>
 	</repositories>
 
 	<properties>
@@ -133,6 +137,18 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.11.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hyperledger</groupId>
+			<artifactId>indy</artifactId>
+			<version>1.14.0</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.google.crypto.tink</groupId>
+			<artifactId>tink</artifactId>
+			<version>1.4.0</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
