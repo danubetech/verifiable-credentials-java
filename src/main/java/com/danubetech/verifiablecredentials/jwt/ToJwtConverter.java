@@ -12,6 +12,7 @@ import foundation.identity.jsonld.JsonLDUtils;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ToJwtConverter {
@@ -72,16 +73,8 @@ public class ToJwtConverter {
             jwtPayloadBuilder.audience(aud);
         }
 
-        try {
-            Map<String, Object> vcClaimValue = new ObjectMapper().readValue(payloadVerifiableCredential.toJson(), Map.class);
-            jwtPayloadBuilder.claim(JwtKeywords.JWT_CLAIM_VC, vcClaimValue);
-        } catch (RuntimeException ex) {
-            throw new RuntimeException(ex);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Map<String, Object> vcClaimValue = new LinkedHashMap<>(payloadVerifiableCredential.getJsonObject());
+        jwtPayloadBuilder.claim(JwtKeywords.JWT_CLAIM_VC, vcClaimValue);
 
         JWTClaimsSet jwtPayload = jwtPayloadBuilder.build();
 
