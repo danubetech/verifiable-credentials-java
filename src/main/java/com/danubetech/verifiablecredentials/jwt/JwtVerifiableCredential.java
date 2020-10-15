@@ -7,6 +7,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
 import java.text.ParseException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class JwtVerifiableCredential extends JwtWrappingObject<VerifiableCredential> {
@@ -26,7 +27,7 @@ public class JwtVerifiableCredential extends JwtWrappingObject<VerifiableCredent
 
 		JWTClaimsSet jwtPayload = signedJWT.getJWTClaimsSet();
 		Map<String, Object> jsonObject = (Map<String, Object>) jwtPayload.getClaims().get(JwtKeywords.JWT_CLAIM_VC);
-		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJson(JSONObjectUtils.toJSONString(jsonObject));
+		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJsonObject(new LinkedHashMap<>(jsonObject));
 
 		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential, signedJWT, compactSerialization);
 	}
