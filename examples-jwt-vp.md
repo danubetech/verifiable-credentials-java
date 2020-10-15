@@ -4,55 +4,61 @@ Verifiable Credentials with JSON Web Tokens:
 
 ### Example Verifiable Presentation
 
-	eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJ1cm46dXVpZDphZWNkYThmZi1iOTQ4LTRlYmItYTBhZS02NDRiMzFlZjczYzgiLCJpc3MiOiJkaWQ6c292OjIxdERBS0NFUmg5NXVHZ0tiSk5IWXAiLCJpYXQiOjE1NjMxOTU5NzEsIm5iZiI6MTU2MzE5NTk3MSwidnAiOnsiQGNvbnRleHQiOlsiaHR0cHM6Ly93d3cudzMub3JnLzIwMTgvY3JlZGVudGlhbHMvdjEiXSwidHlwZSI6WyJWZXJpZmlhYmxlUHJlc2VudGF0aW9uIl0sInZlcmlmaWFibGVDcmVkZW50aWFsIjpbImV5SmhiR2NpT2lKU1V6STFOaUo5LmV5SnFkR2tpT2lKMWNtNDZkWFZwWkRwaE9EZGlaR1ppT0MxaE4yUm1MVFJpWkRrdFlXVXdaQzFrT0Rnek1UTXpOVE00Wm1VaUxDSnpkV0lpT2lKa2FXUTZjMjkyT2pJeGRFUkJTME5GVW1nNU5YVkhaMHRpU2s1SVdYQWlMQ0pwYzNNaU9pSmthV1E2YzI5Mk9qRjVkbGhpYldkUWIxVnROR1JzTmpaRU4wdG9lVVFpTENKdVltWWlPakUxTmpBM01URTBNVGtzSW1WNGNDSTZNVFUyTURjNU56Z3hPU3dpZG1NaU9uc2lRR052Ym5SbGVIUWlPbHNpYUhSMGNITTZMeTkzZDNjdWR6TXViM0puTHpJd01UZ3ZZM0psWkdWdWRHbGhiSE12ZGpFaUxDSm9kSFJ3Y3pvdkwzUnlZV1pwTG1acEwyTnlaV1JsYm5ScFlXeHpMM1l4SWwwc0luUjVjR1VpT2xzaVZtVnlhV1pwWVdKc1pVTnlaV1JsYm5ScFlXd2lMQ0pFY21sMlpYSnpUR2xqWlc1elpVTnlaV1JsYm5ScFlXd2lYU3dpWTNKbFpHVnVkR2xoYkZOMVltcGxZM1FpT25zaVpISnBkbVZ5YzB4cFkyVnVjMlVpT25zaWJHbGpaVzV6WlVOc1lYTnpJam9pZEhKMVkydHpJbjE5ZlgwLlpkSnhNMGtKYWtLQWZKSTJoM0RodmZfQUhVZ0M4LU55UVJyMkRNbmx6Q3hIWnlWRWppMHM1U2w4Y054NmFQd3dqRGFncDJLSEZ5Nk05ZU9OSHJycGRiNDlBdUtldHlKWlFVb0I1YVFnLXNDNUdNSFBWeWVUeHphemFEV3lzRWlDWlNYYzZHY2lyTERtSFhWV01VaWRLRGxHaDh2ZFV0ckhSMGF5VmJ4clhRLXpLYWtmbHRhUmF3UTRPSVJQSi0wZnNzb2pTRGJSTzZLbnJINk1RYnNsLWZ3VFJjWW5saWhOSUhwTlRFcFQ2OERBM1F6SFUxLVRBWDF4WTNKeDJ2WW9yaWhGZjAybW5uNWQzZ1c0R3YyS3NOYk5wZXdJQW1mTC1wLWFiT0ZObXQyY0x4RlVTTHNnYUU1dXBEdzJ4QUdUYzNsQXh2Yko3R200ZWFMOFNYVFEyQSJdfX0.e-5OGe4zboXBB5csM1is4oJVgsJT_GIcJvwU50gpLQKwva35gMY0ivbfv3WZx03vMMvByaJN-_XYhDKrr9E72nS9VbxDabZUWMqdnlEjK9vKCPjspEIHaOSH-zmXMyS6e1tLibBAhRx1MSr4H9hcOZNA6mSxs0E-J5Ne64ksOOQdf1byZC-v7rUSb37zYWqd8xBMWQ-Bz5p6oshQrRq5ISJEmtY07JIpA2X_A6CITgsnaYX_QNG67S1h0i_zj6iPAywLpLdJmo6EX0gA5yMN9MabhgZNMK2_1mIdWB-I3gcKHrhy9ojnVMlycxVqL-99Yv-SAFQXOxERiNdJIJSeFQ
+	eyJhbGciOiJFZERTQSJ9.eyJuYmYiOjE2MDI3NjQ4MDEsImlzcyI6ImRpZDpleGFtcGxlOmViZmViMWY3MTJlYmM2ZjFjMjc2ZTEyZWMyMSIsInZwIjp7IkBjb250ZXh0IjoiaHR0cHM6Ly93d3cudzMub3JnLzIwMTgvY3JlZGVudGlhbHMvdjEiLCJ0eXBlIjoiVmVyaWZpYWJsZVByZXNlbnRhdGlvbiIsInZlcmlmaWFibGVDcmVkZW50aWFsIjoiZXlKaGJHY2lPaUpGWkVSVFFTSjkuZXlKemRXSWlPaUprYVdRNlpYaGhiWEJzWlRwbFltWmxZakZtTnpFeVpXSmpObVl4WXpJM05tVXhNbVZqTWpFaUxDSnVZbVlpT2pFMU5qQTNNVEUwTVRrc0ltbHpjeUk2SW1ScFpEcGxlR0Z0Y0d4bE9qYzJaVEV5WldNM01USmxZbU0yWmpGak1qSXhaV0ptWldJeFppSXNJbVY0Y0NJNk1UVTJNRGM1TnpneE9Td2lkbU1pT25zaVFHTnZiblJsZUhRaU9sc2lhSFIwY0hNNkx5OTNkM2N1ZHpNdWIzSm5Mekl3TVRndlkzSmxaR1Z1ZEdsaGJITXZkakVpTENKb2RIUndjem92TDNkM2R5NTNNeTV2Y21jdk1qQXhPQzlqY21Wa1pXNTBhV0ZzY3k5bGVHRnRjR3hsY3k5Mk1TSmRMQ0owZVhCbElqcGJJbFpsY21sbWFXRmliR1ZEY21Wa1pXNTBhV0ZzSWl3aVZXNXBkbVZ5YzJsMGVVUmxaM0psWlVOeVpXUmxiblJwWVd3aVhTd2lZM0psWkdWdWRHbGhiRk4xWW1wbFkzUWlPbnNpWTI5c2JHVm5aU0k2SWxSbGMzUWdWVzVwZG1WeWMybDBlU0lzSW1SbFozSmxaU0k2ZXlKdVlXMWxJam9pUW1GamFHVnNiM0lnYjJZZ1UyTnBaVzVqWlNCaGJtUWdRWEowY3lJc0luUjVjR1VpT2lKQ1lXTm9aV3h2Y2tSbFozSmxaU0o5Zlgwc0ltcDBhU0k2SW1oMGRIQTZMeTlsZUdGdGNHeGxMbVZrZFM5amNtVmtaVzUwYVdGc2N5OHpOek15SW4wLkdEcENPbHhpWjJpc0JRbjE1MWk1UGoyZS1rVWdrTmdfd3p4Q1BBZnhMeHRkT3o0ZnBEaW1nODFtTnczTHNuTzBHNTZBT1R2RDRTdXpTUXlqMWNQM0JnIn0sImlhdCI6MTYwMjc2NDgwMSwianRpIjoidXJuOnV1aWQ6ZWM3NDE1NTYtM2Y2ZS00ODkxLWJlNTQtNzRjMjNmZDkzNjA1In0.kv4Votk1DpFT4Irr-v85W3lorPo9r2p9qwdDrq4kH_veo7qTKtiNhC7BshUwP7zDN5_gD3GTr68OoNks2LoXDw
 
 JWT Payload:
 
-	{
-		"jti": "urn:uuid:aecda8ff-b948-4ebb-a0ae-644b31ef73c8",
-		"iss": "did:sov:21tDAKCERh95uGgKbJNHYp",
-		"iat": 1563195971,
-		"nbf": 1563195971,
-		"vp": {
-			"@context": [
-				"https://www.w3.org/2018/credentials/v1"
-			],
-			"type": [
-				"VerifiablePresentation"
-			],
-			"verifiableCredential": [
-				 "eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJ1cm46dXVpZDphODdiZGZiOC1hN2RmLTRiZDktYWUwZC1kODgzMTMzNTM4ZmUiLCJzdWIiOiJkaWQ6c292OjIxdERBS0NFUmg5NXVHZ0tiSk5IWXAiLCJpc3MiOiJkaWQ6c292OjF5dlhibWdQb1VtNGRsNjZEN0toeUQiLCJuYmYiOjE1NjA3MTE0MTksImV4cCI6MTU2MDc5NzgxOSwidmMiOnsiQGNvbnRleHQiOlsiaHR0cHM6Ly93d3cudzMub3JnLzIwMTgvY3JlZGVudGlhbHMvdjEiLCJodHRwczovL3RyYWZpLmZpL2NyZWRlbnRpYWxzL3YxIl0sInR5cGUiOlsiVmVyaWZpYWJsZUNyZWRlbnRpYWwiLCJEcml2ZXJzTGljZW5zZUNyZWRlbnRpYWwiXSwiY3JlZGVudGlhbFN1YmplY3QiOnsiZHJpdmVyc0xpY2Vuc2UiOnsibGljZW5zZUNsYXNzIjoidHJ1Y2tzIn19fX0.ZdJxM0kJakKAfJI2h3Dhvf_AHUgC8-NyQRr2DMnlzCxHZyVEji0s5Sl8cNx6aPwwjDagp2KHFy6M9eONHrrpdb49AuKetyJZQUoB5aQg-sC5GMHPVyeTxzazaDWysEiCZSXc6GcirLDmHXVWMUidKDlGh8vdUtrHR0ayVbxrXQ-zKakfltaRawQ4OIRPJ-0fssojSDbRO6KnrH6MQbsl-fwTRcYnlihNIHpNTEpT68DA3QzHU1-TAX1xY3Jx2vYorihFf02mnn5d3gW4Gv2KsNbNpewIAmfL-p-abOFNmt2cLxFUSLsgaE5upDw2xAGTc3lAxvbJ7Gm4eaL8SXTQ2A"
-			]
-		}
-	}
+    {
+        "nbf": 1602764801,
+        "iss": "did:example:ebfeb1f712ebc6f1c276e12ec21",
+        "vp": {
+            "@context": "https://www.w3.org/2018/credentials/v1",
+            "type": "VerifiablePresentation",
+            "verifiableCredential": [
+                "eyJhbGciOiJFZERTQSJ9.eyJzdWIiOiJkaWQ6ZXhhbXBsZTplYmZlYjFmNzEyZWJjNmYxYzI3NmUxMmVjMjEiLCJuYmYiOjE1NjA3MTE0MTksImlzcyI6ImRpZDpleGFtcGxlOjc2ZTEyZWM3MTJlYmM2ZjFjMjIxZWJmZWIxZiIsImV4cCI6MTU2MDc5NzgxOSwidmMiOnsiQGNvbnRleHQiOlsiaHR0cHM6Ly93d3cudzMub3JnLzIwMTgvY3JlZGVudGlhbHMvdjEiLCJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy9leGFtcGxlcy92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiVW5pdmVyc2l0eURlZ3JlZUNyZWRlbnRpYWwiXSwiY3JlZGVudGlhbFN1YmplY3QiOnsiY29sbGVnZSI6IlRlc3QgVW5pdmVyc2l0eSIsImRlZ3JlZSI6eyJuYW1lIjoiQmFjaGVsb3Igb2YgU2NpZW5jZSBhbmQgQXJ0cyIsInR5cGUiOiJCYWNoZWxvckRlZ3JlZSJ9fX0sImp0aSI6Imh0dHA6Ly9leGFtcGxlLmVkdS9jcmVkZW50aWFscy8zNzMyIn0.GDpCOlxiZ2isBQn151i5Pj2e-kUgkNg_wzxCPAfxLxtdOz4fpDimg81mNw3LsnO0G56AOTvD4SuzSQyj1cP3Bg"
+            ]
+        },
+        "iat": 1602764801,
+        "jti": "urn:uuid:ec741556-3f6e-4891-be54-74c23fd93605"
+    }
 
 ### Example code (signing)
 
-	VerifiableCredential verifiableCredential = new VerifiableCredential();
-	verifiableCredential.getContext().add("https://trafi.fi/credentials/v1");
-	verifiableCredential.getType().add("DriversLicenseCredential");
-	verifiableCredential.setId("urn:uuid:a87bdfb8-a7df-4bd9-ae0d-d883133538fe");
-	verifiableCredential.setIssuer("did:sov:1yvXbmgPoUm4dl66D7KhyD");
-	verifiableCredential.setIssuanceDate(VerifiableCredential.DATE_FORMAT.parse("2019-06-16T18:56:59Z"));
-	verifiableCredential.setExpirationDate(VerifiableCredential.DATE_FORMAT.parse("2019-06-17T18:56:59Z"));
-	
-	verifiableCredential.setCredentialSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
-	LinkedHashMap<String, Object> jsonLdCredentialSubject = verifiableCredential.getJsonLdCredentialSubject();
-	LinkedHashMap<String, Object> jsonLdDriversLicense = new LinkedHashMap<String, Object> ();
-	jsonLdDriversLicense.put("licenseClass", "trucks");
-	jsonLdCredentialSubject.put("driversLicense", jsonLdDriversLicense);
-	
-	JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromVerifiableCredential(verifiableCredential);
-	
-	String jwtString1 = jwtVerifiableCredential.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, TestUtil.testRSAPrivateKey);
-	System.out.println(jwtString1);
-	
-	String jwtPayload1 = jwtVerifiableCredential.getPayload().toJson();
-	System.out.println(jwtPayload1);
-	
-	JwtVerifiablePresentation jwtVerifiablePresentation = JwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential);
-	String jwtPayload2 = jwtVerifiablePresentation.getPayload().toJson();
-	System.out.println(jwtPayload2);
-	
-	String jwtString2 = jwtVerifiablePresentation.toJwt(AlgorithmIdentifiers.RSA_USING_SHA256, TestUtil.testRSAPrivateKey);
-	System.out.println(jwtString2);
+        Map<String, Object> claims = new LinkedHashMap<>();
+        Map<String, Object> degree = new LinkedHashMap<String, Object>();
+        degree.put("name", "Bachelor of Science and Arts");
+        degree.put("type", "BachelorDegree");
+        claims.put("college", "Test University");
+        claims.put("degree", degree);
+
+        CredentialSubject credentialSubject = CredentialSubject.builder()
+                .id(URI.create("did:example:ebfeb1f712ebc6f1c276e12ec21"))
+                .claims(claims)
+                .build();
+
+        VerifiableCredential verifiableCredential = VerifiableCredential.builder()
+                .context(VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_EXAMPLES_V1)
+                .type("UniversityDegreeCredential")
+                .id(URI.create("http://example.edu/credentials/3732"))
+                .issuer(URI.create("did:example:76e12ec712ebc6f1c221ebfeb1f"))
+                .issuanceDate(JsonLDUtils.stringToDate("2019-06-16T18:56:59Z"))
+                .expirationDate(JsonLDUtils.stringToDate("2019-06-17T18:56:59Z"))
+                .credentialSubject(credentialSubject)
+                .build();
+
+        byte[] testEd25519PrivateKey = Hex.decodeHex("984b589e121040156838303f107e13150be4a80fc5088ccba0b0bdc9b1d89090de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580".toCharArray());
+
+        JwtVerifiableCredential jwtVerifiableCredential = ToJwtConverter.toJwtVerifiableCredential(verifiableCredential);
+
+        String jwtPayload = jwtVerifiableCredential.getPayload().toString();
+        System.out.println(jwtPayload);
+
+        String jwtString = jwtVerifiableCredential.sign_Ed25519_EdDSA(testEd25519PrivateKey);
+        System.out.println(jwtString);
+
+        JwtVerifiablePresentation jwtVerifiablePresentation = JwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential);
+        String jwtPayload2 = jwtVerifiablePresentation.getPayload().toString();
+        System.out.println(jwtPayload2);
+
+        String jwtString2 = jwtVerifiablePresentation.sign_Ed25519_EdDSA(testEd25519PrivateKey);
+        System.out.println(jwtString2);

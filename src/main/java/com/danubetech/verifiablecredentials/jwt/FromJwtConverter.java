@@ -3,9 +3,12 @@ package com.danubetech.verifiablecredentials.jwt;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
+import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.nimbusds.jwt.JWTClaimsSet;
+import foundation.identity.jsonld.JsonLDUtils;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.Date;
 
 public class FromJwtConverter {
@@ -63,11 +66,12 @@ public class FromJwtConverter {
 
     public static VerifiablePresentation fromJwtVerifiableCredentialToVerifiablePresentation(JwtVerifiableCredential jwtVerifiableCredential) {
 
-        VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(jwtVerifiableCredential.getCompactSerialization());
+        String jwtVerifiableCredentialCompactSerialization = jwtVerifiableCredential.getCompactSerialization();
 
         VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
-                .verifiableCredential(verifiableCredential)
                 .build();
+
+        JsonLDUtils.jsonLdAddList(verifiablePresentation, VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL, Collections.singletonList(jwtVerifiableCredentialCompactSerialization));
 
         return verifiablePresentation;
     }
