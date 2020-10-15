@@ -13,7 +13,7 @@ import java.io.Reader;
 import java.net.URI;
 import java.util.Map;
 
-public class RevocationQuery2020Status extends JsonLDObject {
+public class RevocationQuery2020Status extends CredentialStatus {
 
 	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_REVOCATION_QUERY_2020_STATUS };
@@ -33,7 +33,7 @@ public class RevocationQuery2020Status extends JsonLDObject {
 	 * Factory methods
 	 */
 
-	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
+	public static class Builder<B extends Builder<B>> extends CredentialStatus.Builder<B> {
 
 		private String credentialReference;
 		private String revocationService;

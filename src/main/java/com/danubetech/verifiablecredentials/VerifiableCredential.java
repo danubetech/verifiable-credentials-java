@@ -1,6 +1,7 @@
 package com.danubetech.verifiablecredentials;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.danubetech.verifiablecredentials.credentialstatus.CredentialStatus;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -39,6 +40,7 @@ public class VerifiableCredential extends JsonLDObject {
 		private Date issuanceDate;
 		private Date expirationDate;
 		private CredentialSubject credentialSubject;
+		private CredentialStatus credentialStatus;
 		private LdProof ldProof;
 
 		public Builder(VerifiableCredential jsonLDObject) {
@@ -57,6 +59,7 @@ public class VerifiableCredential extends JsonLDObject {
 			if (this.issuanceDate != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE, JsonLDUtils.dateToString(this.issuanceDate));
 			if (this.expirationDate != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE, JsonLDUtils.dateToString(this.expirationDate));
 			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLDObject);
+			if (this.credentialStatus != null) this.credentialStatus.addToJsonLDObject(this.jsonLDObject);
 			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLDObject);
 
 			return (VerifiableCredential) this.jsonLDObject;
@@ -79,6 +82,11 @@ public class VerifiableCredential extends JsonLDObject {
 
 		public B credentialSubject(CredentialSubject credentialSubject) {
 			this.credentialSubject = credentialSubject;
+			return (B) this;
+		}
+
+		public B credentialStatus(CredentialStatus credentialStatus) {
+			this.credentialStatus = credentialStatus;
 			return (B) this;
 		}
 
