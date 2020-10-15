@@ -4,65 +4,74 @@ Verifiable Credentials with Linked Data Proofs:
 
 ### Example Verifiable Credential
 
-	{
-		"@context": ["https://www.w3.org/2018/credentials/v1", "https://trafi.fi/credentials/v1", "https://w3id.org/security/v1"],
-		"type": ["VerifiableCredential", "DriversLicenseCredential"],
-		"credentialSubject": {
-			"id": "did:sov:21tDAKCERh95uGgKbJNHYp",
-			"driversLicense": {
-				"licenseClass": "trucks"
-			}
-		},
-		"id": "urn:uuid:54ac93ea-6db3-4e7f-9ba7-7bb5d81c7e7e",
-		"issuer": "did:sov:1yvXbmgPoUm4dl66D7KhyD",
-		"issuanceDate": "2019-06-18T07:43:03Z",
-		"proof": {
-			"type": "RsaSignature2018",
-			"creator": "did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1",
-			"created": "2018-01-01T21:19:10Z",
-			"domain": null,
-			"nonce": "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e",
-			"signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..XiAK8PoseWt2KygoYCKjlGQyzhrpOoDrWpM2qI2dqQPZbCykyWkH6oHBx2uUhZImfQAY_Qf9rICFSF0L7BhrFMc5Jca9mdzA9jS-S3w1CcX4L-6OVykPGZC7WiPnoboHQiX517F-o-1kjV5B6zUc-kLKH4fO5HPiKkEJoY2QCRKivbr4K5sMbPhveZEGwqKwI7RLDKxXJgvdiLzJDb3wVGV0Ed3IKiAuBdT6d53n1nB3NKoCsGZeiiTCjo3QlT-VuWtc-YRIFAeRnNTKEmQxexiw2Rn5piFOtmiKgrlDSxJrOWkfNaPZq2esDsAW0-lAQqdFJf8_eURfs8SeLA5c1A"
-		}
-	}
+    {
+      "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://www.w3.org/2018/credentials/examples/v1" ],
+      "type" : [ "VerifiableCredential", "UniversityDegreeCredential" ],
+      "id" : "http://example.edu/credentials/3732",
+      "issuer" : "did:example:76e12ec712ebc6f1c221ebfeb1f",
+      "issuanceDate" : "2019-06-16T18:56:59Z",
+      "expirationDate" : "2019-06-17T18:56:59Z",
+      "credentialSubject" : {
+        "id" : "did:example:ebfeb1f712ebc6f1c276e12ec21",
+        "college" : "Test University",
+        "degree" : {
+          "name" : "Bachelor of Science and Arts",
+          "type" : "BachelorDegree"
+        }
+      },
+      "proof" : {
+        "type" : "Ed25519Signature2018",
+        "created" : "2020-10-15T09:44:25Z",
+        "domain" : "example.com",
+        "nonce" : "343s$FSFDa-",
+        "proofPurpose" : "assertionMethod",
+        "verificationMethod" : "did:example:76e12ec712ebc6f1c221ebfeb1f#keys-1",
+        "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJFZERTQSJ9..yJbi7RlKaNTNf3lhaOXUotKUNBg9N4llcD7--QRFYid_WjRcAovU-qOqtlVWngL_6vbjZWeBCRG-fv2Q9o4_CQ"
+      }
+    }
+
+Process finished with exit code 0
 
 ### Example code (signing)
 
-	VerifiableCredential verifiableCredential = new VerifiableCredential();
-	verifiableCredential.getContext().add("https://trafi.fi/credentials/v1");
-	verifiableCredential.getType().add("DriversLicenseCredential");
-	verifiableCredential.setId("urn:uuid:" + UUID.randomUUID());
-	verifiableCredential.setIssuer("did:sov:1yvXbmgPoUm4dl66D7KhyD");
-	verifiableCredential.setIssuanceDate(new Date());
-	
-	verifiableCredential.setCredentialSubject("did:sov:21tDAKCERh95uGgKbJNHYp");
-	LinkedHashMap<String, Object> jsonLdCredentialSubject = verifiableCredential.getJsonLdCredentialSubject();
-	LinkedHashMap<String, Object> jsonLdDriversLicense = new LinkedHashMap<String, Object> ();
-	jsonLdDriversLicense.put("licenseClass", "trucks");
-	jsonLdCredentialSubject.put("driversLicense", jsonLdDriversLicense);
+    Map<String, Object> claims = new LinkedHashMap<>();
+    Map<String, Object> degree = new LinkedHashMap<String, Object>();
+    degree.put("name", "Bachelor of Science and Arts");
+    degree.put("type", "BachelorDegree");
+    claims.put("college", "Test University");
+    claims.put("degree", degree);
+
+    CredentialSubject credentialSubject = CredentialSubject.builder()
+            .id(URI.create("did:example:ebfeb1f712ebc6f1c276e12ec21"))
+            .claims(claims)
+            .build();
+
+    VerifiableCredential verifiableCredential = VerifiableCredential.builder()
+            .context(VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_EXAMPLES_V1)
+            .type("UniversityDegreeCredential")
+            .id(URI.create("http://example.edu/credentials/3732"))
+            .issuer(URI.create("did:example:76e12ec712ebc6f1c221ebfeb1f"))
+            .issuanceDate(JsonLDUtils.stringToDate("2019-06-16T18:56:59Z"))
+            .expirationDate(JsonLDUtils.stringToDate("2019-06-17T18:56:59Z"))
+            .credentialSubject(credentialSubject)
+            .build();
 
     byte[] testEd25519PrivateKey = Hex.decodeHex("984b589e121040156838303f107e13150be4a80fc5088ccba0b0bdc9b1d89090de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580".toCharArray());
-
-    JsonLDObject jsonLdObject = JsonLDObject.fromJson(new FileReader("input.jsonld"));
-    String verificationMethod = "https://example.com/jdoe/keys/1";
-    String domain = "example.com";
-    String nonce = null;
 
     Ed25519Signature2018LdSigner signer = new Ed25519Signature2018LdSigner(testEd25519PrivateKey);
     signer.setCreated(new Date());
     signer.setProofPurpose(LDSecurityKeywords.JSONLD_TERM_ASSERTIONMETHOD);
-    signer.setVerificationMethod(verificationMethod);
-    signer.setDomain(domain);
-    signer.setNonce(nonce);
-    LdProof ldProof = signer.sign(jsonLdObject);
+    signer.setVerificationMethod(URI.create("did:example:76e12ec712ebc6f1c221ebfeb1f#keys-1"));
+    signer.setDomain("example.com");
+    signer.setNonce("343s$FSFDa-");
+    LdProof ldProof = signer.sign(verifiableCredential);
 
-    System.out.println(ldProof.toJson(true));
+    System.out.println(verifiableCredential.toJson(true));
 
 ### Example code (verifying)
 
-	LinkedHashMap<String, Object> jsonLdObject = (LinkedHashMap<String, Object>) JsonUtils.fromString(...JSON-LD...);
-	VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonLdObject(jsonLdObject);
-	
-	RsaSignature2018LdValidator validator = new RsaSignature2018LdValidator(TestUtil.testRSAPublicKey);
-	
-	System.out.println(validator.validate(verifiableCredential.getJsonLdObject()));
+    byte[] testEd25519PublicKey = Hex.decodeHex("de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580".toCharArray());
+
+    VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new FileReader("input.jsonld"));
+    Ed25519Signature2018LdVerifier verifier = new Ed25519Signature2018LdVerifier(testEd25519PublicKey);
+    System.out.println(verifier.verify(verifiableCredential));
