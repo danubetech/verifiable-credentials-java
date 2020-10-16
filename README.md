@@ -1,3 +1,4 @@
+# verifiable-credentials-java
 
 ## Information
 
@@ -5,7 +6,7 @@ This is a work-in-progress implementation of the [Verifiable Credentials](https:
 
 Not ready for production use! Use at your own risk! Pull requests welcome.
 
-### Maven
+## Maven
 
 First, you need to build the [ld-signatures-java](https://github.com/WebOfTrustInfo/ld-signatures-java) project.
 
@@ -16,20 +17,20 @@ After that, just run:
 Dependency:
 
 	<dependency>
-		<groupId>com.trustnet</groupId>
+		<groupId>com.danubetech</groupId>
 		<artifactId>verifiable-credentials-java</artifactId>
 		<version>0.3-SNAPSHOT</version>
 		<scope>compile</scope>
 	</dependency>
 
-### Examples
+## Examples
 
  * [examples-ldp.md](examples-ldp.md) - Examples of Verifiable Credentials with Linked Data Proofs
  * [examples-jwt.md](examples-jwt.md) - Examples of Verifiable Credentials with JSON Web Tokens
  * [examples-jwt-vp.md](examples-jwt-vp.md) - Examples of Verifiable Presentations with JSON Web Tokens
 
-### About
-
-Originally built as part of [TrustNet](http://trustnet.fi/).
+## About
 
 ![TrustNet Logo](https://github.com/danubetech/verifiable-credentials-java/blob/master/images/trustnet-logo.png?raw=true)
+
+Originally built as part of [TrustNet](http://trustnet.fi/).
