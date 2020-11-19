@@ -14,6 +14,7 @@ import java.util.Map;
 public class VerifiableCredentialContexts {
 
     public static final URI JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 = URI.create("https://www.w3.org/2018/credentials/v1");
+    public static final URI JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V2 = URI.create("https://www.w3.org/2018/credentials/v2");
     public static final URI JSONLD_CONTEXT_W3C_2018_CREDENTIALS_EXAMPLES_V1 = URI.create("https://www.w3.org/2018/credentials/examples/v1");
     public static final URI JSONLD_CONTEXT_W3C_NS_ODRL = URI.create("https://www.w3.org/ns/odrl.jsonld");
     public static final URI JSONLD_CONTEXT_DANUBETECH_2020_CREDENTIALS_V1 = URI.create("https://danubetech.com/2020/credentials/v1");
@@ -31,6 +32,8 @@ public class VerifiableCredentialContexts {
 
             CONTEXTS.put(JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1,
                     JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("credentials-v1.jsonld")));
+            CONTEXTS.put(JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V2,
+                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("credentials-v2-unstable.jsonld")));
             CONTEXTS.put(JSONLD_CONTEXT_W3C_2018_CREDENTIALS_EXAMPLES_V1,
                     JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("credentials-examples-v1.jsonld")));
             CONTEXTS.put(JSONLD_CONTEXT_W3C_NS_ODRL,
