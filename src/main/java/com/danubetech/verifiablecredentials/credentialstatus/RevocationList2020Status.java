@@ -39,6 +39,7 @@ public class RevocationList2020Status extends CredentialStatus {
 
 		public Builder(RevocationList2020Status jsonLDObject) {
 			super(jsonLDObject);
+			this.defaultTypes(true);
 		}
 
 		@Override

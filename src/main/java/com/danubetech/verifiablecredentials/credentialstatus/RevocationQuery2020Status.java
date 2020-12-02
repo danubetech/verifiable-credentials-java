@@ -40,6 +40,7 @@ public class RevocationQuery2020Status extends CredentialStatus {
 
 		public Builder(RevocationQuery2020Status jsonLDObject) {
 			super(jsonLDObject);
+			this.defaultTypes(true);
 		}
 
 		@Override
