@@ -19,7 +19,7 @@ Dependency:
 	<dependency>
 		<groupId>com.danubetech</groupId>
 		<artifactId>verifiable-credentials-java</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.4-SNAPSHOT</version>
 		<scope>compile</scope>
 	</dependency>
 
