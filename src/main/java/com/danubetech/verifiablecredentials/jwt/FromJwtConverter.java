@@ -71,7 +71,7 @@ public class FromJwtConverter {
         VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
                 .build();
 
-        JsonLDUtils.jsonLdAddList(verifiablePresentation, VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL, Collections.singletonList(jwtVerifiableCredentialCompactSerialization));
+        JsonLDUtils.jsonLdAddAsJsonArray(verifiablePresentation, VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL, Collections.singletonList(jwtVerifiableCredentialCompactSerialization));
 
         return verifiablePresentation;
     }
