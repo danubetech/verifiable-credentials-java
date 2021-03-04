@@ -45,6 +45,8 @@ public class VerifiableCredential extends JsonLDObject {
 
 		public Builder(VerifiableCredential jsonLDObject) {
 			super(jsonLDObject);
+			this.forceContextsArray(true);
+			this.forceTypesArray(true);
 			this.defaultContexts(true);
 			this.defaultTypes(true);
 		}

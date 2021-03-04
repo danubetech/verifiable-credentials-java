@@ -38,6 +38,8 @@ public class VerifiablePresentation extends JsonLDObject {
 
 		public Builder(VerifiablePresentation jsonLDObject) {
 			super(jsonLDObject);
+			this.forceContextsArray(true);
+			this.forceTypesArray(true);
 			this.defaultContexts(true);
 			this.defaultTypes(true);
 		}
