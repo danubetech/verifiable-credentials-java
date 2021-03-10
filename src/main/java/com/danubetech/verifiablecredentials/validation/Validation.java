@@ -38,6 +38,8 @@ public class Validation {
 
     public static void validate(VerifiableCredential verifiableCredential) throws IllegalStateException {
 
+        foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
+
         validateRun(() -> { validateTrue(verifiableCredential.getJsonObject() != null); }, "Bad or missing JSON object.");
         validateRun(() -> { validateTrue(verifiableCredential.getContexts().size() > 0); }, "Bad or missing '@context'.");
         validateRun(() -> { validateUrl(verifiableCredential.getContexts().get(0)); }, "@context must be a valid URI: " + verifiableCredential.getContexts().get(0));
@@ -55,6 +57,8 @@ public class Validation {
     }
 
     public static void validate(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
+
+        foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
 
         validateRun(() -> { validateTrue(verifiablePresentation.getJsonObject() != null); }, "Bad or missing JSON object.");
         validateRun(() -> { validateTrue(verifiablePresentation.getContexts().size() > 0); }, "Bad or missing '@context'.");
