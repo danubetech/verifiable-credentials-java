@@ -5,9 +5,9 @@ import com.nimbusds.jose.util.JSONObjectUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.danubetech.keyformats.crypto.ByteSigner;
 import com.danubetech.keyformats.crypto.ByteVerifier;
-import com.danubetech.keyformats.crypto.adapter.JWSSignerAdapter;
-import com.danubetech.keyformats.crypto.adapter.JWSVerifierAdapter;
 import com.danubetech.keyformats.crypto.impl.*;
+import info.weboftrust.ldsignatures.adapter.JWSSignerAdapter;
+import info.weboftrust.ldsignatures.adapter.JWSVerifierAdapter;
 import org.bitcoinj.core.ECKey;
 
 import java.security.interfaces.RSAPrivateKey;
