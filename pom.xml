@@ -134,6 +134,24 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.hyperledger</groupId>
+			<artifactId>indy</artifactId>
+			<version>1.14.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.crypto.tink</groupId>
+			<artifactId>tink</artifactId>
+			<version>1.5.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.mattrglobal</groupId>
+			<artifactId>bbs.signatures</artifactId>
+			<version>1.5-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>info.weboftrust</groupId>
 			<artifactId>ld-signatures-java</artifactId>
 			<version>0.4-SNAPSHOT</version>
@@ -147,18 +165,6 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.11.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hyperledger</groupId>
-			<artifactId>indy</artifactId>
-			<version>1.14.0</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.google.crypto.tink</groupId>
-			<artifactId>tink</artifactId>
-			<version>1.4.0</version>
-			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
