@@ -31,14 +31,16 @@ Dependency:
 
 ## About
 
-![TrustNet Logo](https://raw.githubusercontent.com/danubetech/verifiable-credentials-java/master/docs/trustnet-logo.png)
+Danube Tech - https://danubetech.com/
+
+<img align="left" src="https://raw.githubusercontent.com/danubetech/verifiable-credentials-java/master/docs/trustnet-logo.png" width="115">
 
 Originally built as part of [TrustNet](http://trustnet.fi/).
-
-Danube Tech - https://danubetech.com/
 
 <br clear="left" />
 
 <img align="left" src="https://raw.githubusercontent.com/danubetech/verifiable-credentials-java/master/docs/logo-ngi-essiflab.png" width="115">
 
 Supported by [ESSIF-Lab](https://essif-lab.eu/), which is made possible with financial support from the European Commission's [Next Generation Internet](https://ngi.eu/) programme.
+
+<br clear="left" />
