@@ -8,6 +8,7 @@ import com.danubetech.keyformats.crypto.provider.SHA256Provider;
 import com.danubetech.keyformats.crypto.provider.impl.JavaRandomProvider;
 import com.danubetech.keyformats.crypto.provider.impl.JavaSHA256Provider;
 import com.danubetech.keyformats.crypto.provider.impl.TinkEd25519Provider;
+import com.danubetech.verifiablecredentials.validation.Validation;
 import info.weboftrust.ldsignatures.verifier.Ed25519Signature2018LdVerifier;
 import org.bitcoinj.core.Base58;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +64,19 @@ public class VerifyPresentationTest {
 		RandomProvider.set(new JavaRandomProvider());
 		SHA256Provider.set(new JavaSHA256Provider());
 		Ed25519Provider.set(new TinkEd25519Provider());
+	}
+
+	@Test
+	void testValidity() {
+
+		Validation.validate(verifiablePresentationGood1);
+		Validation.validate(verifiablePresentationGood2);
+		Validation.validate(verifiablePresentationBad1);
+		Validation.validate(verifiablePresentationBad2);
+		Validation.validate(verifiableCredentialGood1);
+		Validation.validate(verifiableCredentialGood2);
+		Validation.validate(verifiableCredentialBad1);
+		Validation.validate(verifiableCredentialBad2);
 	}
 
 	/*

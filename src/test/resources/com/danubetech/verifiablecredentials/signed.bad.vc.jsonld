@@ -21,9 +21,9 @@
   },
   "proof" : {
     "type" : "RsaSignature2018",
-    "creator" : "did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1",
+    "verificationMethod" : "did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1",
     "created" : "2018-01-01T21:19:10Z",
     "nonce" : "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e",
-    "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..m-5V3caaBBVWldf9c83ve2gBfgDdZqVrBGQZl5flXwgskOTkBlEIODMkK0j203PeOIfHSYZUO5wj4bGCSHZ8ORaQWoJFX_znskHipBvH2wc4TBu4mgMIJefP14gl1kDGF6Vw_BtbP6EWpmm2dnhKztDo-X4XuUGpbyBJ-lVX_CGl0qftzPAZtabUEmc-dB911EfiNbslJ6qJYKd_r7D7scSVKnJtE0xXK4obrWJg2_tx-cD1KWtrJXf-wIXa43gdwlFcVLLrHvzglf-KkHezxI9Ee6RNcIP-YQNrsjNet4obRzZuwcQAJ8-pBwdF901AgDKAI0Q85cjy_LGbxqb0GA"
+    "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..Sn-LB5t_x-kh9mUDq1DaS1GScj3PY_2fMnNnhq09x-ZBf6_EzYfvgFOpEvdLUwxkJiEt7B2x-LGg7bp-o7UEGCbIxWdGUTG7BGAsKsU18hUwOHrVNZ6VHovbxeFgK0iNMn0MObDiGdQbYMG8C71m3AvquUP00-2UiDcqNxmGAYg5tHv7SHXLEgvaz7SnIkBklj1yj_TMXreSGa_okbXFYxh7SkMfFcxHbBFShr0Fzd8DTn8tr_WvPHR7Tx3bkJHmqFx9Wo-0e7FkLeICsgmBKa5Hzz-y_1yEQPsDaZRRsbXfBD4krL7WTplJtAwnQ5Sy-L9cwZzNhCQC6KsggGjTgQ"
   }
 }
