@@ -38,8 +38,8 @@ public class CredentialSubject extends JsonLDObject {
 
 		private Map<String, Object> claims;
 
-		public Builder(CredentialSubject jsonLDObject) {
-			super(jsonLDObject);
+		public Builder(CredentialSubject jsonLdObject) {
+			super(jsonLdObject);
 		}
 
 		@Override
@@ -48,9 +48,9 @@ public class CredentialSubject extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.claims != null) JsonLDUtils.jsonLdAddAll(this.jsonLDObject, this.claims);
+			if (this.claims != null) JsonLDUtils.jsonLdAddAll(this.jsonLdObject, this.claims);
 
-			return (CredentialSubject) this.jsonLDObject;
+			return (CredentialSubject) this.jsonLdObject;
 		}
 
 		public B claims(Map<String, Object> claims) {
@@ -73,6 +73,10 @@ public class CredentialSubject extends JsonLDObject {
 
 	public static CredentialSubject fromJson(String json) {
 		return new CredentialSubject(readJson(json));
+	}
+
+	public static CredentialSubject fromMap(Map<String, Object> jsonObject) {
+		return new CredentialSubject(jsonObject);
 	}
 
 	/*

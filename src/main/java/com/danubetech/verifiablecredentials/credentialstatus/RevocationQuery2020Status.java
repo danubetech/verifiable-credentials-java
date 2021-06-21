@@ -38,8 +38,8 @@ public class RevocationQuery2020Status extends CredentialStatus {
 		private String credentialReference;
 		private String revocationService;
 
-		public Builder(RevocationQuery2020Status jsonLDObject) {
-			super(jsonLDObject);
+		public Builder(RevocationQuery2020Status jsonLdObject) {
+			super(jsonLdObject);
 			this.defaultTypes(true);
 		}
 
@@ -49,10 +49,10 @@ public class RevocationQuery2020Status extends CredentialStatus {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.credentialReference != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALREFERENCE, this.credentialReference);
-			if (this.revocationService != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONSERVICE, this.revocationService);
+			if (this.credentialReference != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALREFERENCE, this.credentialReference);
+			if (this.revocationService != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONSERVICE, this.revocationService);
 
-			return (RevocationQuery2020Status) this.jsonLDObject;
+			return (RevocationQuery2020Status) this.jsonLdObject;
 		}
 
 		public B credentialReference(String credentialReference) {

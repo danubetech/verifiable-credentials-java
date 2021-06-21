@@ -37,8 +37,8 @@ public class RevocationList2020Status extends CredentialStatus {
 		private String revocationListIndex;
 		private URI revocationListCredential;
 
-		public Builder(RevocationList2020Status jsonLDObject) {
-			super(jsonLDObject);
+		public Builder(RevocationList2020Status jsonLdObject) {
+			super(jsonLdObject);
 			this.defaultTypes(true);
 		}
 
@@ -48,10 +48,10 @@ public class RevocationList2020Status extends CredentialStatus {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.revocationListIndex != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONLISTINDEX, this.revocationListIndex);
-			if (this.revocationListCredential != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONLISTCREDENTIAL, JsonLDUtils.uriToString(this.revocationListCredential));
+			if (this.revocationListIndex != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONLISTINDEX, this.revocationListIndex);
+			if (this.revocationListCredential != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_REVOCATIONLISTCREDENTIAL, JsonLDUtils.uriToString(this.revocationListCredential));
 
-			return (RevocationList2020Status) this.jsonLDObject;
+			return (RevocationList2020Status) this.jsonLdObject;
 		}
 
 		public B revocationListIndex(String revocationListIndex) {

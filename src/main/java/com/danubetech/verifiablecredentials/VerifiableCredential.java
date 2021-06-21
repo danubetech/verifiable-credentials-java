@@ -43,8 +43,8 @@ public class VerifiableCredential extends JsonLDObject {
 		private CredentialStatus credentialStatus;
 		private LdProof ldProof;
 
-		public Builder(VerifiableCredential jsonLDObject) {
-			super(jsonLDObject);
+		public Builder(VerifiableCredential jsonLdObject) {
+			super(jsonLdObject);
 			this.forceContextsArray(true);
 			this.forceTypesArray(true);
 			this.defaultContexts(true);
@@ -57,14 +57,14 @@ public class VerifiableCredential extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.issuer != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, JsonLDUtils.uriToString(this.issuer));
-			if (this.issuanceDate != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE, JsonLDUtils.dateToString(this.issuanceDate));
-			if (this.expirationDate != null) JsonLDUtils.jsonLdAdd(this.jsonLDObject, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE, JsonLDUtils.dateToString(this.expirationDate));
-			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLDObject);
-			if (this.credentialStatus != null) this.credentialStatus.addToJsonLDObject(this.jsonLDObject);
-			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLDObject);
+			if (this.issuer != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, JsonLDUtils.uriToString(this.issuer));
+			if (this.issuanceDate != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE, JsonLDUtils.dateToString(this.issuanceDate));
+			if (this.expirationDate != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE, JsonLDUtils.dateToString(this.expirationDate));
+			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLdObject);
+			if (this.credentialStatus != null) this.credentialStatus.addToJsonLDObject(this.jsonLdObject);
+			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLdObject);
 
-			return (VerifiableCredential) this.jsonLDObject;
+			return (VerifiableCredential) this.jsonLdObject;
 		}
 
 		public B issuer(URI issuer) {
@@ -112,6 +112,10 @@ public class VerifiableCredential extends JsonLDObject {
 
 	public static VerifiableCredential fromJson(String json) {
 		return new VerifiableCredential(readJson(json));
+	}
+
+	public static VerifiableCredential fromMap(Map<String, Object> map) {
+		return new VerifiableCredential(map);
 	}
 
 	/*

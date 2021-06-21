@@ -36,8 +36,8 @@ public class VerifiablePresentation extends JsonLDObject {
 		private VerifiableCredential verifiableCredential;
 		private LdProof ldProof;
 
-		public Builder(VerifiablePresentation jsonLDObject) {
-			super(jsonLDObject);
+		public Builder(VerifiablePresentation jsonLdObject) {
+			super(jsonLdObject);
 			this.forceContextsArray(true);
 			this.forceTypesArray(true);
 			this.defaultContexts(true);
@@ -50,10 +50,10 @@ public class VerifiablePresentation extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.verifiableCredential != null) this.verifiableCredential.addToJsonLDObject(this.jsonLDObject);
-			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLDObject);
+			if (this.verifiableCredential != null) this.verifiableCredential.addToJsonLDObject(this.jsonLdObject);
+			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLdObject);
 
-			return (VerifiablePresentation) this.jsonLDObject;
+			return (VerifiablePresentation) this.jsonLdObject;
 		}
 
 		public B verifiableCredential(VerifiableCredential verifiableCredential) {
@@ -81,6 +81,10 @@ public class VerifiablePresentation extends JsonLDObject {
 
 	public static VerifiablePresentation fromJson(String json) {
 		return new VerifiablePresentation(readJson(json));
+	}
+
+	public static VerifiablePresentation fromMap(Map<String, Object> jsonObject) {
+		return new VerifiablePresentation(jsonObject);
 	}
 
 	/*

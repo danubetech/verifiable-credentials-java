@@ -33,8 +33,8 @@ public class CredentialStatus extends JsonLDObject {
 
 	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
 
-		public Builder(CredentialStatus jsonLDObject) {
-			super(jsonLDObject);
+		public Builder(CredentialStatus jsonLdObject) {
+			super(jsonLdObject);
 		}
 
 		@Override
@@ -42,7 +42,7 @@ public class CredentialStatus extends JsonLDObject {
 
 			super.build();
 
-			return (CredentialStatus) this.jsonLDObject;
+			return (CredentialStatus) this.jsonLdObject;
 		}
 	}
 
@@ -60,6 +60,10 @@ public class CredentialStatus extends JsonLDObject {
 
 	public static CredentialStatus fromJson(String json) {
 		return new CredentialStatus(readJson(json));
+	}
+
+	public static CredentialStatus fromMap(Map<String, Object> jsonObject) {
+		return new CredentialStatus(jsonObject);
 	}
 
 	/*

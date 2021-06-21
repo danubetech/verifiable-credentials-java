@@ -53,24 +53,24 @@ public class Generator {
 
 			if (argJwt == null) {
 
-				JsonLDObject jsonLDObject = JsonLDObject.fromJson(input);
+				JsonLDObject jsonLdObject = JsonLDObject.fromJson(input);
 
-				if (jsonLDObject.isType(VerifiableCredential.DEFAULT_JSONLD_TYPES[0])) {
+				if (jsonLdObject.isType(VerifiableCredential.DEFAULT_JSONLD_TYPES[0])) {
 
-					VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonObject(jsonLDObject.getJsonObject());
+					VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonObject(jsonLdObject.getJsonObject());
 					Validation.validate(verifiableCredential);
 					if (verifiableCredential.getLdProof() == null) throw new IllegalStateException("No proof in VC");
-				} else if (jsonLDObject.isType(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])) {
+				} else if (jsonLdObject.isType(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])) {
 
-					VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJsonObject(jsonLDObject.getJsonObject());
+					VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJsonObject(jsonLdObject.getJsonObject());
 					Validation.validate(verifiablePresentation);
 					if (verifiablePresentation.getLdProof() == null) throw new IllegalStateException("No proof in VP");
 				} else {
 
-					throw new IllegalStateException("Unknown JSON-LD object type: " + jsonLDObject.getTypes());
+					throw new IllegalStateException("Unknown JSON-LD object type: " + jsonLdObject.getTypes());
 				}
 
-				output = jsonLDObject.toJson();
+				output = jsonLdObject.toJson();
 			} else {
 
 				RSAKey rsaKey = readRSAKey(argJwt);

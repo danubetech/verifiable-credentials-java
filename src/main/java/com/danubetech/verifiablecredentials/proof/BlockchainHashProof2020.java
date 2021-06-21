@@ -35,8 +35,8 @@ public class BlockchainHashProof2020 extends LdProof {
 
 	public static class Builder<B extends Builder<B>> extends LdProof.Builder<B> {
 
-		public Builder(BlockchainHashProof2020 jsonLDObject) {
-			super(jsonLDObject);
+		public Builder(BlockchainHashProof2020 jsonLdObject) {
+			super(jsonLdObject);
 		}
 
 		public BlockchainHashProof2020 build() {
@@ -45,7 +45,7 @@ public class BlockchainHashProof2020 extends LdProof {
 
 			// add JSON-LD properties
 
-			return (BlockchainHashProof2020) this.jsonLDObject;
+			return (BlockchainHashProof2020) this.jsonLdObject;
 		}
 	}
 
