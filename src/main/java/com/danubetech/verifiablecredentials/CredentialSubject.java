@@ -1,6 +1,7 @@
 package com.danubetech.verifiablecredentials;
 
 
+import com.apicatalog.jsonld.lang.Keywords;
 import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
@@ -13,6 +14,7 @@ import java.io.Reader;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CredentialSubject extends JsonLDObject {
 
@@ -97,7 +99,9 @@ public class CredentialSubject extends JsonLDObject {
 
 	public Map<String, Object> getClaims() {
 		Map<String, Object> claims = new LinkedHashMap<>(this.getJsonObject());
+		for (String key : claims.keySet()) if (Keywords.contains(key)) claims.remove(key);
 		claims.remove(JsonLDKeywords.JSONLD_TERM_ID);
+		claims.remove(JsonLDKeywords.JSONLD_TERM_TYPE);
 		return claims;
 	}
 }
