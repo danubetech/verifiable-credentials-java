@@ -28,9 +28,13 @@ public class VerifiableCredentialKeywords {
     public static final String JSONLD_TERM_CREDENTIALREFERENCE = "credentialReference";
     public static final String JSONLD_TERM_REVOCATIONSERVICE = "revocationService";
 
+    public static final String JSONLD_TERM_BLOCKCHAIN_HASH_PROOF_2020 = "BlockchainHashProof2020";
+
+    /*
+     * https://w3id.org/vc-revocation-list-2020/v1
+     */
+
     public static final String JSONLD_TERM_REVOCATION_LIST_2020_STATUS = "RevocationList2020Status";
     public static final String JSONLD_TERM_REVOCATIONLISTINDEX = "revocationListIndex";
     public static final String JSONLD_TERM_REVOCATIONLISTCREDENTIAL = "revocationListCredential";
-
-    public static final String JSONLD_TERM_BLOCKCHAIN_HASH_PROOF_2020 = "BlockchainHashProof2020";
 }
