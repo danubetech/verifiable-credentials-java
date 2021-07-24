@@ -99,7 +99,7 @@ public class CredentialSubject extends JsonLDObject {
 
 	public Map<String, Object> getClaims() {
 		Map<String, Object> claims = new LinkedHashMap<>(this.getJsonObject());
-		for (String key : claims.keySet()) if (Keywords.contains(key)) claims.remove(key);
+		for (String key : this.getJsonObject().keySet()) if (Keywords.contains(key)) claims.remove(key);
 		claims.remove(JsonLDKeywords.JSONLD_TERM_ID);
 		claims.remove(JsonLDKeywords.JSONLD_TERM_TYPE);
 		return claims;
