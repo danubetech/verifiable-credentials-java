@@ -58,7 +58,7 @@ public class JwtObject {
 	}
 
 	public String sign_RSA_RS256(ByteSigner signer) throws JOSEException {
-		return this.sign_RSA_RS256(signer, null, true);
+		return this.sign_RSA_RS256(signer, null, false);
 	}
 
 	public String sign_RSA_RS256(RSAPrivateKey privateKey, String kid, boolean canonicalize) throws JOSEException {
@@ -66,7 +66,7 @@ public class JwtObject {
 	}
 
 	public String sign_RSA_RS256(RSAPrivateKey privateKey) throws JOSEException {
-		return this.sign_RSA_RS256(privateKey, null, true);
+		return this.sign_RSA_RS256(privateKey, null, false);
 	}
 
 	public String sign_RSA_RS256(com.nimbusds.jose.jwk.RSAKey privateKey, String kid, boolean canonicalize) throws JOSEException {
@@ -74,7 +74,7 @@ public class JwtObject {
 	}
 
 	public String sign_RSA_RS256(com.nimbusds.jose.jwk.RSAKey privateKey) throws JOSEException {
-		return this.sign_RSA_RS256(privateKey, null, true);
+		return this.sign_RSA_RS256(privateKey, null, false);
 	}
 
 	public String sign_Ed25519_EdDSA(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
@@ -82,7 +82,7 @@ public class JwtObject {
 	}
 
 	public String sign_Ed25519_EdDSA(ByteSigner signer) throws JOSEException {
-		return this.sign_Ed25519_EdDSA(signer, null, true);
+		return this.sign_Ed25519_EdDSA(signer, null, false);
 	}
 
 	public String sign_Ed25519_EdDSA(byte[] privateKey, String kid, boolean canonicalize) throws JOSEException {
@@ -90,7 +90,7 @@ public class JwtObject {
 	}
 
 	public String sign_Ed25519_EdDSA(byte[] privateKey) throws JOSEException {
-		return this.sign_Ed25519_EdDSA(privateKey, null, true);
+		return this.sign_Ed25519_EdDSA(privateKey, null, false);
 	}
 
 	public String sign_Ed25519_EdDSA(com.nimbusds.jose.jwk.OctetKeyPair privateKey, String kid, boolean canonicalize) throws JOSEException {
@@ -98,7 +98,7 @@ public class JwtObject {
 	}
 
 	public String sign_Ed25519_EdDSA(com.nimbusds.jose.jwk.OctetKeyPair privateKey) throws JOSEException {
-		return this.sign_Ed25519_EdDSA(privateKey, null, true);
+		return this.sign_Ed25519_EdDSA(privateKey, null, false);
 	}
 
 	public String sign_secp256k1_ES256K(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
@@ -106,7 +106,7 @@ public class JwtObject {
 	}
 
 	public String sign_secp256k1_ES256K(ByteSigner signer) throws JOSEException {
-		return this.sign_secp256k1_ES256K(signer, null, true);
+		return this.sign_secp256k1_ES256K(signer, null, false);
 	}
 
 	public String sign_secp256k1_ES256K(ECKey privateKey, String kid, boolean canonicalize) throws JOSEException {
@@ -114,7 +114,7 @@ public class JwtObject {
 	}
 
 	public String sign_secp256k1_ES256K(ECKey privateKey) throws JOSEException {
-		return this.sign_secp256k1_ES256K(privateKey, null, true);
+		return this.sign_secp256k1_ES256K(privateKey, null, false);
 	}
 
 	public String sign_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey privateKey, String kid, boolean canonicalize) throws JOSEException {
@@ -122,7 +122,7 @@ public class JwtObject {
 	}
 
 	public String sign_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
-		return this.sign_secp256k1_ES256K(privateKey, null, true);
+		return this.sign_secp256k1_ES256K(privateKey, null, false);
 	}
 
 	/*
