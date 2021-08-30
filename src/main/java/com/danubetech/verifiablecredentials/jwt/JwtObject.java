@@ -9,7 +9,9 @@ import com.danubetech.keyformats.crypto.impl.*;
 import info.weboftrust.ldsignatures.adapter.JWSSignerAdapter;
 import info.weboftrust.ldsignatures.adapter.JWSVerifierAdapter;
 import org.bitcoinj.core.ECKey;
+import org.erdtman.jcs.JsonCanonicalizer;
 
+import java.io.IOException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
@@ -33,10 +35,15 @@ public class JwtObject {
 	 * Sign
 	 */
 
-	private String sign(JWSSigner jwsSigner, JWSAlgorithm alg) throws JOSEException {
+	private String sign(JWSSigner jwsSigner, JWSAlgorithm alg, String kid, boolean canonicalize) throws JOSEException {
 
-		JWSHeader jwsHeader = new JWSHeader.Builder(alg).build();
-		JWSObject jwsObject = new EscapedSlashWorkaroundJWSObject(jwsHeader, this.getPayload());
+		JWSHeader.Builder jwsHeaderBuilder = new JWSHeader.Builder(alg);
+		jwsHeaderBuilder.type(JOSEObjectType.JWT);
+		if (kid != null) jwsHeaderBuilder.keyID(kid);
+
+		JWSHeader jwsHeader = jwsHeaderBuilder.build();
+
+		JWSObject jwsObject = new EscapedSlashWorkaroundJWSObject(jwsHeader, this.getPayload(), canonicalize);
 
 		jwsObject.sign(jwsSigner);
 
@@ -46,49 +53,76 @@ public class JwtObject {
 		return this.compactSerialization;
 	}
 
-	public String sign_RSA_RS256(ByteSigner signer) throws JOSEException {
+	public String sign_RSA_RS256(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.RS256), JWSAlgorithm.RS256, kid, canonicalize);
+	}
 
-		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.RS256), JWSAlgorithm.RS256);
+	public String sign_RSA_RS256(ByteSigner signer) throws JOSEException {
+		return this.sign_RSA_RS256(signer, null, true);
+	}
+
+	public String sign_RSA_RS256(RSAPrivateKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_RSA_RS256(new RSA_RS256_PrivateKeySigner(privateKey), kid, canonicalize);
 	}
 
 	public String sign_RSA_RS256(RSAPrivateKey privateKey) throws JOSEException {
+		return this.sign_RSA_RS256(privateKey, null, true);
+	}
 
-		return this.sign_RSA_RS256(new RSA_RS256_PrivateKeySigner(privateKey));
+	public String sign_RSA_RS256(com.nimbusds.jose.jwk.RSAKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new com.nimbusds.jose.crypto.RSASSASigner(privateKey), JWSAlgorithm.RS256, kid, canonicalize);
 	}
 
 	public String sign_RSA_RS256(com.nimbusds.jose.jwk.RSAKey privateKey) throws JOSEException {
+		return this.sign_RSA_RS256(privateKey, null, true);
+	}
 
-		return this.sign(new com.nimbusds.jose.crypto.RSASSASigner(privateKey), JWSAlgorithm.RS256);
+	public String sign_Ed25519_EdDSA(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.EdDSA), JWSAlgorithm.EdDSA, kid, canonicalize);
 	}
 
 	public String sign_Ed25519_EdDSA(ByteSigner signer) throws JOSEException {
+		return this.sign_Ed25519_EdDSA(signer, null, true);
+	}
 
-		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.EdDSA), JWSAlgorithm.EdDSA);
+	public String sign_Ed25519_EdDSA(byte[] privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_Ed25519_EdDSA(new Ed25519_EdDSA_PrivateKeySigner(privateKey), kid, canonicalize);
 	}
 
 	public String sign_Ed25519_EdDSA(byte[] privateKey) throws JOSEException {
+		return this.sign_Ed25519_EdDSA(privateKey, null, true);
+	}
 
-		return this.sign_Ed25519_EdDSA(new Ed25519_EdDSA_PrivateKeySigner(privateKey));
+	public String sign_Ed25519_EdDSA(com.nimbusds.jose.jwk.OctetKeyPair privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new com.nimbusds.jose.crypto.Ed25519Signer(privateKey), JWSAlgorithm.EdDSA, kid, canonicalize);
 	}
 
 	public String sign_Ed25519_EdDSA(com.nimbusds.jose.jwk.OctetKeyPair privateKey) throws JOSEException {
+		return this.sign_Ed25519_EdDSA(privateKey, null, true);
+	}
 
-		return this.sign(new com.nimbusds.jose.crypto.Ed25519Signer(privateKey), JWSAlgorithm.EdDSA);
+	public String sign_secp256k1_ES256K(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.ES256K), JWSAlgorithm.ES256K, kid, canonicalize);
 	}
 
 	public String sign_secp256k1_ES256K(ByteSigner signer) throws JOSEException {
-
-		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.ES256K), JWSAlgorithm.ES256K);
+		return this.sign_secp256k1_ES256K(signer, null, true);
 	}
 
-	public String sign_secp256k1_ES256K(ECKey privateKey) throws JOSEException {
-
+	public String sign_secp256k1_ES256K(ECKey privateKey, String kid, boolean canonicalize) throws JOSEException {
 		return this.sign_secp256k1_ES256K(new secp256k1_ES256K_PrivateKeySigner(privateKey));
 	}
 
-	public String sign_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
+	public String sign_secp256k1_ES256K(ECKey privateKey) throws JOSEException {
+		return this.sign_secp256k1_ES256K(privateKey, null, true);
+	}
 
-		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES256K);
+	public String sign_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES256K, kid, canonicalize);
+	}
+
+	public String sign_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
+		return this.sign_secp256k1_ES256K(privateKey, null, true);
 	}
 
 	/*
@@ -96,52 +130,42 @@ public class JwtObject {
 	 */
 
 	private boolean verify(JWSVerifier jwsVerifier) throws JOSEException {
-
 		return this.jwsObject.verify(jwsVerifier);
 	}
 
 	public boolean verify_RSA_RS256(ByteVerifier verifier) throws JOSEException {
-
 		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.RS256));
 	}
 
 	public boolean verify_RSA_RS256(RSAPublicKey publicKey) throws JOSEException {
-
 		return this.verify_RSA_RS256(new RSA_RS256_PublicKeyVerifier(publicKey));
 	}
 
 	public boolean verify_RSA_RS256(com.nimbusds.jose.jwk.RSAKey publicKey) throws JOSEException {
-
 		return this.verify(new com.nimbusds.jose.crypto.RSASSAVerifier(publicKey));
 	}
 
 	public boolean verify_Ed25519_EdDSA(ByteVerifier verifier) throws JOSEException {
-
 		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.EdDSA));
 	}
 
 	public boolean verify_Ed25519_EdDSA(byte[] publicKey) throws JOSEException {
-
 		return this.verify_Ed25519_EdDSA(new Ed25519_EdDSA_PublicKeyVerifier(publicKey));
 	}
 
 	public boolean verify_Ed25519_EdDSA(com.nimbusds.jose.jwk.OctetKeyPair publicKey) throws JOSEException {
-
 		return this.verify(new com.nimbusds.jose.crypto.Ed25519Verifier(publicKey));
 	}
 
 	public boolean verify_secp256k1_ES256K(ByteVerifier verifier) throws JOSEException {
-
 		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.ES256K));
 	}
 
 	public boolean verify_secp256k1_ES256K(ECKey publicKey) throws JOSEException {
-
 		return this.verify_secp256k1_ES256K(new secp256k1_ES256K_PublicKeyVerifier(publicKey));
 	}
 
 	public boolean verify_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
-
 		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
 	}
 
@@ -153,13 +177,22 @@ public class JwtObject {
 
 		private static final long serialVersionUID = -587898962717783109L;
 
-		public EscapedSlashWorkaroundJWSObject(final JWSHeader jwsHeader, final JWTClaimsSet jwtClaimsSet) {
-			super(jwsHeader, makePayload(jwtClaimsSet));
+		public EscapedSlashWorkaroundJWSObject(final JWSHeader jwsHeader, final JWTClaimsSet jwtClaimsSet, boolean canonicalize) {
+			super(jwsHeader, makePayload(jwtClaimsSet, canonicalize));
 		}
 
-		private static Payload makePayload(JWTClaimsSet jwtClaimsSet) {
+		private static Payload makePayload(JWTClaimsSet jwtClaimsSet, boolean canonicalize) {
 			Map<String, Object> jsonObject = jwtClaimsSet.toJSONObject();
-			return new Payload(JSONObjectUtils.toJSONString(jsonObject).replace("\\/", "/"));
+			String payloadString = JSONObjectUtils.toJSONString(jsonObject);
+			if (canonicalize) {
+				try {
+					payloadString = new JsonCanonicalizer(payloadString).getEncodedString();
+				} catch (IOException ex) {
+					throw new IllegalArgumentException(ex.getMessage(), ex);
+				}
+			}
+			payloadString = payloadString.replace("\\/", "/");
+			return new Payload(payloadString);
 		}
 	}
 
