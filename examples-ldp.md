@@ -3,6 +3,7 @@
 Verifiable Credentials with Linked Data Proofs:
 
 ### Example Verifiable Credential
+
 	{
 	  "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://www.w3.org/2018/credentials/examples/v1" ],
 	  "type" : [ "VerifiableCredential", "UniversityDegreeCredential" ],
@@ -66,7 +67,7 @@ Process finished with exit code 0
 ### Example code (verifying)
 
     byte[] testEd25519PublicKey = Hex.decodeHex("de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580".toCharArray());
-
+    
     VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new FileReader("input.jsonld"));
     Ed25519Signature2018LdVerifier verifier = new Ed25519Signature2018LdVerifier(testEd25519PublicKey);
     System.out.println(verifier.verify(verifiableCredential));

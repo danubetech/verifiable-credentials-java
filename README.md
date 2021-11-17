@@ -26,6 +26,7 @@ Dependency:
 ## Examples
 
  * [examples-ldp.md](examples-ldp.md) - Examples of Verifiable Credentials with Linked Data Proofs
+ * [examples-ldp-vp.md](examples-ldp-vp.md) - Examples of Verifiable Presentations with Linked Data Proofs
  * [examples-jwt.md](examples-jwt.md) - Examples of Verifiable Credentials with JSON Web Tokens
  * [examples-jwt-vp.md](examples-jwt-vp.md) - Examples of Verifiable Presentations with JSON Web Tokens
 
