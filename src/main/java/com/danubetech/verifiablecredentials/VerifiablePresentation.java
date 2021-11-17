@@ -5,6 +5,7 @@ import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
+import foundation.identity.jsonld.JsonLDUtils;
 import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
@@ -33,6 +34,7 @@ public class VerifiablePresentation extends JsonLDObject {
 
 	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
 
+		private URI holder;
 		private VerifiableCredential verifiableCredential;
 		private LdProof ldProof;
 
@@ -50,10 +52,16 @@ public class VerifiablePresentation extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
+			if (this.holder != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_HOLDER, JsonLDUtils.uriToString(this.holder));
 			if (this.verifiableCredential != null) this.verifiableCredential.addToJsonLDObject(this.jsonLdObject);
 			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLdObject);
 
 			return (VerifiablePresentation) this.jsonLdObject;
+		}
+
+		public B holder(URI holder) {
+			this.holder = holder;
+			return (B) this;
 		}
 
 		public B verifiableCredential(VerifiableCredential verifiableCredential) {
@@ -131,7 +139,10 @@ public class VerifiablePresentation extends JsonLDObject {
 	 * Getters
 	 */
 
-	@SuppressWarnings("unchecked")
+	public URI getHolder() {
+		return JsonLDUtils.stringToUri(JsonLDUtils.jsonLdGetStringOrObjectId(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_HOLDER));
+	}
+
 	public VerifiableCredential getVerifiableCredential() {
 		return VerifiableCredential.getFromJsonLDObject(this);
 	}

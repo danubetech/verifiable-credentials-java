@@ -134,7 +134,6 @@ public class VerifiableCredential extends JsonLDObject {
 	 * Getters
 	 */
 
-	@SuppressWarnings("unchecked")
 	public URI getIssuer() {
 		return JsonLDUtils.stringToUri(JsonLDUtils.jsonLdGetStringOrObjectId(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER));
 	}

@@ -14,6 +14,7 @@ public class VerifiableCredentialKeywords {
     public static final String JSONLD_TERM_CREDENTIALSUBJECT = "credentialSubject";
 
     public static final String JSONLD_TERM_VERIFIABLE_PRESENTATION = "VerifiablePresentation";
+    public static final String JSONLD_TERM_HOLDER = "holder";
     public static final String JSONLD_TERM_VERIFIABLECREDENTIAL = "verifiableCredential";
 
     /*
