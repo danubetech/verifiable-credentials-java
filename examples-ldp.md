@@ -3,32 +3,29 @@
 Verifiable Credentials with Linked Data Proofs:
 
 ### Example Verifiable Credential
-
-    {
-      "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://www.w3.org/2018/credentials/examples/v1" ],
-      "type" : [ "VerifiableCredential", "UniversityDegreeCredential" ],
-      "id" : "http://example.edu/credentials/3732",
-      "issuer" : "did:example:76e12ec712ebc6f1c221ebfeb1f",
-      "issuanceDate" : "2019-06-16T18:56:59Z",
-      "expirationDate" : "2019-06-17T18:56:59Z",
-      "credentialSubject" : {
-        "id" : "did:example:ebfeb1f712ebc6f1c276e12ec21",
-        "college" : "Test University",
-        "degree" : {
-          "name" : "Bachelor of Science and Arts",
-          "type" : "BachelorDegree"
-        }
-      },
-      "proof" : {
-        "type" : "Ed25519Signature2018",
-        "created" : "2020-10-15T09:44:25Z",
-        "domain" : "example.com",
-        "nonce" : "343s$FSFDa-",
-        "proofPurpose" : "assertionMethod",
-        "verificationMethod" : "did:example:76e12ec712ebc6f1c221ebfeb1f#keys-1",
-        "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJFZERTQSJ9..yJbi7RlKaNTNf3lhaOXUotKUNBg9N4llcD7--QRFYid_WjRcAovU-qOqtlVWngL_6vbjZWeBCRG-fv2Q9o4_CQ"
-      }
-    }
+	{
+	  "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://www.w3.org/2018/credentials/examples/v1" ],
+	  "type" : [ "VerifiableCredential", "UniversityDegreeCredential" ],
+	  "id" : "http://example.edu/credentials/3732",
+	  "issuer" : "did:example:76e12ec712ebc6f1c221ebfeb1f",
+	  "issuanceDate" : "2019-06-16T18:56:59Z",
+	  "expirationDate" : "2019-06-17T18:56:59Z",
+	  "credentialSubject" : {
+	    "id" : "did:example:ebfeb1f712ebc6f1c276e12ec21",
+	    "college" : "Test University",
+	    "degree" : {
+	      "name" : "Bachelor of Science and Arts",
+	      "type" : "BachelorDegree"
+	    }
+	  },
+	  "proof" : {
+	    "type" : "Ed25519Signature2018",
+	    "created" : "2021-11-17T22:20:27Z",
+	    "proofPurpose" : "assertionMethod",
+	    "verificationMethod" : "did:example:76e12ec712ebc6f1c221ebfeb1f#keys-1",
+	    "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJFZERTQSJ9..JNerzfrK46Mq4XxYZEnY9xOK80xsEaWCLAHuZsFie1-NTJD17wWWENn_DAlA_OwxGF5dhxUJ05P6Dm8lcmF5Cg"
+	  }
+	}
 
 Process finished with exit code 0
 
@@ -62,8 +59,6 @@ Process finished with exit code 0
     signer.setCreated(new Date());
     signer.setProofPurpose(LDSecurityKeywords.JSONLD_TERM_ASSERTIONMETHOD);
     signer.setVerificationMethod(URI.create("did:example:76e12ec712ebc6f1c221ebfeb1f#keys-1"));
-    signer.setDomain("example.com");
-    signer.setNonce("343s$FSFDa-");
     LdProof ldProof = signer.sign(verifiableCredential);
 
     System.out.println(verifiableCredential.toJson(true));
