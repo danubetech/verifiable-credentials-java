@@ -33,12 +33,12 @@ Verifiable Presentations with Linked Data Proofs:
       },
       "proof" : {
         "type" : "Ed25519Signature2018",
-        "created" : "2021-11-17T22:43:05Z",
+        "created" : "2021-11-18T08:57:43Z",
         "domain" : "example.com",
         "nonce" : "343s$FSFDa-",
-        "proofPurpose" : "assertionMethod",
+        "proofPurpose" : "authentication",
         "verificationMethod" : "did:key:z6MkwBZ6oiJ71ovCohPfdsgBrQinMXnFn6wJxVZHpZEpSh8x#z6MkwBZ6oiJ71ovCohPfdsgBrQinMXnFn6wJxVZHpZEpSh8x",
-        "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJFZERTQSJ9..D9T1iZ6bF_do_xFhYWjb3HVicP0NvpaKrBrE6K8ZpReEE1UUj5iV6prkj81bilovcRZ9FZpVmq_Gq3mDfIfnBg"
+        "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJFZERTQSJ9..twmPVhZgmKnnx6EI1xmUt3t_0GJizjambyLxWioG1hzwmDYnadWcQCC600uRpOE5WRIdx14y8uRHIa7AxSo5Cw"
       }
     }
 
@@ -53,7 +53,7 @@ Verifiable Presentations with Linked Data Proofs:
     
     Ed25519Signature2018LdSigner signer2 = new Ed25519Signature2018LdSigner(testEd25519PrivateKey2);
     signer2.setCreated(new Date());
-    signer2.setProofPurpose(LDSecurityKeywords.JSONLD_TERM_ASSERTIONMETHOD);
+    signer2.setProofPurpose(LDSecurityKeywords.JSONLD_TERM_AUTHENTICATION);
     signer2.setVerificationMethod(URI.create("did:example:45678#keys-1"));
     signer2.setDomain("example.com");
     signer2.setNonce("343s$FSFDa-");
