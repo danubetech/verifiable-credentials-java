@@ -146,12 +146,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.mattrglobal</groupId>
-			<artifactId>bbs.signatures</artifactId>
-			<version>1.5-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>info.weboftrust</groupId>
 			<artifactId>ld-signatures-java</artifactId>
 			<version>0.6.0</version>
