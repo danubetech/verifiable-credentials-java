@@ -57,6 +57,8 @@ public class BlockchainHashProof2020 extends LdProof {
 		return new BlockchainHashProof2020(jsonObject);
 	}
 
+	public static BlockchainHashProof2020 fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
+
 	public static BlockchainHashProof2020 fromJson(Reader reader) {
 		return new BlockchainHashProof2020(readJson(reader));
 	}

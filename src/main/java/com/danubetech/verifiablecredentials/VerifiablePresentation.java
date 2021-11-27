@@ -83,6 +83,8 @@ public class VerifiablePresentation extends JsonLDObject {
 		return new VerifiablePresentation(jsonObject);
 	}
 
+	public static VerifiablePresentation fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
+
 	public static VerifiablePresentation fromJson(Reader reader) {
 		return new VerifiablePresentation(readJson(reader));
 	}

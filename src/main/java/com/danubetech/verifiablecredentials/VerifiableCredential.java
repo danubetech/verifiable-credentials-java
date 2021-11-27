@@ -106,6 +106,8 @@ public class VerifiableCredential extends JsonLDObject {
 		return new VerifiableCredential(jsonObject);
 	}
 
+	public static VerifiableCredential fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
+
 	public static VerifiableCredential fromJson(Reader reader) {
 		return new VerifiableCredential(readJson(reader));
 	}

@@ -69,6 +69,8 @@ public class CredentialSubject extends JsonLDObject {
 		return new CredentialSubject(jsonObject);
 	}
 
+	public static CredentialSubject fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
+
 	public static CredentialSubject fromJson(Reader reader) {
 		return new CredentialSubject(readJson(reader));
 	}

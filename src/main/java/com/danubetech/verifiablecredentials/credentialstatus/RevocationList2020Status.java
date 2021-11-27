@@ -73,6 +73,8 @@ public class RevocationList2020Status extends CredentialStatus {
 		return new RevocationList2020Status(jsonObject);
 	}
 
+	public static RevocationList2020Status fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
+
 	public static RevocationList2020Status fromJson(Reader reader) {
 		return new RevocationList2020Status(readJson(reader));
 	}

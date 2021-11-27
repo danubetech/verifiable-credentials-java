@@ -1,6 +1,7 @@
 package com.danubetech.verifiablecredentials.credentialstatus;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -53,6 +54,8 @@ public class CredentialStatus extends JsonLDObject {
 	public static CredentialStatus fromJsonObject(Map<String, Object> jsonObject) {
 		return new CredentialStatus(jsonObject);
 	}
+
+	public static CredentialStatus fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
 
 	public static CredentialStatus fromJson(Reader reader) {
 		return new CredentialStatus(readJson(reader));
