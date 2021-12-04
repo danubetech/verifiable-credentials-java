@@ -1,16 +1,18 @@
 package com.danubetech.verifiablecredentials.jwt;
 
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.UUID;
+import java.text.ParseException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class JwtVerifiablePresentation extends JwtWrappingObject<JwtVerifiableCredential> {
+public class JwtVerifiablePresentation extends JwtWrappingObject<VerifiablePresentation> {
 
-	private JwtVerifiablePresentation(JWTClaimsSet payload, JwtVerifiableCredential payloadObject, JWSObject jwsObject, String compactSerialization) {
+	public JwtVerifiablePresentation(JWTClaimsSet payload, VerifiablePresentation payloadObject, JWSObject jwsObject, String compactSerialization) {
 
 		super(payload, payloadObject, jwsObject, compactSerialization);
 	}
@@ -19,28 +21,14 @@ public class JwtVerifiablePresentation extends JwtWrappingObject<JwtVerifiableCr
 	 * Factory methods
 	 */
 
-	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential, String aud) throws  IOException {
+	public static JwtVerifiablePresentation fromCompactSerialization(String compactSerialization) throws ParseException {
 
-		JwtVerifiableCredential payloadJwtVerifiableCredential = jwtVerifiableCredential;
-		VerifiablePresentation verifiablePresentation = FromJwtConverter.fromJwtVerifiableCredentialToVerifiablePresentation(payloadJwtVerifiableCredential);
+		SignedJWT signedJWT = SignedJWT.parse(compactSerialization);
 
-		JWTClaimsSet.Builder payloadBuilder = new JWTClaimsSet.Builder();
+		JWTClaimsSet jwtPayload = signedJWT.getJWTClaimsSet();
+		Map<String, Object> jsonObject = (Map<String, Object>) jwtPayload.getClaims().get(JwtKeywords.JWT_CLAIM_VC);
+		VerifiablePresentation payloadVerifiablePresentation = VerifiablePresentation.fromJsonObject(new LinkedHashMap<>(jsonObject));
 
-		Date issueTime = new Date();
-		
-		payloadBuilder.jwtID("urn:uuid:" + UUID.randomUUID().toString());
-		payloadBuilder.issuer(jwtVerifiableCredential.getPayload().getSubject());
-		payloadBuilder.issueTime(issueTime);
-		payloadBuilder.notBeforeTime(issueTime);
-		if (aud != null) payloadBuilder.audience(aud);
-
-		payloadBuilder.claim(JwtKeywords.JWT_CLAIM_VP, verifiablePresentation.getJsonObject());
-
-		return new JwtVerifiablePresentation(payloadBuilder.build(), payloadJwtVerifiableCredential, null, null);
-	}
-
-	public static JwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential) throws IOException {
-
-		return fromJwtVerifiableCredential(jwtVerifiableCredential, null);
+		return new JwtVerifiablePresentation(jwtPayload, payloadVerifiablePresentation, signedJWT, compactSerialization);
 	}
 }

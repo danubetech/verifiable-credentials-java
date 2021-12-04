@@ -3,8 +3,8 @@ package com.danubetech.verifiablecredentials.w3ctestsuite;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.FromJwtConverter;
+import com.danubetech.verifiablecredentials.jwt.JwtJwtVerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
 import com.danubetech.verifiablecredentials.validation.Validation;
 import com.nimbusds.jose.JOSEException;
@@ -17,7 +17,6 @@ import org.apache.commons.codec.binary.Base64;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
@@ -92,8 +91,8 @@ public class Generator {
 
 						jwtVerifiableCredential.sign_RSA_RS256(rsaKey);
 
-						JwtVerifiablePresentation jwtVerifiablePresentation = JwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential, argAud);
-						output = jwtVerifiablePresentation.sign_RSA_RS256(rsaKey);
+						JwtJwtVerifiablePresentation jwtJwtVerifiablePresentation = JwtJwtVerifiablePresentation.fromJwtVerifiableCredential(jwtVerifiableCredential, argAud);
+						output = jwtJwtVerifiablePresentation.sign_RSA_RS256(rsaKey);
 					} else {
 
 						if (argNoJws) {

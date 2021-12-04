@@ -2,6 +2,7 @@ package com.danubetech.verifiablecredentials.jwt;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -73,8 +74,8 @@ public class ToJwtConverter {
             jwtPayloadBuilder.audience(aud);
         }
 
-        Map<String, Object> vcClaimValue = new LinkedHashMap<>(payloadVerifiableCredential.getJsonObject());
-        jwtPayloadBuilder.claim(JwtKeywords.JWT_CLAIM_VC, vcClaimValue);
+        Map<String, Object> vcContent = new LinkedHashMap<>(payloadVerifiableCredential.getJsonObject());
+        jwtPayloadBuilder.claim(JwtKeywords.JWT_CLAIM_VC, vcContent);
 
         JWTClaimsSet jwtPayload = jwtPayloadBuilder.build();
 
@@ -86,4 +87,48 @@ public class ToJwtConverter {
         return toJwtVerifiableCredential(verifiableCredential, null);
     }
 
+    /*
+     * from JSON-LD to JWT VP
+     */
+
+    public static JwtVerifiablePresentation toJwtVerifiablePresentation(VerifiablePresentation verifiablePresentation, String aud) {
+
+        JWTClaimsSet.Builder jwtPayloadBuilder = new JWTClaimsSet.Builder();
+
+        VerifiablePresentation payloadVerifiablePresentation = VerifiablePresentation.builder()
+                .defaultContexts(false)
+                .defaultTypes(false)
+                .build();
+
+        JsonLDUtils.jsonLdAddAll(payloadVerifiablePresentation, verifiablePresentation.getJsonObject());
+
+        URI id = verifiablePresentation.getId();
+        if (id != null) {
+            jwtPayloadBuilder.jwtID(id.toString());
+            JsonLDUtils.jsonLdRemove(payloadVerifiablePresentation, JsonLDKeywords.JSONLD_TERM_ID);
+        }
+
+        URI holder = verifiablePresentation.getHolder();
+        if (holder != null) {
+            jwtPayloadBuilder.issuer(holder.toString());
+            jwtPayloadBuilder.subject(holder.toString());
+            JsonLDUtils.jsonLdRemove(payloadVerifiablePresentation, VerifiableCredentialKeywords.JSONLD_TERM_HOLDER);
+        }
+
+        if (aud != null) {
+            jwtPayloadBuilder.audience(aud);
+        }
+
+        Map<String, Object> vpContent = new LinkedHashMap<>(payloadVerifiablePresentation.getJsonObject());
+        jwtPayloadBuilder.claim(JwtKeywords.JWT_CLAIM_VP, vpContent);
+
+        JWTClaimsSet jwtPayload = jwtPayloadBuilder.build();
+
+        return new JwtVerifiablePresentation(jwtPayload, payloadVerifiablePresentation, null, null);
+    }
+
+    public static JwtVerifiablePresentation toJwtVerifiablePresentation(VerifiablePresentation verifiablePresentation) {
+
+        return toJwtVerifiablePresentation(verifiablePresentation, null);
+    }
 }
