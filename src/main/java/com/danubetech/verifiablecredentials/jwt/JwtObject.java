@@ -1,11 +1,11 @@
 package com.danubetech.verifiablecredentials.jwt;
 
-import com.nimbusds.jose.*;
-import com.nimbusds.jose.util.JSONObjectUtils;
-import com.nimbusds.jwt.JWTClaimsSet;
 import com.danubetech.keyformats.crypto.ByteSigner;
 import com.danubetech.keyformats.crypto.ByteVerifier;
 import com.danubetech.keyformats.crypto.impl.*;
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.util.JSONObjectUtils;
+import com.nimbusds.jwt.JWTClaimsSet;
 import info.weboftrust.ldsignatures.adapter.JWSSignerAdapter;
 import info.weboftrust.ldsignatures.adapter.JWSVerifierAdapter;
 import org.bitcoinj.core.ECKey;
@@ -51,6 +51,30 @@ public class JwtObject {
 		this.compactSerialization = jwsObject.serialize();
 
 		return this.compactSerialization;
+	}
+
+	public String sign_RSA_PS256(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.PS256), JWSAlgorithm.PS256, kid, canonicalize);
+	}
+
+	public String sign_RSA_PS256(ByteSigner signer) throws JOSEException {
+		return this.sign_RSA_PS256(signer, null, false);
+	}
+
+	public String sign_RSA_PS256(RSAPrivateKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_RSA_PS256(new RSA_PS256_PrivateKeySigner(privateKey), kid, canonicalize);
+	}
+
+	public String sign_RSA_PS256(RSAPrivateKey privateKey) throws JOSEException {
+		return this.sign_RSA_PS256(privateKey, null, false);
+	}
+
+	public String sign_RSA_PS256(com.nimbusds.jose.jwk.RSAKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new com.nimbusds.jose.crypto.RSASSASigner(privateKey), JWSAlgorithm.PS256, kid, canonicalize);
+	}
+
+	public String sign_RSA_PS256(com.nimbusds.jose.jwk.RSAKey privateKey) throws JOSEException {
+		return this.sign_RSA_PS256(privateKey, null, false);
 	}
 
 	public String sign_RSA_RS256(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
@@ -131,6 +155,18 @@ public class JwtObject {
 
 	private boolean verify(JWSVerifier jwsVerifier) throws JOSEException {
 		return this.jwsObject.verify(jwsVerifier);
+	}
+
+	public boolean verify_RSA_PS256(ByteVerifier verifier) throws JOSEException {
+		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.RS256));
+	}
+
+	public boolean verify_RSA_PS256(RSAPublicKey publicKey) throws JOSEException {
+		return this.verify_RSA_PS256(new RSA_PS256_PublicKeyVerifier(publicKey));
+	}
+
+	public boolean verify_RSA_PS256(com.nimbusds.jose.jwk.RSAKey publicKey) throws JOSEException {
+		return this.verify(new com.nimbusds.jose.crypto.RSASSAVerifier(publicKey));
 	}
 
 	public boolean verify_RSA_RS256(ByteVerifier verifier) throws JOSEException {
