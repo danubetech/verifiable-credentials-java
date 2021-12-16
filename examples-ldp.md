@@ -33,7 +33,7 @@ Process finished with exit code 0
 ### Example code (signing)
 
     Map<String, Object> claims = new LinkedHashMap<>();
-    Map<String, Object> degree = new LinkedHashMap<String, Object>();
+    Map<String, Object> degree = new LinkedHashMap<>();
     degree.put("name", "Bachelor of Science and Arts");
     degree.put("type", "BachelorDegree");
     claims.put("college", "Test University");
