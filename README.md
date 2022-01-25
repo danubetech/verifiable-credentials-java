@@ -2,9 +2,7 @@
 
 ## Information
 
-This is a work-in-progress implementation of the [Verifiable Credentials](https://w3c.github.io/vc-data-model/) data model.
-
-Not ready for production use! Use at your own risk! Pull requests welcome.
+This is an implementation of the [Verifiable Credentials](https://w3c.github.io/vc-data-model/) data model.
 
 ## Maven
 
@@ -16,11 +14,17 @@ After that, just run:
 
 Dependency:
 
+	<repositories>
+		<repository>
+			<id>danubetech-maven-public</id>
+			<url>https://repo.danubetech.com/repository/maven-public/</url>
+		</repository>
+	</repositories>
+
 	<dependency>
 		<groupId>com.danubetech</groupId>
 		<artifactId>verifiable-credentials-java</artifactId>
-		<version>0.4-SNAPSHOT</version>
-		<scope>compile</scope>
+		<version>1.0.0</version>
 	</dependency>
 
 ## Examples
