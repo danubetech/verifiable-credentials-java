@@ -6,9 +6,7 @@ This is an implementation of the [Verifiable Credentials](https://w3c.github.io/
 
 ## Maven
 
-First, you need to build the [ld-signatures-java](https://github.com/WebOfTrustInfo/ld-signatures-java) project.
-
-After that, just run:
+Build:
 
 	mvn clean install
 
