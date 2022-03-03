@@ -10,6 +10,8 @@ import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class VerifiablePresentation extends JsonLDObject {
@@ -35,7 +37,7 @@ public class VerifiablePresentation extends JsonLDObject {
 	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
 
 		private URI holder;
-		private VerifiableCredential verifiableCredential;
+		private List<VerifiableCredential> verifiableCredential = new LinkedList<>();
 		private LdProof ldProof;
 
 		public Builder(VerifiablePresentation jsonLdObject) {
@@ -53,7 +55,13 @@ public class VerifiablePresentation extends JsonLDObject {
 
 			// add JSON-LD properties
 			if (this.holder != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_HOLDER, JsonLDUtils.uriToString(this.holder));
-			if (this.verifiableCredential != null) this.verifiableCredential.addToJsonLDObject(this.jsonLdObject);
+			if (!this.verifiableCredential.isEmpty()) {
+				if (this.verifiableCredential.size() == 1) {
+					this.verifiableCredential.iterator().next().addToJsonLDObject(this.jsonLdObject);
+				} else {
+					this.verifiableCredential.forEach(verifiableCredential -> verifiableCredential.addToJsonLDObjectAsJsonArray(this.jsonLdObject));
+				}
+			}
 			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLdObject);
 
 			return (VerifiablePresentation) this.jsonLdObject;
@@ -65,7 +73,7 @@ public class VerifiablePresentation extends JsonLDObject {
 		}
 
 		public B verifiableCredential(VerifiableCredential verifiableCredential) {
-			this.verifiableCredential = verifiableCredential;
+			this.verifiableCredential.add(verifiableCredential);
 			return (B) this;
 		}
 
