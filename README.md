@@ -42,8 +42,6 @@ Originally built as part of [TrustNet](http://trustnet.fi/).
 
 <br clear="left" />
 
-<img align="left" src="https://raw.githubusercontent.com/danubetech/verifiable-credentials-java/master/docs/logo-ngi-essiflab.png" width="115">
+<img align="left" height="70" src="https://raw.githubusercontent.com/danubetech/verifiable-credentials-java/main/docs/logo-ngi-essiflab.png">
 
-Supported by [ESSIF-Lab](https://essif-lab.eu/), which is made possible with financial support from the European Commission's [Next Generation Internet](https://ngi.eu/) programme.
-
-<br clear="left" />
+This software library is part of a project that has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 871932
