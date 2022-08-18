@@ -12,7 +12,7 @@ import org.bitcoinj.core.ECKey;
 import org.erdtman.jcs.JsonCanonicalizer;
 
 import java.io.IOException;
-import java.security.interfaces.RSAPrivateKey;
+import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 
@@ -61,11 +61,11 @@ public class JwtObject {
 		return this.sign_RSA_PS256(signer, null, false);
 	}
 
-	public String sign_RSA_PS256(RSAPrivateKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+	public String sign_RSA_PS256(KeyPair privateKey, String kid, boolean canonicalize) throws JOSEException {
 		return this.sign_RSA_PS256(new RSA_PS256_PrivateKeySigner(privateKey), kid, canonicalize);
 	}
 
-	public String sign_RSA_PS256(RSAPrivateKey privateKey) throws JOSEException {
+	public String sign_RSA_PS256(KeyPair privateKey) throws JOSEException {
 		return this.sign_RSA_PS256(privateKey, null, false);
 	}
 
@@ -85,11 +85,11 @@ public class JwtObject {
 		return this.sign_RSA_RS256(signer, null, false);
 	}
 
-	public String sign_RSA_RS256(RSAPrivateKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+	public String sign_RSA_RS256(KeyPair privateKey, String kid, boolean canonicalize) throws JOSEException {
 		return this.sign_RSA_RS256(new RSA_RS256_PrivateKeySigner(privateKey), kid, canonicalize);
 	}
 
-	public String sign_RSA_RS256(RSAPrivateKey privateKey) throws JOSEException {
+	public String sign_RSA_RS256(KeyPair privateKey) throws JOSEException {
 		return this.sign_RSA_RS256(privateKey, null, false);
 	}
 
