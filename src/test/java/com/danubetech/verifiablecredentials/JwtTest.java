@@ -20,7 +20,7 @@ public class JwtTest {
 
 	static {
 
-		rsaKey = new RSAKey.Builder(TestUtil.testRSAPublicKey).privateKey(TestUtil.testRSAPrivateKey).build();
+		rsaKey = new RSAKey.Builder(TestUtil.testRSAPublicKey).privateKey(TestUtil.testRSAPrivateKey.getPrivate()).build();
 	}
 
 	@Test
