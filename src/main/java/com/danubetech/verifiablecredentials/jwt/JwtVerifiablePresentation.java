@@ -26,7 +26,7 @@ public class JwtVerifiablePresentation extends JwtWrappingObject<VerifiablePrese
 		SignedJWT signedJWT = SignedJWT.parse(compactSerialization);
 
 		JWTClaimsSet jwtPayload = signedJWT.getJWTClaimsSet();
-		Map<String, Object> jsonObject = (Map<String, Object>) jwtPayload.getClaims().get(JwtKeywords.JWT_CLAIM_VC);
+		Map<String, Object> jsonObject = (Map<String, Object>) jwtPayload.getClaims().get(JwtKeywords.JWT_CLAIM_VP);
 		VerifiablePresentation payloadVerifiablePresentation = VerifiablePresentation.fromJsonObject(new LinkedHashMap<>(jsonObject));
 
 		return new JwtVerifiablePresentation(jwtPayload, payloadVerifiablePresentation, signedJWT, compactSerialization);
