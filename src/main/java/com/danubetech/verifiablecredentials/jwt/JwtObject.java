@@ -168,7 +168,7 @@ public class JwtObject {
 	}
 
 	public String sign_P_256_ES256(com.nimbusds.jose.jwk.ECKey privateKey, String kid, boolean canonicalize) throws JOSEException {
-		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES256K, kid, canonicalize);
+		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES256, kid, canonicalize);
 	}
 
 	public String sign_P_256_ES256(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
