@@ -13,6 +13,8 @@ import org.erdtman.jcs.JsonCanonicalizer;
 
 import java.io.IOException;
 import java.security.KeyPair;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 
@@ -149,6 +151,30 @@ public class JwtObject {
 		return this.sign_secp256k1_ES256K(privateKey, null, false);
 	}
 
+	public String sign_P_256_ES256(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.ES256), JWSAlgorithm.ES256, kid, canonicalize);
+	}
+
+	public String sign_P_256_ES256(ByteSigner signer) throws JOSEException {
+		return this.sign_P_256_ES256(signer, null, false);
+	}
+
+	public String sign_P_256_ES256(ECPrivateKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_P_256_ES256(new P_256_ES256_PrivateKeySigner(privateKey));
+	}
+
+	public String sign_P_256_ES256(ECPrivateKey privateKey) throws JOSEException {
+		return this.sign_P_256_ES256(privateKey, null, false);
+	}
+
+	public String sign_P_256_ES256(com.nimbusds.jose.jwk.ECKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES256K, kid, canonicalize);
+	}
+
+	public String sign_P_256_ES256(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
+		return this.sign_P_256_ES256(privateKey, null, false);
+	}
+
 	/*
 	 * Verify
 	 */
@@ -202,6 +228,18 @@ public class JwtObject {
 	}
 
 	public boolean verify_secp256k1_ES256K(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
+		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
+	}
+
+	public boolean verify_P_256_ES256(ByteVerifier verifier) throws JOSEException {
+		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.ES256));
+	}
+
+	public boolean verify_P_256_ES256(ECPublicKey publicKey) throws JOSEException {
+		return this.verify_P_256_ES256(new P_256_ES256_PublicKeyVerifier(publicKey));
+	}
+
+	public boolean verify_P_256_ES256(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
 		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
 	}
 
