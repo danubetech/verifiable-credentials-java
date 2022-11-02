@@ -54,8 +54,8 @@ public class ToJwtConverter {
 
         URI issuer = verifiableCredential.getIssuer();
         if (issuer != null) {
+            jwtPayloadBuilder.issuer(issuer.toString());
             if (!( payloadVerifiableCredential.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER) instanceof Map)) {
-                jwtPayloadBuilder.issuer(issuer.toString());
                 JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
             }
         }
