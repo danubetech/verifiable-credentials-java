@@ -4,13 +4,10 @@ import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.JWTClaimsSet;
 import foundation.identity.jsonld.JsonLDKeywords;
 import foundation.identity.jsonld.JsonLDUtils;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -55,7 +52,8 @@ public class ToJwtConverter {
         URI issuer = verifiableCredential.getIssuer();
         if (issuer != null) {
             jwtPayloadBuilder.issuer(issuer.toString());
-            if (!( payloadVerifiableCredential.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER) instanceof Map)) {
+            if ( verifiableCredential.getJsonObject().containsKey(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER)
+                    && !( verifiableCredential.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER) instanceof Map)) {
                 JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
             }
         }
