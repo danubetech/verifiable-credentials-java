@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,10 @@ public class JwtTest {
 				.issuer(URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD"))
 				.issuanceDate(JsonLDUtils.stringToDate("2019-06-16T18:56:59Z"))
 				.expirationDate(JsonLDUtils.stringToDate("2019-06-17T18:56:59Z"))
-				.credentialSubjects(List.of(firstCredentialSubject, secondCredentialSubject))
+				.credentialSubjects(new ArrayList<CredentialSubject>() {{
+					add(firstCredentialSubject);
+					add(secondCredentialSubject);
+				}})
 				.build();
 
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> { ToJwtConverter.toJwtVerifiableCredential(verifiableCredential); });
