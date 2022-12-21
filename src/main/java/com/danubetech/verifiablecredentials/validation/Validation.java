@@ -53,6 +53,7 @@ public class Validation {
         validateRun(() -> { validateTrue(verifiableCredential.getIssuanceDate() != null); }, "Bad or missing 'issuanceDate'.");
         validateRun(() -> { verifiableCredential.getExpirationDate(); }, "Bad 'expirationDate'.");
         validateRun(() -> { verifiableCredential.getCredentialSubject(); }, "Bad 'credentialSubject'.");
+        validateRun(() -> { validateTrue(verifiableCredential.getCredentialSubjects().size() > 0); }, "Bad or missing 'credentialSubject'");
         validateRun(() -> { validateTrue(verifiableCredential.getCredentialSubject() != null); }, "Bad or missing 'credentialSubject'.");
     }
 

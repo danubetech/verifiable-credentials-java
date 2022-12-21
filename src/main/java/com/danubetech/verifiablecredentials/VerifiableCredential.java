@@ -11,7 +11,9 @@ import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class VerifiableCredential extends JsonLDObject {
@@ -39,12 +41,13 @@ public class VerifiableCredential extends JsonLDObject {
 		private URI issuer;
 		private Date issuanceDate;
 		private Date expirationDate;
-		private CredentialSubject credentialSubject;
+		private List<CredentialSubject> credentialSubjects;
 		private CredentialStatus credentialStatus;
 		private LdProof ldProof;
 
 		public Builder(VerifiableCredential jsonLdObject) {
 			super(jsonLdObject);
+			this.credentialSubjects = new ArrayList<>();
 			this.forceContextsArray(true);
 			this.forceTypesArray(true);
 			this.defaultContexts(true);
@@ -60,7 +63,13 @@ public class VerifiableCredential extends JsonLDObject {
 			if (this.issuer != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, JsonLDUtils.uriToString(this.issuer));
 			if (this.issuanceDate != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE, JsonLDUtils.dateToString(this.issuanceDate));
 			if (this.expirationDate != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE, JsonLDUtils.dateToString(this.expirationDate));
-			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLdObject);
+			if (this.credentialSubjects != null) {
+				if (this.credentialSubjects.size() == 1) {
+					this.credentialSubjects.get(0).addToJsonLDObject(this.jsonLdObject);
+				} else {
+					JsonLDUtils.jsonLdAddAsJsonArray(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSUBJECT, this.credentialSubjects);
+				}
+			}
 			if (this.credentialStatus != null) this.credentialStatus.addToJsonLDObject(this.jsonLdObject);
 			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLdObject);
 
@@ -83,7 +92,12 @@ public class VerifiableCredential extends JsonLDObject {
 		}
 
 		public B credentialSubject(CredentialSubject credentialSubject) {
-			this.credentialSubject = credentialSubject;
+			this.credentialSubjects.add(credentialSubject);
+			return (B) this;
+		}
+
+		public B credentialSubjects(List<CredentialSubject> credentialSubjects) {
+			this.credentialSubjects = credentialSubjects;
 			return (B) this;
 		}
 
@@ -149,7 +163,21 @@ public class VerifiableCredential extends JsonLDObject {
 	}
 
 	public CredentialSubject getCredentialSubject() {
-		return CredentialSubject.getFromJsonLDObject(this);
+		return getCredentialSubjects().get(0);
+	}
+
+	/**
+	 * Get a list of all subjects contained in the receiver.
+	 *
+	 * @return A list of each subject in the "credentialSubject" property as `CredentialSubject` objects.
+	 */
+	public List<CredentialSubject> getCredentialSubjects() {
+        /*
+        The "credentialSubject" node may contain an array of objects as permissible in the VC spec:
+        https://www.w3.org/TR/vc-data-model/#credential-subject
+         */
+		return new ArrayList<CredentialSubject>();
+		
 	}
 
 	public LdProof getLdProof() {

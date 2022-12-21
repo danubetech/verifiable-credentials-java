@@ -38,6 +38,18 @@ public class ToJwtConverter {
 
         CredentialSubject credentialSubject = verifiableCredential.getCredentialSubject();
         if (credentialSubject != null) {
+            if (verifiableCredential.getCredentialSubjects().size() > 1) {
+                /*
+                Per https://www.w3.org/TR/vc-data-model/#jwt-encoding:
+
+                Implementers are warned that JWTs are not capable of encoding multiple subjects and are thus not capable of
+                encoding a verifiable credential with more than one subject. JWTs might support multiple subjects in the
+                future and implementers are advised to refer to the JSON Web Token Claim Registry for multi-subject JWT
+                claim names or the Nested JSON Web Token specification.
+                */
+                throw new IllegalArgumentException("JWTs are not capable of encoding multiple subjects and are thus not capable of encoding a verifiable credential with more than one subject.");
+            }
+
             if (credentialSubject.getId() != null) {
                 jwtPayloadBuilder.subject(credentialSubject.getId().toString());
             }
