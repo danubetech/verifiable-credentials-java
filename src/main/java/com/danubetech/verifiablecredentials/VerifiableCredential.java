@@ -5,16 +5,24 @@ import com.danubetech.verifiablecredentials.credentialstatus.CredentialStatus;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import foundation.identity.jsonld.ConfigurableDocumentLoader;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
 import info.weboftrust.ldsignatures.LdProof;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
+import javax.security.auth.login.CredentialException;
 import java.io.Reader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class VerifiableCredential extends JsonLDObject {
 
@@ -22,6 +30,8 @@ public class VerifiableCredential extends JsonLDObject {
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLE_CREDENTIAL };
 	public static final String DEFAULT_JSONLD_PREDICATE = VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL;
 	public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
+
+	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	@JsonCreator
 	public VerifiableCredential() {
@@ -176,8 +186,26 @@ public class VerifiableCredential extends JsonLDObject {
         The "credentialSubject" node may contain an array of objects as permissible in the VC spec:
         https://www.w3.org/TR/vc-data-model/#credential-subject
          */
-		return new ArrayList<CredentialSubject>();
-		
+		Object entry = this.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSUBJECT);
+		if (entry == null) {
+			return new ArrayList(); // empty list
+		} else if (entry instanceof List) {
+			final TypeReference<Map<String, Object>> stringMapTypeReference = new TypeReference<Map<String, Object>>() {};
+
+			final List<Object> subjectArray = JsonLDUtils.jsonLdGetJsonArray(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSUBJECT);
+
+			// Convert each object in the list to a CredentialSubject
+			return subjectArray.stream()
+					.map(subjectObject -> objectMapper.convertValue(subjectObject, stringMapTypeReference))
+					.map(subjectMap -> CredentialSubject.fromJsonObject(subjectMap))
+					.collect(Collectors.toList());
+		} else {
+			final Map<String, Object> subjectObject = JsonLDUtils.jsonLdGetJsonObject(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSUBJECT);
+			final CredentialSubject singleSubject = CredentialSubject.fromJsonObject(subjectObject);
+			return new ArrayList<CredentialSubject>() {{
+				add(singleSubject);
+			}};
+		}
 	}
 
 	public LdProof getLdProof() {
