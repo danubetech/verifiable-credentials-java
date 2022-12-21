@@ -47,4 +47,35 @@ public class SignCredentialTest {
 		boolean verify = verifier.verify(verifiableCredential);
 		assertTrue(verify);
 	}
+
+	@Test
+	void testSignMultiSubject() throws Throwable {
+
+		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(VerifyCredentialTest.class.getResourceAsStream("input.multisubject.vc.jsonld")));
+
+		URI verificationMethod = URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1");
+		Date created = JsonLDUtils.DATE_FORMAT.parse("2018-01-01T21:19:10Z");
+		String domain = null;
+		String nonce = "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e";
+
+		RsaSignature2018LdSigner signer = new RsaSignature2018LdSigner(TestUtil.testRSAPrivateKey);
+		signer.setVerificationMethod(verificationMethod);
+		signer.setCreated(created);
+		signer.setDomain(domain);
+		signer.setNonce(nonce);
+		LdProof ldProof = signer.sign(verifiableCredential, true, false);
+
+		assertEquals(SignatureSuites.SIGNATURE_SUITE_RSASIGNATURE2018.getTerm(), ldProof.getType());
+		assertEquals(verificationMethod, ldProof.getVerificationMethod());
+		assertEquals(created, ldProof.getCreated());
+		assertEquals(domain, ldProof.getDomain());
+		assertEquals(nonce, ldProof.getNonce());
+		assertEquals("eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..ftxWowm3x1roIwnkdOK8ARWtPzYh9WPmR4QAxnZy2kBA_NgePpqtlIek1lMshx4Syv6N9CJqEXDFeURRNsQWAhhiGYAts_PphIZtrpeXuEh_dnMcyRhO2iFNQby5hwhLRwo_HeuNop73oiJYqFm_P_3_F0NJaKrONQ5dsiM3M2SNwInKVhuZ_x-vOqEX3BDcajBJ0wHn9CCbysynhWmxzLiZ4HxQW3aBWG94GmCQBJVc9pP8H4B58-jwDhz_L74rl5iywH5NiaokBggrBbJcz2QJBMYuYEjsAO6UQAm-T5EJcVzDoy0qxlmxgSaDovbr-xHGU8Wjc-cROt8Kqc1lqw", ldProof.getJws());
+
+		Validation.validate(verifiableCredential);
+
+		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
+		boolean verify = verifier.verify(verifiableCredential);
+		assertTrue(verify);
+	}
 }
