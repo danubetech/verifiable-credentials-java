@@ -1,0 +1,65 @@
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1"
+  ],
+  "type": [
+    "VerifiablePresentation"
+  ],
+  "holder": "did:web:vc.transmute.world",
+  "verifiableCredential": [
+    {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        {
+          "ex": "https://example.org/examples#",
+          "schema": "http://schema.org/",
+          "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+          "BachelorDegree": "ex:BachelorDegree",
+          "UniversityDegreeCredential": "ex:UniversityDegreeCredential",
+          "degree": "ex:degree",
+          "name": {
+            "@id": "schema:name",
+            "@type": "rdf:HTML"
+          }
+        }
+      ],
+      "id": "http://example.gov/credentials/3732",
+      "type": [
+        "VerifiableCredential",
+        "UniversityDegreeCredential"
+      ],
+      "issuer": "did:v1:test:nym:z6MkhdmzFu659ZJ4XKj31vtEDmjvsi5yDZG5L7Caz63oP39k",
+      "issuanceDate": "2020-03-10T04:24:12.164Z",
+      "credentialSubject": [
+        {
+          "id": "did:key:z6MkjRagNiMu91DduvCvgEsqLZDVzrJzFrwahc4tXLt9DoHd",
+          "degree": {
+            "type": "BachelorDegree",
+            "name": "Bachelor of Science and Arts"
+          }
+        },
+        {
+          "id": "did:key:z6MkjRagNiMu91DduvCvgEsqLZDVzrJzFrwahc4tXLt9DoHe",
+          "degree": {
+            "type": "GraduateDegree",
+            "name": "Master of Arts"
+          }
+        }
+      ],
+      "proof": {
+        "type": "RsaSignature2018",
+        "created": "2018-01-01T21:19:10Z",
+        "nonce": "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e",
+        "verificationMethod": "did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1",
+        "jws": "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..OfsKRFq63GbZmLEekSN9VV6fcyF7SMs91rIa_GffsPqKhTCbN3wL9hazri-PxGYJYzHswG_0U_aMa5Fkye8hF6jxNJweYcnGTL5N5ipSb6hu6S2zRdiPWnP_L17zIlZJQdXJlqDGiXdi7oroExfrOPsww_cPfylRQAdh7jFF_rNwQLT_XMxriKi8ColXZlItZ4HrxeL4_DssTZPvjfTwQUQ4cNCHQ5Mmri06ghUzvamzPl1_Tp0Gz4D73aXRd-A4eoREK5nPX2BTDzVsZA0X1-9AN5MThdmNOKk3ZwF3IILSSWOmLhDX07YkvtkzTE32g6J9PXjBplShle-QKa8IUg"
+      }
+    }
+  ],
+  "proof": {
+    "type": "RsaSignature2018",
+    "created": "2018-01-01T21:19:10Z",
+    "nonce": "c0ae1c8e-c7e7-469f-b252-86e6a0e7387e",
+    "verificationMethod": "did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1",
+    "jws": "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..lhT2Lezru6k6kW3Fu4X6r30DRvLZpKRMvN6QzYzQS62NsAKdInHx16R1-sn0d6ZAM2NP9fHll_NqcRyKoOfGTHOZQ57aobaCmiRgmNZgl3eWXGwl_X9o47jDHoiOvlj14z4732lo1fgcR0LKqjWXCKXlVyoqkLO0LtHCcc05WdMAznuikXR2qzbkOFONBBq81PpNkX18qKjNCKoiOP6jDyABA8M2z7RidaHXHgyRVFuHt2iFF9MG0av-SxGaGUceRXbhNIo-pla686iMANDBDEqNKmCafBln5FdYW_lvxYqSBREd1J1rGT666GUMpwpgdDx42tJzUACNWBfwGzh4Mg"
+  }
+}
