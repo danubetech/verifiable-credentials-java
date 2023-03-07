@@ -42,4 +42,5 @@ public class VerifiableCredentialKeywords {
     public static final String JSONLD_TERM_STATUS_LIST_2021_ENTRY = "StatusList2021Entry";
     public static final String JSONLD_TERM_STATUSLISTINDEX = "statusListIndex";
     public static final String JSONLD_TERM_STATUSLISTCREDENTIAL = "statusListCredential";
+    public static final String JSONLD_TERM_STATUSPURPOSE = "statusPurpose";
 }

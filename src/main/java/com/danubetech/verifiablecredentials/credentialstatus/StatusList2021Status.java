@@ -36,6 +36,8 @@ public class StatusList2021Status extends CredentialStatus {
         private String statusListIndex;
         private URI statusListCredential;
 
+        private String statusPurpose;
+
         public Builder(StatusList2021Status jsonLdObject) {
             super(jsonLdObject);
             this.defaultTypes(true);
@@ -49,6 +51,7 @@ public class StatusList2021Status extends CredentialStatus {
             // add JSON-LD properties
             if (this.statusListIndex != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_STATUSLISTINDEX, this.statusListIndex);
             if (this.statusListCredential != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_STATUSLISTCREDENTIAL, JsonLDUtils.uriToString(this.statusListCredential));
+            if (this.statusPurpose != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_STATUSPURPOSE, this.statusPurpose);
 
             return (StatusList2021Status) this.jsonLdObject;
         }
@@ -60,6 +63,11 @@ public class StatusList2021Status extends CredentialStatus {
 
         public B statusListCredential(URI statusListCredential) {
             this.statusListCredential = statusListCredential;
+            return (B) this;
+        }
+
+        public B statusListCredential(String statusPurpose) {
+            this.statusPurpose = statusPurpose;
             return (B) this;
         }
     }
@@ -104,5 +112,9 @@ public class StatusList2021Status extends CredentialStatus {
 
     public URI getStatusListCredential() {
         return JsonLDUtils.stringToUri(JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_STATUSLISTCREDENTIAL));
+    }
+
+    public String getStatusPurpose(){
+        return JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_STATUSPURPOSE);
     }
 }
