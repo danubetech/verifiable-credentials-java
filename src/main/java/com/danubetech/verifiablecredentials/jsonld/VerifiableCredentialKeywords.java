@@ -38,4 +38,8 @@ public class VerifiableCredentialKeywords {
     public static final String JSONLD_TERM_REVOCATION_LIST_2020_STATUS = "RevocationList2020Status";
     public static final String JSONLD_TERM_REVOCATIONLISTINDEX = "revocationListIndex";
     public static final String JSONLD_TERM_REVOCATIONLISTCREDENTIAL = "revocationListCredential";
+
+    public static final String JSONLD_TERM_STATUS_LIST_2021_ENTRY = "StatusList2021Entry";
+    public static final String JSONLD_TERM_STATUSLISTINDEX = "statusListIndex";
+    public static final String JSONLD_TERM_STATUSLISTCREDENTIAL = "statusListCredential";
 }

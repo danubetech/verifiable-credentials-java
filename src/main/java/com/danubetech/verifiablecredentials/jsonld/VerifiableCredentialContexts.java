@@ -19,6 +19,7 @@ public class VerifiableCredentialContexts {
     public static final URI JSONLD_CONTEXT_W3C_NS_ODRL = URI.create("https://www.w3.org/ns/odrl.jsonld");
     public static final URI JSONLD_CONTEXT_DANUBETECH_2020_CREDENTIALS_V1 = URI.create("https://danubetech.com/2020/credentials/v1");
     public static final URI JSONLD_CONTEXT_W3ID_VC_REVOCATION_LIST_2020_V1 = URI.create("https://w3id.org/vc-revocation-list-2020/v1");
+    public static final URI JSONLD_CONTEXT_W3ID_VC_STATUS_LIST_2021_V1 = URI.create("https://w3id.org/vc/status-list/2021/v1");
     public static final URI JSONLD_CONTEXT_DIF_PRESENTATION_EXCHANGE_SUBMISSIONS_V1 = URI.create("https://identity.foundation/presentation-exchange/submission/v1");
 
     public static final Map<URI, JsonDocument> CONTEXTS;
@@ -44,6 +45,8 @@ public class VerifiableCredentialContexts {
                     JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("danubetech-v1.jsonld")));
             CONTEXTS.put(JSONLD_CONTEXT_W3ID_VC_REVOCATION_LIST_2020_V1,
                     JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("vc-revocation-list-2020-v1.jsonld")));
+            CONTEXTS.put(JSONLD_CONTEXT_W3ID_VC_STATUS_LIST_2021_V1,
+                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("vc-status-list-2021-v1.jsonld")));
             CONTEXTS.put(JSONLD_CONTEXT_DIF_PRESENTATION_EXCHANGE_SUBMISSIONS_V1,
                     JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("presentation-exchange-submissions-v1.jsonld")));
 
