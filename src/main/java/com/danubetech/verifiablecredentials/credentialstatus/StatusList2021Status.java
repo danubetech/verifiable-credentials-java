@@ -66,7 +66,7 @@ public class StatusList2021Status extends CredentialStatus {
             return (B) this;
         }
 
-        public B statusListCredential(String statusPurpose) {
+        public B statusPurpose(String statusPurpose) {
             this.statusPurpose = statusPurpose;
             return (B) this;
         }
