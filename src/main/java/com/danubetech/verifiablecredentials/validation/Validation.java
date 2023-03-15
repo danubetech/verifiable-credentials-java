@@ -36,9 +36,31 @@ public class Validation {
         }
     }
 
+    @Deprecated
     public static void validate(VerifiableCredential verifiableCredential) throws IllegalStateException {
+        validateJsonLd(verifiableCredential);
+    }
+
+    @Deprecated
+    public static void validate(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
+        validateJsonLd(verifiablePresentation);
+    }
+
+    public static void validateJsonLd(VerifiableCredential verifiableCredential) throws IllegalStateException {
 
         foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
+
+        validateJson(verifiableCredential);
+    }
+
+    public static void validateJsonLd(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
+
+        foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
+
+        validateJson(verifiablePresentation);
+    }
+
+    public static void validateJson(VerifiableCredential verifiableCredential) throws IllegalStateException {
 
         validateRun(() -> { validateTrue(verifiableCredential.getJsonObject() != null); }, "Bad or missing JSON object.");
         validateRun(() -> { validateTrue(verifiableCredential.getContexts().size() > 0); }, "Bad or missing '@context'.");
@@ -56,9 +78,7 @@ public class Validation {
         validateRun(() -> { validateTrue(verifiableCredential.getCredentialSubject() != null); }, "Bad or missing 'credentialSubject'.");
     }
 
-    public static void validate(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
-
-        foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
+    public static void validateJson(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
 
         validateRun(() -> { validateTrue(verifiablePresentation.getJsonObject() != null); }, "Bad or missing JSON object.");
         validateRun(() -> { validateTrue(verifiablePresentation.getContexts().size() > 0); }, "Bad or missing '@context'.");
