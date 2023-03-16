@@ -155,4 +155,8 @@ public class VerifiableCredential extends JsonLDObject {
 	public LdProof getLdProof() {
 		return LdProof.getFromJsonLDObject(this);
 	}
+
+	public CredentialStatus getCredentialStatus() {
+		return CredentialStatus.getFromJsonLDObject(this);
+	}
 }
