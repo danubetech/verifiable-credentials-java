@@ -11,7 +11,7 @@ import java.io.Reader;
 import java.net.URI;
 import java.util.Map;
 
-public class StatusList2021Status extends CredentialStatus {
+public class StatusList2021Entry extends CredentialStatus {
 
     public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
     public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_STATUS_LIST_2021_ENTRY };
@@ -19,11 +19,11 @@ public class StatusList2021Status extends CredentialStatus {
     public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
     @JsonCreator
-    public StatusList2021Status() {
+    public StatusList2021Entry() {
         super();
     }
 
-    protected StatusList2021Status(Map<String, Object> jsonObject) {
+    protected StatusList2021Entry(Map<String, Object> jsonObject) {
         super(jsonObject);
     }
 
@@ -31,20 +31,20 @@ public class StatusList2021Status extends CredentialStatus {
      * Factory methods
      */
 
-    public static class Builder<B extends StatusList2021Status.Builder<B>> extends CredentialStatus.Builder<B> {
+    public static class Builder<B extends StatusList2021Entry.Builder<B>> extends CredentialStatus.Builder<B> {
 
         private String statusListIndex;
         private URI statusListCredential;
 
         private String statusPurpose;
 
-        public Builder(StatusList2021Status jsonLdObject) {
+        public Builder(StatusList2021Entry jsonLdObject) {
             super(jsonLdObject);
             this.defaultTypes(true);
         }
 
         @Override
-        public StatusList2021Status build() {
+        public StatusList2021Entry build() {
 
             super.build();
 
@@ -53,7 +53,7 @@ public class StatusList2021Status extends CredentialStatus {
             if (this.statusListCredential != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_STATUSLISTCREDENTIAL, JsonLDUtils.uriToString(this.statusListCredential));
             if (this.statusPurpose != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_STATUSPURPOSE, this.statusPurpose);
 
-            return (StatusList2021Status) this.jsonLdObject;
+            return (StatusList2021Entry) this.jsonLdObject;
         }
 
         public B statusListIndex(String statusListIndex) {
@@ -72,34 +72,34 @@ public class StatusList2021Status extends CredentialStatus {
         }
     }
 
-    public static StatusList2021Status.Builder<? extends StatusList2021Status.Builder<?>> builder() {
-        return new StatusList2021Status.Builder(new StatusList2021Status());
+    public static StatusList2021Entry.Builder<? extends StatusList2021Entry.Builder<?>> builder() {
+        return new StatusList2021Entry.Builder(new StatusList2021Entry());
     }
 
-    public static StatusList2021Status fromJsonObject(Map<String, Object> jsonObject) {
-        return new StatusList2021Status(jsonObject);
+    public static StatusList2021Entry fromJsonObject(Map<String, Object> jsonObject) {
+        return new StatusList2021Entry(jsonObject);
     }
 
-    public static StatusList2021Status fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
+    public static StatusList2021Entry fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
 
-    public static StatusList2021Status fromJson(Reader reader) {
-        return new StatusList2021Status(readJson(reader));
+    public static StatusList2021Entry fromJson(Reader reader) {
+        return new StatusList2021Entry(readJson(reader));
     }
 
-    public static StatusList2021Status fromJson(String json) {
-        return new StatusList2021Status(readJson(json));
+    public static StatusList2021Entry fromJson(String json) {
+        return new StatusList2021Entry(readJson(json));
     }
 
     /*
      * Adding, getting, and removing the JSON-LD object
      */
 
-    public static StatusList2021Status getFromJsonLDObject(JsonLDObject jsonLdObject) {
-        return JsonLDObject.getFromJsonLDObject(StatusList2021Status.class, jsonLdObject);
+    public static StatusList2021Entry getFromJsonLDObject(JsonLDObject jsonLdObject) {
+        return JsonLDObject.getFromJsonLDObject(StatusList2021Entry.class, jsonLdObject);
     }
 
     public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
-        JsonLDObject.removeFromJsonLdObject(StatusList2021Status.class, jsonLdObject);
+        JsonLDObject.removeFromJsonLdObject(StatusList2021Entry.class, jsonLdObject);
     }
 
     /*
