@@ -22,7 +22,7 @@ Dependency:
 	<dependency>
 		<groupId>com.danubetech</groupId>
 		<artifactId>verifiable-credentials-java</artifactId>
-		<version>1.0.0</version>
+		<version>1.2.0</version>
 	</dependency>
 
 ## Examples
