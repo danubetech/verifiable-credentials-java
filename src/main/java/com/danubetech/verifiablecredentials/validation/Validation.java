@@ -55,7 +55,7 @@ public class Validation {
         validateRun(() -> { verifiableCredential.getCredentialSubject(); }, "Bad 'credentialSubject'.");
         validateRun(() -> { validateTrue(verifiableCredential.getCredentialSubject() != null); }, "Bad or missing 'credentialSubject'.");
         validateRun(() -> { if (verifiableCredential.getCredentialStatus() != null) validateTrue(verifiableCredential.getCredentialStatus().getId() != null); }, "'credentialStatus' must contain 'id'.");
-        validateRun(() -> { if (verifiableCredential.getCredentialStatus() != null) validateTrue(verifiableCredential.getCredentialStatus().getType() != null); }, "'credentialStatus' must contain 'type'.np");
+        validateRun(() -> { if (verifiableCredential.getCredentialStatus() != null) validateTrue(verifiableCredential.getCredentialStatus().getType() != null); }, "'credentialStatus' must contain 'type'.");
     }
 
     public static void validate(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
