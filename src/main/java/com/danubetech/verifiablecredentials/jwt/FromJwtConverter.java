@@ -31,31 +31,37 @@ public class FromJwtConverter {
         JWTClaimsSet payload = jwtVerifiableCredential.getPayload();
 
         String jwtId = payload.getJWTID();
-        if (jwtId != null) {
+        if (jwtId != null && payloadVerifiableCredential.getId() == null) {
             verifiableCredentialBuilder.id(URI.create(jwtId));
         }
 
-        String subject = payload.getSubject();
-        if (subject != null) {
-            CredentialSubject credentialSubject = CredentialSubject.builder()
-                    .base(payloadCredentialSubject)
-                    .id(URI.create(subject))
-                    .build();
+        if (payloadCredentialSubject != null) {
+
+            CredentialSubject.Builder credentialSubjectBuilder = CredentialSubject.builder()
+                    .base(payloadCredentialSubject);
+
+            String subject = payload.getSubject();
+            if (subject != null && payloadCredentialSubject.getId() == null) {
+                credentialSubjectBuilder.id(URI.create(subject));
+            }
+
+            CredentialSubject credentialSubject = credentialSubjectBuilder.build();
+
             verifiableCredentialBuilder.credentialSubject(credentialSubject);
         }
 
         String issuer = payload.getIssuer();
-        if (issuer != null) {
+        if (issuer != null && payloadVerifiableCredential.getIssuer() == null) {
             verifiableCredentialBuilder.issuer(URI.create(issuer));
         }
 
         Date notBeforeTime = payload.getNotBeforeTime();
-        if (notBeforeTime != null) {
+        if (notBeforeTime != null && payloadVerifiableCredential.getIssuanceDate() == null) {
             verifiableCredentialBuilder.issuanceDate(notBeforeTime);
         }
 
         Date expirationTime = payload.getExpirationTime();
-        if (expirationTime != null) {
+        if (expirationTime != null && payloadVerifiableCredential.getExpirationDate() == null) {
             verifiableCredentialBuilder.expirationDate(expirationTime);
         }
 
@@ -76,12 +82,12 @@ public class FromJwtConverter {
         JWTClaimsSet payload = jwtVerifiablePresentation.getPayload();
 
         String jwtId = payload.getJWTID();
-        if (jwtId != null) {
+        if (jwtId != null && payloadVerifiablePresentation.getId() == null) {
             verifiablePresentationBuilder.id(URI.create(jwtId));
         }
 
         String issuer = payload.getIssuer();
-        if (issuer != null) {
+        if (issuer != null && payloadVerifiablePresentation.getHolder() == null) {
             verifiablePresentationBuilder.holder(URI.create(issuer));
         }
 
