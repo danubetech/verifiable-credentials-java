@@ -64,6 +64,32 @@ public class FromJwtConverter {
         return verifiableCredential;
     }
 
+    public static VerifiablePresentation fromJwtVerifiablePresentation(JwtVerifiablePresentation jwtVerifiablePresentation) {
+
+        VerifiablePresentation payloadVerifiablePresentation = VerifiablePresentation.fromJson(jwtVerifiablePresentation.getPayloadObject().toString());
+
+        VerifiablePresentation.Builder verifiablePresentationBuilder = VerifiablePresentation.builder()
+                .base(payloadVerifiablePresentation)
+                .defaultContexts(false)
+                .defaultTypes(false);
+
+        JWTClaimsSet payload = jwtVerifiablePresentation.getPayload();
+
+        String jwtId = payload.getJWTID();
+        if (jwtId != null) {
+            verifiablePresentationBuilder.id(URI.create(jwtId));
+        }
+
+        String issuer = payload.getIssuer();
+        if (issuer != null) {
+            verifiablePresentationBuilder.holder(URI.create(issuer));
+        }
+
+        VerifiablePresentation verifiablePresentation = verifiablePresentationBuilder.build();
+
+        return verifiablePresentation;
+    }
+
     public static VerifiablePresentation fromJwtVerifiableCredentialToVerifiablePresentation(JwtVerifiableCredential jwtVerifiableCredential) {
 
         String jwtVerifiableCredentialCompactSerialization = jwtVerifiableCredential.getCompactSerialization();
