@@ -27,6 +27,8 @@ public class JwtVerifiableCredential extends JwtWrappingObject<VerifiableCredent
 
 		JWTClaimsSet jwtPayload = signedJWT.getJWTClaimsSet();
 		Map<String, Object> jsonObject = (Map<String, Object>) jwtPayload.getClaims().get(JwtKeywords.JWT_CLAIM_VC);
+		if (jsonObject == null) return null;
+
 		VerifiableCredential payloadVerifiableCredential = VerifiableCredential.fromJsonObject(new LinkedHashMap<>(jsonObject));
 
 		return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential, signedJWT, compactSerialization);
