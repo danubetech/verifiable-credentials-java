@@ -175,6 +175,57 @@ public class JwtObject {
 		return this.sign_P_256_ES256(privateKey, null, false);
 	}
 
+	public String sign_P_384_ES384(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.ES384), JWSAlgorithm.ES384, kid, canonicalize);
+	}
+
+	public String sign_P_384_ES384(ByteSigner signer) throws JOSEException {
+		return this.sign_P_384_ES384(signer, null, false);
+	}
+
+	public String sign_P_384_ES384(ECPrivateKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_P_384_ES384(new P_384_ES384_PrivateKeySigner(privateKey));
+	}
+
+	public String sign_P_384_ES384(ECPrivateKey privateKey) throws JOSEException {
+		return this.sign_P_384_ES384(privateKey, null, false);
+	}
+
+	public String sign_P_384_ES384(com.nimbusds.jose.jwk.ECKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES384, kid, canonicalize);
+	}
+
+	public String sign_P_384_ES384(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
+		return this.sign_P_384_ES384(privateKey, null, false);
+	}
+
+	public String sign_P_521_ES512(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.ES512), JWSAlgorithm.ES512, kid, canonicalize);
+	}
+
+	public String sign_P_521_ES512(ByteSigner signer) throws JOSEException {
+		return this.sign_P_521_ES512(signer, null, false);
+	}
+
+	public String sign_P_521_ES512(ECPrivateKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_P_521_ES512(new P_521_ES512_PrivateKeySigner(privateKey));
+	}
+
+	public String sign_P_521_ES512(ECPrivateKey privateKey) throws JOSEException {
+		return this.sign_P_521_ES512(privateKey, null, false);
+	}
+
+	public String sign_P_521_ES512(com.nimbusds.jose.jwk.ECKey privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new com.nimbusds.jose.crypto.ECDSASigner(privateKey), JWSAlgorithm.ES512, kid, canonicalize);
+	}
+
+	public String sign_P_521_ES512(com.nimbusds.jose.jwk.ECKey privateKey) throws JOSEException {
+		return this.sign_P_521_ES512(privateKey, null, false);
+	}
+
+
+
+
 	/*
 	 * Verify
 	 */
@@ -240,6 +291,30 @@ public class JwtObject {
 	}
 
 	public boolean verify_P_256_ES256(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
+		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
+	}
+
+	public boolean verify_P_384_ES384(ByteVerifier verifier) throws JOSEException {
+		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.ES384));
+	}
+
+	public boolean verify_P_384_ES384(ECPublicKey publicKey) throws JOSEException {
+		return this.verify_P_384_ES384(new P_384_ES384_PublicKeyVerifier(publicKey));
+	}
+
+	public boolean verify_P_384_ES384(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
+		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
+	}
+
+	public boolean verify_P_521_ES512(ByteVerifier verifier) throws JOSEException {
+		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.ES512));
+	}
+
+	public boolean verify_P_521_ES512(ECPublicKey publicKey) throws JOSEException {
+		return this.verify_P_521_ES512(new P_521_ES512_PublicKeyVerifier(publicKey));
+	}
+
+	public boolean verify_P_521_ES512(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
 		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
 	}
 
