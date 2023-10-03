@@ -68,6 +68,6 @@ public class Validation {
 
         validateRun(() -> { validateTrue(verifiablePresentation.getTypes().size() > 0); }, "Bad or missing 'type'.");
         validateRun(() -> { validateTrue(verifiablePresentation.getTypes().contains(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])); }, "type must contain VerifiablePresentation: " + verifiablePresentation.getTypes());
-        validateRun(() -> { validateTrue(verifiablePresentation.getVerifiableCredential() != null); }, "Bad or missing 'verifiableCredential'.");
+        validateRun(() -> { validateTrue(verifiablePresentation.getVerifiableCredential() != null || verifiablePresentation.getJwtVerifiableCredentialString() != null); }, "Bad or missing 'verifiableCredential'.");
     }
 }

@@ -10,6 +10,7 @@ import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 public class VerifiablePresentation extends JsonLDObject {
@@ -146,7 +147,23 @@ public class VerifiablePresentation extends JsonLDObject {
 	}
 
 	public VerifiableCredential getVerifiableCredential() {
-		return VerifiableCredential.getFromJsonLDObject(this);
+		Object verifiableCredentialObject = this.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL);
+		if ((verifiableCredentialObject instanceof List && ! ((List) verifiableCredentialObject).isEmpty() && ((List) verifiableCredentialObject).get(0) instanceof Map)) {
+			return VerifiableCredential.getFromJsonLDObject(this);
+		} else if (verifiableCredentialObject instanceof Map) {
+			return VerifiableCredential.getFromJsonLDObject(this);
+		}
+		return null;
+	}
+
+	public String getJwtVerifiableCredentialString() {
+		Object verifiableCredentialObject = this.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL);
+		if (verifiableCredentialObject instanceof List && ! ((List) verifiableCredentialObject).isEmpty() && ((List) verifiableCredentialObject).get(0) instanceof String) {
+			return (String) ((List) verifiableCredentialObject).get(0);
+		} else if (verifiableCredentialObject instanceof String) {
+			return (String) verifiableCredentialObject;
+		}
+		return null;
 	}
 
 	public LdProof getLdProof() {
