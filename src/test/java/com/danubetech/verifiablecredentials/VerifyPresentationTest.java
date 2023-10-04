@@ -9,12 +9,19 @@ import com.danubetech.keyformats.crypto.provider.impl.JavaRandomProvider;
 import com.danubetech.keyformats.crypto.provider.impl.JavaSHA256Provider;
 import com.danubetech.keyformats.crypto.provider.impl.TinkEd25519Provider;
 import com.danubetech.verifiablecredentials.validation.Validation;
+import foundation.identity.jsonld.JsonLDUtils;
+import info.weboftrust.ldsignatures.LdProof;
+import info.weboftrust.ldsignatures.signer.RsaSignature2018LdSigner;
+import info.weboftrust.ldsignatures.suites.SignatureSuites;
 import info.weboftrust.ldsignatures.verifier.Ed25519Signature2018LdVerifier;
+import info.weboftrust.ldsignatures.verifier.RsaSignature2018LdVerifier;
 import org.bitcoinj.core.Base58;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.Date;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,10 +35,12 @@ public class VerifyPresentationTest {
 
 	final static VerifiablePresentation verifiablePresentationGood1;
 	final static VerifiablePresentation verifiablePresentationGood2;
+	final static VerifiablePresentation verifiablePresentationGoodMultiSubject;
 	final static VerifiablePresentation verifiablePresentationBad1;
 	final static VerifiablePresentation verifiablePresentationBad2;
 	final static VerifiableCredential verifiableCredentialGood1;
 	final static VerifiableCredential verifiableCredentialGood2;
+	final static VerifiableCredential verifiableCredentialGoodMultiSubject;
 	final static VerifiableCredential verifiableCredentialBad1;
 	final static VerifiableCredential verifiableCredentialBad2;
 
@@ -46,10 +55,12 @@ public class VerifyPresentationTest {
 
 			verifiablePresentationGood1 = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.good.vp1.jsonld")));
 			verifiablePresentationGood2 = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.good.vp2.jsonld")));
+			verifiablePresentationGoodMultiSubject = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.good.multisubject.vp.jsonld")));
 			verifiablePresentationBad1 = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.bad.vp1.jsonld")));
 			verifiablePresentationBad2 = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.bad.vp2.jsonld")));
 			verifiableCredentialGood1 = verifiablePresentationGood1.getVerifiableCredential();
 			verifiableCredentialGood2 = verifiablePresentationGood2.getVerifiableCredential();
+			verifiableCredentialGoodMultiSubject = verifiablePresentationGoodMultiSubject.getVerifiableCredential();
 			verifiableCredentialBad1 = verifiablePresentationBad1.getVerifiableCredential();
 			verifiableCredentialBad2 = verifiablePresentationBad2.getVerifiableCredential();
 		} catch (Exception ex) {
@@ -71,10 +82,12 @@ public class VerifyPresentationTest {
 
 		Validation.validate(verifiablePresentationGood1);
 		Validation.validate(verifiablePresentationGood2);
+		Validation.validate(verifiablePresentationGoodMultiSubject);
 		Validation.validate(verifiablePresentationBad1);
 		Validation.validate(verifiablePresentationBad2);
 		Validation.validate(verifiableCredentialGood1);
 		Validation.validate(verifiableCredentialGood2);
+		Validation.validate(verifiableCredentialGoodMultiSubject);
 		Validation.validate(verifiableCredentialBad1);
 		Validation.validate(verifiableCredentialBad2);
 	}
@@ -100,8 +113,20 @@ public class VerifyPresentationTest {
 		boolean verify = verifier.verify(verifiableCredentialGood2);
 
 		assertTrue(verify);
-		assertEquals("Bachelor of Science and Arts", ((Map<String, Object>) verifiableCredentialGood1.getCredentialSubject().getClaims().get("degree")).get("name"));
+		assertEquals("Bachelor of Science and Arts", ((Map<String, Object>) verifiableCredentialGood2.getCredentialSubject().getClaims().get("degree")).get("name"));
 	}
+
+	@Test
+	void testVerifyGoodCredentialMultiSubject() throws Exception {
+
+		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
+		boolean verify = verifier.verify(verifiableCredentialGoodMultiSubject);
+
+		assertTrue(verify);
+		assertEquals("Bachelor of Science and Arts", ((Map<String, Object>) verifiableCredentialGoodMultiSubject.getCredentialSubject().getClaims().get("degree")).get("name"));
+		assertEquals("Master of Arts", ((Map<String, Object>) verifiableCredentialGoodMultiSubject.getCredentialSubjects().get(1).getClaims().get("degree")).get("name"));
+	}
+
 
 	/*
 	 * BAD CREDENTIAL
@@ -145,6 +170,15 @@ public class VerifyPresentationTest {
 
 		Ed25519Signature2018LdVerifier verifier = new Ed25519Signature2018LdVerifier(publicKeyPresentation2);
 		boolean verify = verifier.verify(verifiablePresentationGood2);
+
+		assertTrue(verify);
+	}
+
+	@Test
+	void testVerifyGoodPresentationMultiSubject() throws Exception {
+
+		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
+		boolean verify = verifier.verify(verifiablePresentationGoodMultiSubject);
 
 		assertTrue(verify);
 	}
