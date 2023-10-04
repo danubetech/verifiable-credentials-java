@@ -1,0 +1,17 @@
+{
+	"@context": [
+		"https://www.w3.org/2018/credentials/v1"
+	],
+	"id": "http://example.edu/credentials/1872",
+	"type": ["VerifiableCredential", "UniversityDegreeCredential"],
+	"issuer": "https://example.edu/issuers/565049",
+	"issuanceDate": "2010-01-01T19:73:24Z",
+	"credentialSubject": {
+		"id": "did:example:ebfeb1f712ebc6f1c276e12ec21",
+		"givenName": "Manu",
+		"familyName": "Sporny",
+		"college": {
+			"id": "did:example:c276e12ec21ebfeb1f712ebc6f1"
+		}
+	}
+}
