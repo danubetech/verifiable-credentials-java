@@ -1,7 +1,6 @@
 package com.danubetech.verifiablecredentials.proof;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
-import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -50,7 +49,7 @@ public class BlockchainHashProof2020 extends LdProof {
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
-		return new Builder(new BlockchainHashProof2020());
+		return new Builder<? extends Builder<?>>(new BlockchainHashProof2020());
 	}
 
 	public static BlockchainHashProof2020 fromJsonObject(Map<String, Object> jsonObject) {

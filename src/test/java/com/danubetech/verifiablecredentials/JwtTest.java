@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JwtTest {
 
-	static RSAKey rsaKey;
+	static final RSAKey rsaKey;
 
 	static {
 
@@ -27,7 +27,7 @@ public class JwtTest {
 	void testSign() throws Exception {
 
 		Map<String, Object> claims = new LinkedHashMap<>();
-		Map<String, Object> driversLicense = new LinkedHashMap<String, Object>();
+		Map<String, Object> driversLicense = new LinkedHashMap<>();
 		driversLicense.put("licenseClass", "trucks");
 		driversLicense.put("suspended", Boolean.FALSE);
 		claims.put("name", "M S");

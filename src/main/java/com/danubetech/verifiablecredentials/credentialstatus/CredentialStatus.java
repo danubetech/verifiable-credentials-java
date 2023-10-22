@@ -1,12 +1,11 @@
 package com.danubetech.verifiablecredentials.credentialstatus;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
-import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.danubetech.verifiablecredentials.proof.BlockchainHashProof2020;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
-import foundation.identity.jsonld.JsonLDUtils;
 
 import java.io.Reader;
 import java.net.URI;
@@ -48,7 +47,7 @@ public class CredentialStatus extends JsonLDObject {
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
-		return new Builder(new CredentialStatus());
+		return new Builder<? extends BlockchainHashProof2020.Builder<?>>(new CredentialStatus());
 	}
 
 	public static CredentialStatus fromJsonObject(Map<String, Object> jsonObject) {

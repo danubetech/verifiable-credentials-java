@@ -3,6 +3,7 @@ package com.danubetech.verifiablecredentials;
 import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.danubetech.verifiablecredentials.proof.BlockchainHashProof2020;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
@@ -77,7 +78,7 @@ public class VerifiablePresentation extends JsonLDObject {
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
-		return new Builder(new VerifiablePresentation());
+		return new Builder<? extends BlockchainHashProof2020.Builder<?>>(new VerifiablePresentation());
 	}
 
 	public static VerifiablePresentation fromJsonObject(Map<String, Object> jsonObject) {
@@ -148,7 +149,7 @@ public class VerifiablePresentation extends JsonLDObject {
 
 	public VerifiableCredential getVerifiableCredential() {
 		Object verifiableCredentialObject = this.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL);
-		if ((verifiableCredentialObject instanceof List && ! ((List) verifiableCredentialObject).isEmpty() && ((List) verifiableCredentialObject).get(0) instanceof Map)) {
+		if ((verifiableCredentialObject instanceof List<?> && ! ((List<?>) verifiableCredentialObject).isEmpty() && ((List<?>) verifiableCredentialObject).get(0) instanceof Map)) {
 			return VerifiableCredential.getFromJsonLDObject(this);
 		} else if (verifiableCredentialObject instanceof Map) {
 			return VerifiableCredential.getFromJsonLDObject(this);
@@ -158,8 +159,8 @@ public class VerifiablePresentation extends JsonLDObject {
 
 	public String getJwtVerifiableCredentialString() {
 		Object verifiableCredentialObject = this.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL);
-		if (verifiableCredentialObject instanceof List && ! ((List) verifiableCredentialObject).isEmpty() && ((List) verifiableCredentialObject).get(0) instanceof String) {
-			return (String) ((List) verifiableCredentialObject).get(0);
+		if (verifiableCredentialObject instanceof List<?> && ! ((List<?>) verifiableCredentialObject).isEmpty() && ((List<?>) verifiableCredentialObject).get(0) instanceof String) {
+			return (String) ((List<?>) verifiableCredentialObject).get(0);
 		} else if (verifiableCredentialObject instanceof String) {
 			return (String) verifiableCredentialObject;
 		}

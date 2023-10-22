@@ -2,7 +2,6 @@ package com.danubetech.verifiablecredentials.jwt;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.util.JSONObjectUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 

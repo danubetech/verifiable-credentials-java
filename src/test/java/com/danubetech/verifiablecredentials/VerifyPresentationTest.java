@@ -1,7 +1,5 @@
 package com.danubetech.verifiablecredentials;
 
-import com.danubetech.keyformats.crypto.provider.RandomProvider;
-import com.danubetech.keyformats.crypto.provider.SHA256Provider;
 import com.danubetech.keyformats.crypto.provider.Ed25519Provider;
 import com.danubetech.keyformats.crypto.provider.RandomProvider;
 import com.danubetech.keyformats.crypto.provider.SHA256Provider;
@@ -16,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,10 +43,10 @@ public class VerifyPresentationTest {
 			publicKeyCredential1 = Base58.decode("5TVraf9itbKXrRvt2DSS95Gw4vqU3CHAdetoufdcKazA");
 			publicKeyCredential2 = Base58.decode("5yKdnU7ToTjAoRNDzfuzVTfWBH38qyhE1b9xh4v8JaWF");
 
-			verifiablePresentationGood1 = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.good.vp1.jsonld")));
-			verifiablePresentationGood2 = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.good.vp2.jsonld")));
-			verifiablePresentationBad1 = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.bad.vp1.jsonld")));
-			verifiablePresentationBad2 = VerifiablePresentation.fromJson(new InputStreamReader(VerifyPresentationTest.class.getResourceAsStream("signed.bad.vp2.jsonld")));
+			verifiablePresentationGood1 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyPresentationTest.class.getResourceAsStream("signed.good.vp1.jsonld"))));
+			verifiablePresentationGood2 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyPresentationTest.class.getResourceAsStream("signed.good.vp2.jsonld"))));
+			verifiablePresentationBad1 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyPresentationTest.class.getResourceAsStream("signed.bad.vp1.jsonld"))));
+			verifiablePresentationBad2 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyPresentationTest.class.getResourceAsStream("signed.bad.vp2.jsonld"))));
 			verifiableCredentialGood1 = verifiablePresentationGood1.getVerifiableCredential();
 			verifiableCredentialGood2 = verifiablePresentationGood2.getVerifiableCredential();
 			verifiableCredentialBad1 = verifiablePresentationBad1.getVerifiableCredential();

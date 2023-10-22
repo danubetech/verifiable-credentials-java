@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Date;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,7 +21,7 @@ public class SignPresentationTest {
 	@Test
 	void testSign() throws Throwable {
 
-		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJson(new InputStreamReader(VerifyCredentialTest.class.getResourceAsStream("input.vp.jsonld")));
+		VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyCredentialTest.class.getResourceAsStream("input.vp.jsonld"))));
 
 		URI verificationMethod = URI.create("did:sov:1yvXbmgPoUm4dl66D7KhyD#keys-1");
 		Date created = JsonLDUtils.DATE_FORMAT.parse("2018-01-01T21:19:10Z");

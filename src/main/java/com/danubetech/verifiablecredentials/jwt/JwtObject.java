@@ -324,8 +324,6 @@ public class JwtObject {
 
 	private static class EscapedSlashWorkaroundJWSObject extends JWSObject {
 
-		private static final long serialVersionUID = -587898962717783109L;
-
 		public EscapedSlashWorkaroundJWSObject(final JWSHeader jwsHeader, final JWTClaimsSet jwtClaimsSet, boolean canonicalize) {
 			super(jwsHeader, makePayload(jwtClaimsSet, canonicalize));
 		}

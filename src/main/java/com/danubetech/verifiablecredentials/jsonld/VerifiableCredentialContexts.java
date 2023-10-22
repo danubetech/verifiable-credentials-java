@@ -10,6 +10,7 @@ import info.weboftrust.ldsignatures.jsonld.LDSecurityContexts;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class VerifiableCredentialContexts {
 
@@ -34,21 +35,21 @@ public class VerifiableCredentialContexts {
             CONTEXTS.putAll(LDSecurityContexts.CONTEXTS);
 
             CONTEXTS.put(JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1,
-                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("credentials-v1.jsonld")));
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("credentials-v1.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V2,
-                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("credentials-v2-unstable.jsonld")));
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("credentials-v2-unstable.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_W3C_2018_CREDENTIALS_EXAMPLES_V1,
-                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("credentials-examples-v1.jsonld")));
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("credentials-examples-v1.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_W3C_NS_ODRL,
-                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("odrl.jsonld")));
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("odrl.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_DANUBETECH_2020_CREDENTIALS_V1,
-                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("danubetech-v1.jsonld")));
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("danubetech-v1.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_W3ID_VC_REVOCATION_LIST_2020_V1,
-                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("vc-revocation-list-2020-v1.jsonld")));
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("vc-revocation-list-2020-v1.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_W3ID_VC_STATUS_LIST_2021_V1,
-                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("vc-status-list-2021-v1.jsonld")));
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("vc-status-list-2021-v1.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_DIF_PRESENTATION_EXCHANGE_SUBMISSIONS_V1,
-                    JsonDocument.of(MediaType.JSON_LD, VerifiableCredentialContexts.class.getResourceAsStream("presentation-exchange-submissions-v1.jsonld")));
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("presentation-exchange-submissions-v1.jsonld"))));
 
             for (Map.Entry<URI, JsonDocument> context : CONTEXTS.entrySet()) {
                 context.getValue().setDocumentUrl(context.getKey());

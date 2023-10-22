@@ -19,7 +19,7 @@ public class JwtJwtVerifiablePresentation extends JwtWrappingObject<JwtVerifiabl
 	 * Factory methods
 	 */
 
-	public static JwtJwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential, String aud) throws  IOException {
+	public static JwtJwtVerifiablePresentation fromJwtVerifiableCredential(JwtVerifiableCredential jwtVerifiableCredential, String aud) throws IOException {
 
 		JwtVerifiableCredential payloadJwtVerifiableCredential = jwtVerifiableCredential;
 		VerifiablePresentation verifiablePresentation = FromJwtConverter.fromJwtVerifiableCredentialToVerifiablePresentation(payloadJwtVerifiableCredential);
@@ -28,7 +28,7 @@ public class JwtJwtVerifiablePresentation extends JwtWrappingObject<JwtVerifiabl
 
 		Date issueTime = new Date();
 		
-		payloadBuilder.jwtID("urn:uuid:" + UUID.randomUUID().toString());
+		payloadBuilder.jwtID("urn:uuid:" + UUID.randomUUID());
 		payloadBuilder.issuer(jwtVerifiableCredential.getPayload().getSubject());
 		payloadBuilder.issueTime(issueTime);
 		payloadBuilder.notBeforeTime(issueTime);

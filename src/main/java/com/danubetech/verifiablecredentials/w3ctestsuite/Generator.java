@@ -42,13 +42,13 @@ public class Generator {
 
 		String input = readInput(new File(argInput));
 
-		if (input == null || input.trim().length() < 1) throw new NullPointerException();
+		if (input.trim().isEmpty()) throw new NullPointerException();
 
 		// do the work
 
 		try {
 
-			String output = null;
+			String output;
 
 			if (argJwt == null) {
 
@@ -165,7 +165,7 @@ public class Generator {
 	static String readInput(File input) throws Exception {
 
 		BufferedReader reader = new BufferedReader(new FileReader(input));
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		String line;
 		while ((line = reader.readLine()) != null) buffer.append(line);

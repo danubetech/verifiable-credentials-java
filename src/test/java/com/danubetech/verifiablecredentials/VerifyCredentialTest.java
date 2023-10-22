@@ -5,6 +5,7 @@ import info.weboftrust.ldsignatures.verifier.RsaSignature2018LdVerifier;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +14,7 @@ public class VerifyCredentialTest {
 	@Test
 	void testVerify() throws Throwable {
 
-		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(VerifyCredentialTest.class.getResourceAsStream("signed.good.vc.jsonld")));
+		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyCredentialTest.class.getResourceAsStream("signed.good.vc.jsonld"))));
 
 		Validation.validate(verifiableCredential);
 
@@ -31,7 +32,7 @@ public class VerifyCredentialTest {
 	@Test
 	void testBadVerify() throws Throwable {
 
-		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(VerifyCredentialTest.class.getResourceAsStream("signed.bad.vc.jsonld")));
+		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyCredentialTest.class.getResourceAsStream("signed.bad.vc.jsonld"))));
 
 		Validation.validate(verifiableCredential);
 

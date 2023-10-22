@@ -7,7 +7,6 @@ import com.danubetech.verifiablecredentials.proof.BlockchainHashProof2020;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
-import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
@@ -67,7 +66,7 @@ public class RevocationQuery2020Status extends CredentialStatus {
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
-		return new Builder(new RevocationQuery2020Status());
+		return new Builder<? extends BlockchainHashProof2020.Builder<?>>(new RevocationQuery2020Status());
 	}
 
 	public static RevocationQuery2020Status fromJsonObject(Map<String, Object> jsonObject) {

@@ -5,6 +5,7 @@ import com.apicatalog.jsonld.lang.Keywords;
 import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import com.danubetech.verifiablecredentials.proof.BlockchainHashProof2020;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDKeywords;
 import foundation.identity.jsonld.JsonLDObject;
@@ -14,7 +15,6 @@ import java.io.Reader;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CredentialSubject extends JsonLDObject {
 
@@ -62,7 +62,7 @@ public class CredentialSubject extends JsonLDObject {
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
-		return new Builder(new CredentialSubject());
+		return new Builder<? extends BlockchainHashProof2020.Builder<?>>(new CredentialSubject());
 	}
 
 	public static CredentialSubject fromJsonObject(Map<String, Object> jsonObject) {
