@@ -49,7 +49,7 @@ public class BlockchainHashProof2020 extends LdProof {
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
-		return new Builder<? extends Builder<?>>(new BlockchainHashProof2020());
+		return new Builder<>(new BlockchainHashProof2020());
 	}
 
 	public static BlockchainHashProof2020 fromJsonObject(Map<String, Object> jsonObject) {

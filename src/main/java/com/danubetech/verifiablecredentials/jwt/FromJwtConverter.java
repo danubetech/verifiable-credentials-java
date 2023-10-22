@@ -24,7 +24,7 @@ public class FromJwtConverter {
         CredentialSubject payloadCredentialSubject = payloadVerifiableCredential.getCredentialSubject();
         CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
 
-        VerifiableCredential.Builder<? extends BlockchainHashProof2020.Builder<?>> verifiableCredentialBuilder = VerifiableCredential.builder()
+        VerifiableCredential.Builder<? extends VerifiableCredential.Builder<?>> verifiableCredentialBuilder = VerifiableCredential.builder()
                 .base(payloadVerifiableCredential)
                 .defaultContexts(false)
                 .defaultTypes(false);
@@ -38,7 +38,7 @@ public class FromJwtConverter {
 
         if (payloadCredentialSubject != null) {
 
-            CredentialSubject.Builder<? extends BlockchainHashProof2020.Builder<?>> credentialSubjectBuilder = CredentialSubject.builder()
+            CredentialSubject.Builder<? extends CredentialSubject.Builder<?>> credentialSubjectBuilder = CredentialSubject.builder()
                     .base(payloadCredentialSubject);
 
             String subject = payload.getSubject();
@@ -75,7 +75,7 @@ public class FromJwtConverter {
 
         VerifiablePresentation payloadVerifiablePresentation = VerifiablePresentation.fromJson(jwtVerifiablePresentation.getPayloadObject().toString());
 
-        VerifiablePresentation.Builder<? extends BlockchainHashProof2020.Builder<?>> verifiablePresentationBuilder = VerifiablePresentation.builder()
+        VerifiablePresentation.Builder<? extends VerifiablePresentation.Builder<?>> verifiablePresentationBuilder = VerifiablePresentation.builder()
                 .base(payloadVerifiablePresentation)
                 .defaultContexts(false)
                 .defaultTypes(false);

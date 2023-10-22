@@ -3,7 +3,6 @@ package com.danubetech.verifiablecredentials.credentialstatus;
 import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
-import com.danubetech.verifiablecredentials.proof.BlockchainHashProof2020;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
@@ -66,7 +65,7 @@ public class RevocationList2020Status extends CredentialStatus {
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
-		return new Builder<? extends BlockchainHashProof2020.Builder<?>>(new RevocationList2020Status());
+		return new Builder<>(new RevocationList2020Status());
 	}
 
 	public static RevocationList2020Status fromJsonObject(Map<String, Object> jsonObject) {
