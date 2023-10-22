@@ -77,6 +77,7 @@ public class Generator {
 				if (argDecode) {
 
 					JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromCompactSerialization(input);
+					if (jwtVerifiableCredential == null) throw new IllegalArgumentException("Cannot parse JWT compact serialization");
 					//if (! jwtVerifiableCredential.verify_RSA_RS256(rsaKey.toPublicJWK())) throw new GeneralSecurityException("Invalid signature.");
 
 					VerifiableCredential verifiableCredential = FromJwtConverter.fromJwtVerifiableCredential(jwtVerifiableCredential);
