@@ -4,7 +4,6 @@ import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
-import com.danubetech.verifiablecredentials.proof.BlockchainHashProof2020;
 import com.nimbusds.jwt.JWTClaimsSet;
 import foundation.identity.jsonld.JsonLDUtils;
 
