@@ -147,23 +147,45 @@ public class VerifiablePresentation extends JsonLDObject {
 	}
 
 	public VerifiableCredential getVerifiableCredential() {
-		Object verifiableCredentialObject = this.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL);
-		if ((verifiableCredentialObject instanceof List<?> && ! ((List<?>) verifiableCredentialObject).isEmpty() && ((List<?>) verifiableCredentialObject).get(0) instanceof Map)) {
-			return VerifiableCredential.getFromJsonLDObject(this);
-		} else if (verifiableCredentialObject instanceof Map) {
-			return VerifiableCredential.getFromJsonLDObject(this);
-		}
-		return null;
+		return getVerifiableCredentials().stream().findFirst().orElse(null);
 	}
 
 	public String getJwtVerifiableCredentialString() {
+		return getJwtVerifiableCredentialStrings().stream().findFirst().orElse(null);
+	}
+
+	private List<?> getVerifiableCredentialObjects() {
 		Object verifiableCredentialObject = this.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL);
-		if (verifiableCredentialObject instanceof List<?> && ! ((List<?>) verifiableCredentialObject).isEmpty() && ((List<?>) verifiableCredentialObject).get(0) instanceof String) {
-			return (String) ((List<?>) verifiableCredentialObject).get(0);
-		} else if (verifiableCredentialObject instanceof String) {
-			return (String) verifiableCredentialObject;
+		if (verifiableCredentialObject instanceof List<?>) {
+			return (List<?>) verifiableCredentialObject;
+		} else if (verifiableCredentialObject != null) {
+			return List.of(verifiableCredentialObject);
+		} else {
+			return List.of();
 		}
-		return null;
+	}
+
+	public List<VerifiableCredential> getVerifiableCredentials() {
+		List<?> vcObjs = getVerifiableCredentialObjects();
+		return vcObjs.stream()
+				.filter(o -> o instanceof Map)
+				.map(o -> VerifiableCredential.fromMap((Map) o))
+				.toList();
+	}
+
+	public List<String> getJwtVerifiableCredentialStrings() {
+		List<?> vcObjs = getVerifiableCredentialObjects();
+		return vcObjs.stream()
+				.filter(o -> o instanceof String)
+				.map(o -> (String) o)
+				.toList();
+	}
+
+	public List<?> getUnsupportedVerifiableCredentials() {
+		List<?> vcObjs = getVerifiableCredentialObjects();
+		return vcObjs.stream()
+				.filter(o -> ! (o instanceof Map || o instanceof String))
+				.toList();
 	}
 
 	public LdProof getLdProof() {
