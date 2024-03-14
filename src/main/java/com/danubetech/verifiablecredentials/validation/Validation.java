@@ -58,6 +58,11 @@ public class Validation {
 
     public static void validate(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
 
+        validate(verifiablePresentation, true);
+    }
+
+    public static void validate(VerifiablePresentation verifiablePresentation, boolean requireVc) throws IllegalStateException {
+
         foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
 
         validateRun(() -> validateTrue(verifiablePresentation.getJsonObject() != null), "Bad or missing JSON object.");
@@ -69,6 +74,8 @@ public class Validation {
         validateRun(() -> validateTrue(! verifiablePresentation.getTypes().isEmpty()), "Bad or missing 'type'.");
         validateRun(() -> validateTrue(verifiablePresentation.getTypes().contains(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])), "type must contain VerifiablePresentation: " + verifiablePresentation.getTypes());
         validateRun(() -> validateTrue(verifiablePresentation.getUnsupportedVerifiableCredentials().isEmpty()), "Unsupported type in 'verifiableCredential'.");
-        validateRun(() -> validateTrue(verifiablePresentation.getVerifiableCredential() != null || verifiablePresentation.getJwtVerifiableCredentialString() != null), "Missing 'verifiableCredential'.");
+        if (requireVc) {
+            validateRun(() -> validateTrue(verifiablePresentation.getVerifiableCredential() != null || verifiablePresentation.getJwtVerifiableCredentialString() != null), "Missing 'verifiableCredential'.");
+        }
     }
 }
