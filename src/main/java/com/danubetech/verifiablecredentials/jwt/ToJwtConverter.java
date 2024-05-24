@@ -19,7 +19,7 @@ public class ToJwtConverter {
      * from JSON-LD to JWT VC
      */
 
-    public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, String aud) {
+    public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, String aud, boolean preserveVerifiableCredentialProperties) {
 
         JWTClaimsSet.Builder jwtPayloadBuilder = new JWTClaimsSet.Builder();
 
@@ -33,27 +33,28 @@ public class ToJwtConverter {
         URI id = verifiableCredential.getId();
         if (id != null) {
             jwtPayloadBuilder.jwtID(id.toString());
-            JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, JsonLDKeywords.JSONLD_TERM_ID);
+            if (!preserveVerifiableCredentialProperties) {
+                JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, JsonLDKeywords.JSONLD_TERM_ID);
+            }
         }
 
         CredentialSubject credentialSubject = verifiableCredential.getCredentialSubject();
-        if (credentialSubject != null) {
-            if (credentialSubject.getId() != null) {
-                jwtPayloadBuilder.subject(credentialSubject.getId().toString());
+        if (credentialSubject != null && credentialSubject.getId() != null) {
+            jwtPayloadBuilder.subject(credentialSubject.getId().toString());
+            if (!preserveVerifiableCredentialProperties) {
+                CredentialSubject payloadCredentialSubject = CredentialSubject.builder()
+                        .base(credentialSubject)
+                        .build();
+                JsonLDUtils.jsonLdRemove(payloadCredentialSubject, JsonLDKeywords.JSONLD_TERM_ID);
+                CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
+                payloadCredentialSubject.addToJsonLDObject(payloadVerifiableCredential);
             }
-            CredentialSubject payloadCredentialSubject = CredentialSubject.builder()
-                    .base(credentialSubject)
-                    .build();
-            JsonLDUtils.jsonLdRemove(payloadCredentialSubject, JsonLDKeywords.JSONLD_TERM_ID);
-            CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
-            payloadCredentialSubject.addToJsonLDObject(payloadVerifiableCredential);
         }
 
         URI issuer = verifiableCredential.getIssuer();
         if (issuer != null) {
             jwtPayloadBuilder.issuer(issuer.toString());
-            if ( verifiableCredential.getJsonObject().containsKey(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER)
-                    && !( verifiableCredential.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER) instanceof Map)) {
+            if (!preserveVerifiableCredentialProperties) {
                 JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
             }
         }
@@ -61,13 +62,17 @@ public class ToJwtConverter {
         Date issuanceDate = verifiableCredential.getIssuanceDate();
         if (issuanceDate != null) {
             jwtPayloadBuilder.notBeforeTime(issuanceDate);
-            JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE);
+            if (!preserveVerifiableCredentialProperties) {
+                JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE);
+            }
         }
 
         Date expirationDate = verifiableCredential.getExpirationDate();
         if (expirationDate != null) {
             jwtPayloadBuilder.expirationTime(expirationDate);
-            JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE);
+            if (!preserveVerifiableCredentialProperties) {
+                JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE);
+            }
         }
 
         if (aud != null) {
@@ -82,9 +87,19 @@ public class ToJwtConverter {
         return new JwtVerifiableCredential(jwtPayload, payloadVerifiableCredential, null, null);
     }
 
+    public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, String aud) {
+
+        return toJwtVerifiableCredential(verifiableCredential, null, false);
+    }
+
+    public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, boolean preserveVerifiableCredentialProperties) {
+
+        return toJwtVerifiableCredential(verifiableCredential, null, preserveVerifiableCredentialProperties);
+    }
+
     public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential) {
 
-        return toJwtVerifiableCredential(verifiableCredential, null);
+        return toJwtVerifiableCredential(verifiableCredential, null, false);
     }
 
     /*
