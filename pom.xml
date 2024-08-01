@@ -36,10 +36,6 @@
 			<url>https://repo.danubetech.com/repository/maven-public/</url>
 		</repository>
 		<repository>
-			<id>sovrin</id>
-			<url>https://repo.sovrin.org/repository/maven-public</url>
-		</repository>
-		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
