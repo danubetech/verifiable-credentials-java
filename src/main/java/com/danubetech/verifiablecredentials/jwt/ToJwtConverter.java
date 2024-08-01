@@ -19,7 +19,7 @@ public class ToJwtConverter {
      * from JSON-LD to JWT VC
      */
 
-    public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, String aud, boolean preserveVerifiableCredentialProperties) {
+    public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, String aud, boolean preserveVerifiableCredentialProperties, boolean includeIat) {
 
         JWTClaimsSet.Builder jwtPayloadBuilder = new JWTClaimsSet.Builder();
 
@@ -62,6 +62,7 @@ public class ToJwtConverter {
         Date issuanceDate = verifiableCredential.getIssuanceDate();
         if (issuanceDate != null) {
             jwtPayloadBuilder.notBeforeTime(issuanceDate);
+            if (includeIat) jwtPayloadBuilder.issueTime(issuanceDate);
             if (!preserveVerifiableCredentialProperties) {
                 JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE);
             }
@@ -89,17 +90,17 @@ public class ToJwtConverter {
 
     public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, String aud) {
 
-        return toJwtVerifiableCredential(verifiableCredential, null, false);
+        return toJwtVerifiableCredential(verifiableCredential, null, false, false);
     }
 
-    public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, boolean preserveVerifiableCredentialProperties) {
+    public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential, boolean preserveVerifiableCredentialProperties, boolean includeIat) {
 
-        return toJwtVerifiableCredential(verifiableCredential, null, preserveVerifiableCredentialProperties);
+        return toJwtVerifiableCredential(verifiableCredential, null, preserveVerifiableCredentialProperties, includeIat);
     }
 
     public static JwtVerifiableCredential toJwtVerifiableCredential(VerifiableCredential verifiableCredential) {
 
-        return toJwtVerifiableCredential(verifiableCredential, null, false);
+        return toJwtVerifiableCredential(verifiableCredential, null, false, false);
     }
 
     /*
