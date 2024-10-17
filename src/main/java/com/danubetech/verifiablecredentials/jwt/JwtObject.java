@@ -49,8 +49,8 @@ public class JwtObject {
 	 */
 
 	private String sign(JWSSigner jwsSigner, JWSAlgorithm alg, String kid, boolean canonicalize) throws JOSEException {
-		
-		if(this.header == null || this.header.getKeyID() == null){
+
+		if(this.header == null || this.header.getKeyID() == null || this.header.getAlgorithm() == null){
 			JWSHeader.Builder jwsHeaderBuilder = new JWSHeader.Builder(alg);
 			jwsHeaderBuilder.type(JOSEObjectType.JWT);
 			if (kid != null) jwsHeaderBuilder.keyID(kid);
