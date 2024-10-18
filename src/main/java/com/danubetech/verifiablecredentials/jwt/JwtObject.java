@@ -23,6 +23,7 @@ public class JwtObject {
 	private final JWTClaimsSet payload;
 	private JWSObject jwsObject;
 	private String compactSerialization;
+	private JWSHeader header;
 
 	public JwtObject(JWTClaimsSet payload, JWSObject jwsObject, String compactSerialization) {
 
@@ -33,19 +34,30 @@ public class JwtObject {
 		this.compactSerialization = compactSerialization;
 	}
 
+	public JwtObject(JWTClaimsSet payload, JWSObject jwsObject, String compactSerialization, JWSHeader header) {
+
+		if (payload == null) throw new NullPointerException();
+
+		this.payload = payload;
+		this.jwsObject = jwsObject;
+		this.compactSerialization = compactSerialization;
+		this.header = header;
+	}
+
 	/*
 	 * Sign
 	 */
 
 	private String sign(JWSSigner jwsSigner, JWSAlgorithm alg, String kid, boolean canonicalize) throws JOSEException {
 
-		JWSHeader.Builder jwsHeaderBuilder = new JWSHeader.Builder(alg);
-		jwsHeaderBuilder.type(JOSEObjectType.JWT);
-		if (kid != null) jwsHeaderBuilder.keyID(kid);
+		if(this.header == null || this.header.getKeyID() == null || this.header.getAlgorithm() == null){
+			JWSHeader.Builder jwsHeaderBuilder = new JWSHeader.Builder(alg);
+			jwsHeaderBuilder.type(JOSEObjectType.JWT);
+			if (kid != null) jwsHeaderBuilder.keyID(kid);
+			this.header = jwsHeaderBuilder.build();
+		}
 
-		JWSHeader jwsHeader = jwsHeaderBuilder.build();
-
-		JWSObject jwsObject = new EscapedSlashWorkaroundJWSObject(jwsHeader, this.getPayload(), canonicalize);
+		JWSObject jwsObject = new EscapedSlashWorkaroundJWSObject(this.header, this.getPayload(), canonicalize);
 
 		jwsObject.sign(jwsSigner);
 
@@ -358,4 +370,10 @@ public class JwtObject {
 	public String getCompactSerialization() {
 		return this.compactSerialization;
 	}
+
+	public JWSHeader getHeader() {
+		return this.header;
+	}
+
+
 }
