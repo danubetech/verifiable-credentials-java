@@ -1,10 +1,14 @@
 package com.danubetech.verifiablecredentials.validation;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.danubetech.verifiablecredentials.VerifiableCredentialV2;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
+import com.danubetech.verifiablecredentials.credentialstatus.CredentialStatus;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
 
 public class Validation {
 
@@ -69,5 +73,49 @@ public class Validation {
         validateRun(() -> validateTrue(! verifiablePresentation.getTypes().isEmpty()), "Bad or missing 'type'.");
         validateRun(() -> validateTrue(verifiablePresentation.getTypes().contains(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])), "type must contain VerifiablePresentation: " + verifiablePresentation.getTypes());
         validateRun(() -> validateTrue(verifiablePresentation.getVerifiableCredential() != null || verifiablePresentation.getJwtVerifiableCredentialString() != null), "Bad or missing 'verifiableCredential'.");
+    }
+
+
+    public static void validate(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
+
+        foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
+
+        validateRun(() -> validateTrue(verifiableCredential.getJsonObject() != null), "Bad or missing JSON object.");
+        validateRun(() -> validateTrue(!verifiableCredential.getContexts().isEmpty()), "Bad or missing '@context'.");
+        validateRun(() -> validateUrl(verifiableCredential.getContexts().get(0)), "@context must be a valid URI: " + verifiableCredential.getContexts().get(0));
+        validateRun(() -> validateTrue(VerifiableCredentialV2.DEFAULT_JSONLD_CONTEXTS[0].equals(verifiableCredential.getContexts().get(0))), "First value of @context must be " + VerifiableCredentialV2.DEFAULT_JSONLD_CONTEXTS[0] + ": " + verifiableCredential.getContexts().get(0));
+        validateRun(() -> { if (verifiableCredential.getId() != null) validateUrl(verifiableCredential.getId()); }, "'id' must be a valid URI.");
+
+        validateRun(() -> validateTrue(!verifiableCredential.getTypes().isEmpty()), "Bad or missing 'type'.");
+        validateRun(() -> validateTrue(verifiableCredential.getTypes().contains(VerifiableCredential.DEFAULT_JSONLD_TYPES[0])), "'type' must contain 'VerifiableCredential': " + verifiableCredential.getTypes());
+
+
+        //Issuer validation
+        validateIssuer(verifiableCredential);
+        validateRun(() -> validateTrue(verifiableCredential.getValidFrom() != null), "Bad or missing 'validFrom'.");
+        validateRun(verifiableCredential::getValidUntil, "Bad 'validUntil'.");
+        validateRun(verifiableCredential::getCredentialSubject, "Bad 'credentialSubject'.");
+        validateRun(() -> validateTrue(verifiableCredential.getCredentialSubject() != null), "Bad or missing 'credentialSubject'.");
+
+        //Validate credential Status : Handle both list and single object of credentialStatus
+        validateStatus(verifiableCredential);
+    }
+
+    private static void validateIssuer(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
+
+        validateRun(() -> validateTrue(verifiableCredential.getIssuer() != null), "Bad or missing 'issuer'.");
+        if(verifiableCredential.getIssuer() instanceof String )validateRun(() -> validateUrl(URI.create(verifiableCredential.getIssuer().toString())), "'issuer' must be a valid URI.");
+        else if(verifiableCredential.getIssuer() instanceof Map<?,?>) validateRun(()-> validateUrl(URI.create(((Map<String,Object>)verifiableCredential.getIssuer()).get("id").toString())), "'issuer' must be a valid URI.");
+        else validateRun(()-> validateTrue(false),"'issuer' must be a valid URI or object containing an 'id' property.");
+    }
+
+    private static void validateStatus(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
+        if(verifiableCredential.getCredentialStatus() == null) return;
+        if(verifiableCredential.getCredentialStatus() instanceof CredentialStatus) validateCredentialStatus((CredentialStatus) verifiableCredential.getCredentialStatus());
+        else if (verifiableCredential.getCredentialStatus() instanceof List<?>) ((List<CredentialStatus>)verifiableCredential.getCredentialStatus()).forEach(Validation::validateCredentialStatus);
+    }
+
+    private static void validateCredentialStatus(CredentialStatus credentialStatus) throws IllegalStateException {
+        validateRun(() -> validateTrue(credentialStatus.getType() != null), "Bad or missing 'credentialStatus Type'.");
     }
 }
