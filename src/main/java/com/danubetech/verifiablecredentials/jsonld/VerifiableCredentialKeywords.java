@@ -43,4 +43,19 @@ public class VerifiableCredentialKeywords {
     public static final String JSONLD_TERM_STATUSLISTINDEX = "statusListIndex";
     public static final String JSONLD_TERM_STATUSLISTCREDENTIAL = "statusListCredential";
     public static final String JSONLD_TERM_STATUSPURPOSE = "statusPurpose";
+
+    /*
+     * https://www.w3.org/ns/credentials/v2
+     */
+    public static final String JSONLD_TERM_VALIDFROM = "validFrom";
+    public static final String JSONLD_TERM_VALIDUNTIL = "validUntil";
+    public static final String JSONLD_TERM_STATUS = "status";
+    public static final String JSONLD_TERM_CREDENTIALSCHEMA = "credentialSchema";
+    public static final String JSONLD_TERM_REFRESHSERVICE = "refreshService";
+    public static final String JSONLD_TERM_TERMSOFUSE = "termsOfUse";
+    public static final String JSONLD_TERM_EVIDENCE = "evidence";
+    public static final String JSONLD_TERM_NAME = "name";
+    public static final String JSONLD_TERM_DESCRIPTION = "description";
+
+
 }
