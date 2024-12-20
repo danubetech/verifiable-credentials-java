@@ -2,6 +2,10 @@ package com.danubetech.verifiablecredentials;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.verifiablecredentials.credentialstatus.CredentialStatus;
+import com.danubetech.verifiablecredentials.extensions.CredentialSchema;
+import com.danubetech.verifiablecredentials.extensions.Evidence;
+import com.danubetech.verifiablecredentials.extensions.RefreshService;
+import com.danubetech.verifiablecredentials.extensions.TermsOfUse;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -14,6 +18,7 @@ import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class VerifiableCredentialV2 extends JsonLDObject {
 
@@ -46,6 +51,13 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 		private String description;
 		private LdProof ldProof;
 
+		//extensions
+
+		private List<CredentialSchema> credentialSchema;
+		private Set<Evidence> evidence;
+		private TermsOfUse termsOfUse;
+		private RefreshService refreshService;
+
 		public Builder(VerifiableCredentialV2 jsonLdObject) {
 			super(jsonLdObject);
 			this.forceContextsArray(true);
@@ -69,10 +81,21 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 			if(this.description != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_NAME, this.description);
 			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLdObject);
 
+			//add extensions
+			if (this.credentialSchema != null) JsonLDUtils.jsonLdAddAsJsonArray(this.jsonLdObject,VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSCHEMA, credentialSchema);
+			if (this.termsOfUse != null) this.termsOfUse.addToJsonLDObject(this.jsonLdObject);
+			if (this.evidence != null && !this.evidence.isEmpty()) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_EVIDENCE, this.evidence);
+			if (this.refreshService != null) this.refreshService.addToJsonLDObject(this.jsonLdObject);
+
 			return (VerifiableCredentialV2) this.jsonLdObject;
 		}
 
 		public B issuer(URI issuer) {
+			this.issuer = issuer;
+			return (B) this;
+		}
+
+		public B issuer(Map<String,Object> issuer) {
 			this.issuer = issuer;
 			return (B) this;
 		}
@@ -116,6 +139,25 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 			this.description = description;
 			return (B) this;
 		}
+
+		public B evidence(Set<Evidence> evidence) {
+			this.evidence = evidence;
+			return (B) this;
+		}
+		public B credentialSchema(List<CredentialSchema> credentialSchema) {
+			this.credentialSchema = credentialSchema;
+			return (B) this;
+		}
+
+		public B termsOfUse(TermsOfUse termsOfUse) {
+			this.termsOfUse = termsOfUse;
+			return (B) this;
+		}
+
+		public B refreshService(RefreshService refreshService) {
+			this.refreshService = refreshService;
+			return (B) this;
+		}
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
@@ -157,7 +199,14 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 	 */
 
 	public Object getIssuer() {
-		return JsonLDUtils.stringToUri(JsonLDUtils.jsonLdGetStringOrObjectId(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER));
+		return JsonLDUtils.jsonLdGetJsonValue(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
+	}
+
+	public URI getIssuerUri() {
+
+		Object issuer = JsonLDUtils.jsonLdGetJsonValue(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
+
+		return (issuer instanceof String) ? URI.create(issuer.toString()) : URI.create((((Map<String,Object>)issuer).get(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER)).toString());
 	}
 
 	public Date getValidFrom() {
@@ -188,6 +237,22 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 
 	public String getDescription(){
 		return JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_DESCRIPTION);
+	}
+
+	public Set<Evidence> getEvidence() {
+		return (Set<Evidence>) JsonLDUtils.jsonLdGetJsonValue(this.getJsonObject(),VerifiableCredentialKeywords.JSONLD_TERM_EVIDENCE);
+	}
+
+	public List<CredentialSchema> getCredentialSchema() {
+		return (List<CredentialSchema>) JsonLDUtils.jsonLdGetJsonValue(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_CREDENTIALSCHEMA);
+	}
+
+	public TermsOfUse getTermsOfUse() {
+		return TermsOfUse.getFromJsonLDObject(this);
+	}
+
+	public RefreshService getRefreshService() {
+		return RefreshService.getFromJsonLDObject(this);
 	}
 
 
