@@ -2,6 +2,7 @@ package com.danubetech.verifiablecredentials.jwt;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.danubetech.verifiablecredentials.VerifiableCredentialV2;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -106,5 +107,57 @@ public class FromJwtConverter {
         JsonLDUtils.jsonLdAddAsJsonArray(verifiablePresentation, VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL, Collections.singletonList(jwtVerifiableCredentialCompactSerialization));
 
         return verifiablePresentation;
+    }
+
+
+    public static VerifiableCredentialV2 fromJwtVerifiableCredential(JwtVerifiableCredentialV2 jwtVerifiableCredential) {
+
+        VerifiableCredentialV2 payloadVerifiableCredential = VerifiableCredentialV2.fromJson(jwtVerifiableCredential.getPayloadObject().toString());
+        CredentialSubject payloadCredentialSubject = payloadVerifiableCredential.getCredentialSubject();
+        CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
+
+        VerifiableCredentialV2.Builder<? extends VerifiableCredentialV2.Builder<?>> verifiableCredentialBuilder = VerifiableCredentialV2.builder()
+                .base(payloadVerifiableCredential)
+                .defaultContexts(false)
+                .defaultTypes(false);
+
+        JWTClaimsSet payload = jwtVerifiableCredential.getPayload();
+
+        String jwtId = payload.getJWTID();
+        if (jwtId != null && payloadVerifiableCredential.getId() == null) {
+            verifiableCredentialBuilder.id(URI.create(jwtId));
+        }
+
+        if (payloadCredentialSubject != null) {
+
+            CredentialSubject.Builder<? extends CredentialSubject.Builder<?>> credentialSubjectBuilder = CredentialSubject.builder()
+                    .base(payloadCredentialSubject);
+
+            String subject = payload.getSubject();
+            if (subject != null && payloadCredentialSubject.getId() == null) {
+                credentialSubjectBuilder.id(URI.create(subject));
+            }
+
+            CredentialSubject credentialSubject = credentialSubjectBuilder.build();
+
+            verifiableCredentialBuilder.credentialSubject(credentialSubject);
+        }
+
+        String issuer = payload.getIssuer();
+        if (issuer != null && payloadVerifiableCredential.getIssuer() == null) {
+            verifiableCredentialBuilder.issuer(URI.create(issuer));
+        }
+
+        Date notBeforeTime = payload.getNotBeforeTime();
+        if (notBeforeTime != null && payloadVerifiableCredential.getValidFrom() == null) {
+            verifiableCredentialBuilder.validFrom(notBeforeTime);
+        }
+
+        Date expirationTime = payload.getExpirationTime();
+        if (expirationTime != null && payloadVerifiableCredential.getValidUntil() == null) {
+            verifiableCredentialBuilder.validUntil(expirationTime);
+        }
+
+        return verifiableCredentialBuilder.build();
     }
 }
