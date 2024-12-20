@@ -110,7 +110,7 @@ public class FromJwtConverter {
     }
 
 
-    public static VerifiableCredentialV2 fromJwtVerifiableCredential(JwtVerifiableCredentialV2 jwtVerifiableCredential) {
+    public static VerifiableCredentialV2 fromJwtVerifiableCredentialV2(JwtVerifiableCredentialV2 jwtVerifiableCredential) {
 
         VerifiableCredentialV2 payloadVerifiableCredential = VerifiableCredentialV2.fromJson(jwtVerifiableCredential.getPayloadObject().toString());
         CredentialSubject payloadCredentialSubject = payloadVerifiableCredential.getCredentialSubject();
