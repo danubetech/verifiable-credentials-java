@@ -1,12 +1,22 @@
 package com.danubetech.verifiablecredentials.extensions;
 
+import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
+import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 
 import java.io.Reader;
+import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 public class RefreshService extends JsonLDObject {
+
+    public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_CREDENTIALS_V2 };
+    public static final String[] DEFAULT_JSONLD_TYPES = { };
+    public static final String DEFAULT_JSONLD_PREDICATE = VerifiableCredentialKeywords.JSONLD_TERM_REFRESHSERVICE;
+    public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
     @JsonCreator
     public RefreshService() {
@@ -62,6 +72,10 @@ public class RefreshService extends JsonLDObject {
 
     public static RefreshService getFromJsonLDObject(JsonLDObject jsonLdObject) {
         return JsonLDObject.getFromJsonLDObject(RefreshService.class, jsonLdObject);
+    }
+
+    public static List<RefreshService> getFromJsonLDObjectAsList(JsonLDObject jsonLdObject) {
+        return JsonLDObject.getFromJsonLDObjectAsList(RefreshService.class, jsonLdObject);
     }
 
     public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
