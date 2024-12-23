@@ -12,6 +12,7 @@ import info.weboftrust.ldsignatures.LdProof;
 import java.io.Reader;
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class VerifiableCredential extends JsonLDObject {
@@ -128,6 +129,10 @@ public class VerifiableCredential extends JsonLDObject {
 		return JsonLDObject.getFromJsonLDObject(VerifiableCredential.class, jsonLdObject);
 	}
 
+	public static List<VerifiableCredential> getFromJsonLDObjectAsList(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObjectAsList(VerifiableCredential.class, jsonLdObject);
+	}
+
 	public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
 		JsonLDObject.removeFromJsonLdObject(VerifiableCredential.class, jsonLdObject);
 	}
@@ -154,6 +159,10 @@ public class VerifiableCredential extends JsonLDObject {
 
 	public LdProof getLdProof() {
 		return LdProof.getFromJsonLDObject(this);
+	}
+
+	public List<LdProof> getLdProofAsList() {
+		return LdProof.getFromJsonLDObjectAsList(this);
 	}
 
 	public CredentialStatus getCredentialStatus() {

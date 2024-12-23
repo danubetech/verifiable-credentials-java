@@ -8,6 +8,7 @@ import foundation.identity.jsonld.JsonLDObject;
 
 import java.io.Reader;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 public class CredentialStatus extends JsonLDObject {
@@ -73,6 +74,10 @@ public class CredentialStatus extends JsonLDObject {
 
 	public static CredentialStatus getFromJsonLDObject(JsonLDObject jsonLdObject) {
 		return JsonLDObject.getFromJsonLDObject(CredentialStatus.class, jsonLdObject);
+	}
+
+	public static List<CredentialStatus> getFromJsonLDObjectAsList(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObjectAsList(CredentialStatus.class, jsonLdObject);
 	}
 
 	public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
