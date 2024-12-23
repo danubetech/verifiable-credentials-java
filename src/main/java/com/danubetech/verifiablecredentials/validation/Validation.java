@@ -105,14 +105,13 @@ public class Validation {
 
         validateRun(() -> validateTrue(verifiableCredential.getIssuer() != null), "Bad or missing 'issuer'.");
         if(verifiableCredential.getIssuer() instanceof String )validateRun(() -> validateUrl(URI.create(verifiableCredential.getIssuer().toString())), "'issuer' must be a valid URI.");
-        else if(verifiableCredential.getIssuer() instanceof Map<?,?>) validateRun(()-> validateUrl(URI.create(((Map<String,Object>)verifiableCredential.getIssuer()).get("id").toString())), "'issuer' must be a valid URI.");
+        else if(verifiableCredential.getIssuer() instanceof Map<?,?>) validateRun(()-> validateUrl(URI.create(((Map<String,Object>)verifiableCredential.getIssuer()).get("id").toString())), "'issuer' must contain be a valid 'id'.");
         else validateRun(()-> validateTrue(false),"'issuer' must be a valid URI or object containing an 'id' property.");
     }
 
     private static void validateStatus(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
         if(verifiableCredential.getCredentialStatus() == null) return;
-        if(verifiableCredential.getCredentialStatus() instanceof CredentialStatus) validateCredentialStatus((CredentialStatus) verifiableCredential.getCredentialStatus());
-        else if (verifiableCredential.getCredentialStatus() instanceof List<?>) ((List<CredentialStatus>)verifiableCredential.getCredentialStatus()).forEach(Validation::validateCredentialStatus);
+        verifiableCredential.getCredentialStatusAsList().forEach(Validation::validateCredentialStatus);
     }
 
     private static void validateCredentialStatus(CredentialStatus credentialStatus) throws IllegalStateException {
