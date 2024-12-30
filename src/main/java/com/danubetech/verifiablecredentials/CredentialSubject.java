@@ -13,6 +13,7 @@ import foundation.identity.jsonld.JsonLDUtils;
 import java.io.Reader;
 import java.net.URI;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CredentialSubject extends JsonLDObject {
@@ -88,6 +89,10 @@ public class CredentialSubject extends JsonLDObject {
 
 	public static CredentialSubject getFromJsonLDObject(JsonLDObject jsonLdObject) {
 		return JsonLDObject.getFromJsonLDObject(CredentialSubject.class, jsonLdObject);
+	}
+
+	public static List<CredentialSubject> getFromJsonLDObjectAsList(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObjectAsList(CredentialSubject.class, jsonLdObject);
 	}
 
 	public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {

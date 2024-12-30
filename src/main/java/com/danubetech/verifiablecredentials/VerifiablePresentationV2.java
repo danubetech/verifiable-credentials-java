@@ -10,21 +10,24 @@ import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class VerifiablePresentation extends JsonLDObject {
+public class VerifiablePresentationV2 extends JsonLDObject {
 
-	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
+	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_CREDENTIALS_V2 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLE_PRESENTATION };
 	public static final String DEFAULT_JSONLD_PREDICATE = null;
 	public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
 	@JsonCreator
-	public VerifiablePresentation() {
+	public VerifiablePresentationV2() {
 		super();
 	}
 
-	protected VerifiablePresentation(Map<String, Object> jsonObject) {
+	protected VerifiablePresentationV2(Map<String, Object> jsonObject) {
 		super(jsonObject);
 	}
 
@@ -35,10 +38,10 @@ public class VerifiablePresentation extends JsonLDObject {
 	public static class Builder<B extends Builder<B>> extends JsonLDObject.Builder<B> {
 
 		private URI holder;
-		private List<VerifiableCredential> verifiableCredential;
+		private List<VerifiableCredentialV2> verifiableCredential;
 		private List<LdProof> ldProof;
 
-		public Builder(VerifiablePresentation jsonLdObject) {
+		public Builder(VerifiablePresentationV2 jsonLdObject) {
 			super(jsonLdObject);
 			this.forceContextsArray(true);
 			this.forceTypesArray(true);
@@ -47,7 +50,7 @@ public class VerifiablePresentation extends JsonLDObject {
 		}
 
 		@Override
-		public VerifiablePresentation build() {
+		public VerifiablePresentationV2 build() {
 
 			super.build();
 
@@ -56,7 +59,7 @@ public class VerifiablePresentation extends JsonLDObject {
 			if (this.verifiableCredential != null) this.verifiableCredential.forEach(verifiableCredential -> verifiableCredential.addToJsonLDObject(this.jsonLdObject));
 			if (this.ldProof != null) this.ldProof.forEach(ldProof -> ldProof.addToJsonLDObject(this.jsonLdObject));
 
-			return (VerifiablePresentation) this.jsonLdObject;
+			return (VerifiablePresentationV2) this.jsonLdObject;
 		}
 
 		public B holder(URI holder) {
@@ -64,13 +67,13 @@ public class VerifiablePresentation extends JsonLDObject {
 			return (B) this;
 		}
 
-		public B verifiableCredential(VerifiableCredential verifiableCredential) {
+		public B verifiableCredential(VerifiableCredentialV2 verifiableCredential) {
 			if (this.verifiableCredential == null) this.verifiableCredential = new ArrayList<>();
 			this.verifiableCredential.add(verifiableCredential);
 			return (B) this;
 		}
 
-		public B verifiableCredential(Set<VerifiableCredential> verifiableCredential) {
+		public B verifiableCredential(Set<VerifiableCredentialV2> verifiableCredential) {
 			if (this.verifiableCredential == null) this.verifiableCredential = new ArrayList<>();
 			this.verifiableCredential.addAll(verifiableCredential);
 			return (B) this;
@@ -90,41 +93,41 @@ public class VerifiablePresentation extends JsonLDObject {
 	}
 
 	public static Builder<? extends Builder<?>> builder() {
-		return new Builder<>(new VerifiablePresentation());
+		return new Builder<>(new VerifiablePresentationV2());
 	}
 
-	public static VerifiablePresentation fromJsonObject(Map<String, Object> jsonObject) {
-		return new VerifiablePresentation(jsonObject);
+	public static VerifiablePresentationV2 fromJsonObject(Map<String, Object> jsonObject) {
+		return new VerifiablePresentationV2(jsonObject);
 	}
 
-	public static VerifiablePresentation fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
+	public static VerifiablePresentationV2 fromJsonLDObject(JsonLDObject jsonLDObject) { return fromJsonObject(jsonLDObject.getJsonObject()); }
 
-	public static VerifiablePresentation fromJson(Reader reader) {
-		return new VerifiablePresentation(readJson(reader));
+	public static VerifiablePresentationV2 fromJson(Reader reader) {
+		return new VerifiablePresentationV2(readJson(reader));
 	}
 
-	public static VerifiablePresentation fromJson(String json) {
-		return new VerifiablePresentation(readJson(json));
+	public static VerifiablePresentationV2 fromJson(String json) {
+		return new VerifiablePresentationV2(readJson(json));
 	}
 
-	public static VerifiablePresentation fromMap(Map<String, Object> jsonObject) {
-		return new VerifiablePresentation(jsonObject);
+	public static VerifiablePresentationV2 fromMap(Map<String, Object> jsonObject) {
+		return new VerifiablePresentationV2(jsonObject);
 	}
 
 	/*
 	 * Adding, getting, and removing the JSON-LD object
 	 */
 
-	public static VerifiablePresentation getFromJsonLDObject(JsonLDObject jsonLdObject) {
-		return JsonLDObject.getFromJsonLDObject(VerifiablePresentation.class, jsonLdObject);
+	public static VerifiablePresentationV2 getFromJsonLDObject(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObject(VerifiablePresentationV2.class, jsonLdObject);
 	}
 
-	public static List<VerifiablePresentation> getFromJsonLDObjectAsList(JsonLDObject jsonLdObject) {
-		return JsonLDObject.getFromJsonLDObjectAsList(VerifiablePresentation.class, jsonLdObject);
+	public static List<VerifiablePresentationV2> getFromJsonLDObjectAsList(JsonLDObject jsonLdObject) {
+		return JsonLDObject.getFromJsonLDObjectAsList(VerifiablePresentationV2.class, jsonLdObject);
 	}
 
 	public static void removeFromJsonLdObject(JsonLDObject jsonLdObject) {
-		JsonLDObject.removeFromJsonLdObject(VerifiablePresentation.class, jsonLdObject);
+		JsonLDObject.removeFromJsonLdObject(VerifiablePresentationV2.class, jsonLdObject);
 	}
 
 	/*
@@ -135,12 +138,12 @@ public class VerifiablePresentation extends JsonLDObject {
 		return JsonLDUtils.stringToUri(JsonLDUtils.jsonLdGetStringOrObjectId(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_HOLDER));
 	}
 
-	public VerifiableCredential getVerifiableCredential() {
-		return VerifiableCredential.getFromJsonLDObject(this);
+	public VerifiableCredentialV2 getVerifiableCredential() {
+		return VerifiableCredentialV2.getFromJsonLDObject(this);
 	}
 
-	public List<VerifiableCredential> getVerifiableCredentialAsList() {
-		return VerifiableCredential.getFromJsonLDObjectAsList(this);
+	public List<VerifiableCredentialV2> getVerifiableCredentialAsList() {
+		return VerifiableCredentialV2.getFromJsonLDObjectAsList(this);
 	}
 
 	public String getJwtVerifiableCredentialString() {
