@@ -10,7 +10,10 @@ import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class VerifiablePresentation extends JsonLDObject {
 
@@ -70,7 +73,7 @@ public class VerifiablePresentation extends JsonLDObject {
 			return (B) this;
 		}
 
-		public B verifiableCredential(Set<VerifiableCredential> verifiableCredential) {
+		public B verifiableCredential(Collection<VerifiableCredential> verifiableCredential) {
 			if (this.verifiableCredential == null) this.verifiableCredential = new ArrayList<>();
 			this.verifiableCredential.addAll(verifiableCredential);
 			return (B) this;
@@ -82,7 +85,7 @@ public class VerifiablePresentation extends JsonLDObject {
 			return (B) this;
 		}
 
-		public B ldProof(Set<LdProof> ldProof) {
+		public B ldProof(Collection<LdProof> ldProof) {
 			if (this.ldProof == null) this.ldProof = new ArrayList<>();
 			this.ldProof.addAll(ldProof);
 			return (B) this;
