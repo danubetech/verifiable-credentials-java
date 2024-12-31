@@ -11,9 +11,7 @@ import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class VerifiableCredential extends JsonLDObject {
 
@@ -42,7 +40,7 @@ public class VerifiableCredential extends JsonLDObject {
 		private Date expirationDate;
 		private CredentialSubject credentialSubject;
 		private CredentialStatus credentialStatus;
-		private LdProof ldProof;
+		private List<LdProof> ldProof;
 
 		public Builder(VerifiableCredential jsonLdObject) {
 			super(jsonLdObject);
@@ -63,7 +61,7 @@ public class VerifiableCredential extends JsonLDObject {
 			if (this.expirationDate != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE, JsonLDUtils.dateToString(this.expirationDate));
 			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLdObject);
 			if (this.credentialStatus != null) this.credentialStatus.addToJsonLDObject(this.jsonLdObject);
-			if (this.ldProof != null) this.ldProof.addToJsonLDObject(this.jsonLdObject);
+			if (this.ldProof != null) this.ldProof.forEach(ldProof -> ldProof.addToJsonLDObject(this.jsonLdObject));
 
 			return (VerifiableCredential) this.jsonLdObject;
 		}
@@ -94,7 +92,14 @@ public class VerifiableCredential extends JsonLDObject {
 		}
 
 		public B ldProof(LdProof ldProof) {
-			this.ldProof = ldProof;
+			if (this.ldProof == null) this.ldProof = new ArrayList<>();
+			this.ldProof.add(ldProof);
+			return (B) this;
+		}
+
+		public B ldProof(Collection<LdProof> ldProof) {
+			if (this.ldProof == null) this.ldProof = new ArrayList<>();
+			this.ldProof.addAll(ldProof);
 			return (B) this;
 		}
 	}
