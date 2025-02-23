@@ -58,12 +58,12 @@ public class Generator {
 
 					VerifiableCredential verifiableCredential = VerifiableCredential.fromJsonObject(jsonLdObject.getJsonObject());
 					Validation.validate(verifiableCredential);
-					if (verifiableCredential.getLdProof() == null) throw new IllegalStateException("No proof in VC");
+					if (verifiableCredential.getDataIntegrityProof() == null) throw new IllegalStateException("No proof in VC");
 				} else if (jsonLdObject.isType(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])) {
 
 					VerifiablePresentation verifiablePresentation = VerifiablePresentation.fromJsonObject(jsonLdObject.getJsonObject());
 					Validation.validate(verifiablePresentation);
-					if (verifiablePresentation.getLdProof() == null) throw new IllegalStateException("No proof in VP");
+					if (verifiablePresentation.getDataIntegrityProof() == null) throw new IllegalStateException("No proof in VP");
 				} else {
 
 					throw new IllegalStateException("Unknown JSON-LD object type: " + jsonLdObject.getTypes());

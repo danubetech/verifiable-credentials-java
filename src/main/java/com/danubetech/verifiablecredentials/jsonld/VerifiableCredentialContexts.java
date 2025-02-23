@@ -4,8 +4,8 @@ import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jsonld.http.media.MediaType;
 import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.danubetech.dataintegrity.jsonld.LDSecurityContexts;
 import foundation.identity.jsonld.ConfigurableDocumentLoader;
-import info.weboftrust.ldsignatures.jsonld.LDSecurityContexts;
 
 import java.net.URI;
 import java.util.HashMap;

@@ -1,18 +1,18 @@
 package com.danubetech.verifiablecredentials.proof;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.danubetech.dataintegrity.DataIntegrityProof;
+import com.danubetech.dataintegrity.jsonld.LDSecurityKeywords;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
-import info.weboftrust.ldsignatures.LdProof;
-import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 
 import java.io.Reader;
 import java.net.URI;
 import java.util.Map;
 
-public class BlockchainHashProof2020 extends LdProof {
+public class BlockchainHashProof2020 extends DataIntegrityProof {
 
 	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_BLOCKCHAIN_HASH_PROOF_2020 };
@@ -32,7 +32,7 @@ public class BlockchainHashProof2020 extends LdProof {
 	 * Factory methods
 	 */
 
-	public static class Builder<B extends Builder<B>> extends LdProof.Builder<B> {
+	public static class Builder<B extends Builder<B>> extends DataIntegrityProof.Builder<B> {
 
 		public Builder(BlockchainHashProof2020 jsonLdObject) {
 			super(jsonLdObject);

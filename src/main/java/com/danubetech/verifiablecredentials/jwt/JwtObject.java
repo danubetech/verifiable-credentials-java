@@ -1,13 +1,13 @@
 package com.danubetech.verifiablecredentials.jwt;
 
+import com.danubetech.dataintegrity.adapter.JWSSignerAdapter;
+import com.danubetech.dataintegrity.adapter.JWSVerifierAdapter;
 import com.danubetech.keyformats.crypto.ByteSigner;
 import com.danubetech.keyformats.crypto.ByteVerifier;
 import com.danubetech.keyformats.crypto.impl.*;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.util.JSONObjectUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
-import info.weboftrust.ldsignatures.adapter.JWSSignerAdapter;
-import info.weboftrust.ldsignatures.adapter.JWSVerifierAdapter;
 import org.bitcoinj.core.ECKey;
 import org.erdtman.jcs.JsonCanonicalizer;
 

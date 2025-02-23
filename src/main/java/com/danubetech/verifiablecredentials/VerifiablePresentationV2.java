@@ -1,12 +1,12 @@
 package com.danubetech.verifiablecredentials;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.danubetech.dataintegrity.DataIntegrityProof;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
-import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
@@ -39,7 +39,7 @@ public class VerifiablePresentationV2 extends JsonLDObject {
 
 		private URI holder;
 		private List<VerifiableCredentialV2> verifiableCredential;
-		private List<LdProof> ldProof;
+		private List<DataIntegrityProof> dataIntegrityProof;
 
 		public Builder(VerifiablePresentationV2 jsonLdObject) {
 			super(jsonLdObject);
@@ -57,7 +57,7 @@ public class VerifiablePresentationV2 extends JsonLDObject {
 			// add JSON-LD properties
 			if (this.holder != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_HOLDER, JsonLDUtils.uriToString(this.holder));
 			if (this.verifiableCredential != null) this.verifiableCredential.forEach(verifiableCredential -> verifiableCredential.addToJsonLDObject(this.jsonLdObject));
-			if (this.ldProof != null) this.ldProof.forEach(ldProof -> ldProof.addToJsonLDObject(this.jsonLdObject));
+			if (this.dataIntegrityProof != null) this.dataIntegrityProof.forEach(dataIntegrityProof -> dataIntegrityProof.addToJsonLDObject(this.jsonLdObject));
 
 			return (VerifiablePresentationV2) this.jsonLdObject;
 		}
@@ -79,15 +79,15 @@ public class VerifiablePresentationV2 extends JsonLDObject {
 			return (B) this;
 		}
 
-		public B ldProof(LdProof ldProof) {
-			if (this.ldProof == null) this.ldProof = new ArrayList<>();
-			this.ldProof.add(ldProof);
+		public B dataIntegrityProof(DataIntegrityProof dataIntegrityProof) {
+			if (this.dataIntegrityProof == null) this.dataIntegrityProof = new ArrayList<>();
+			this.dataIntegrityProof.add(dataIntegrityProof);
 			return (B) this;
 		}
 
-		public B ldProof(Collection<LdProof> ldProof) {
-			if (this.ldProof == null) this.ldProof = new ArrayList<>();
-			this.ldProof.addAll(ldProof);
+		public B dataIntegrityProof(Collection<DataIntegrityProof> dataIntegrityProof) {
+			if (this.dataIntegrityProof == null) this.dataIntegrityProof = new ArrayList<>();
+			this.dataIntegrityProof.addAll(dataIntegrityProof);
 			return (B) this;
 		}
 	}
@@ -156,11 +156,11 @@ public class VerifiablePresentationV2 extends JsonLDObject {
 		return null;
 	}
 
-	public LdProof getLdProof() {
-		return LdProof.getFromJsonLDObject(this);
+	public DataIntegrityProof getDataIntegrityProof() {
+		return DataIntegrityProof.getFromJsonLDObject(this);
 	}
 
-	public List<LdProof> getLdProofAsList() {
-		return LdProof.getFromJsonLDObjectAsList(this);
+	public List<DataIntegrityProof> getDataIntegrityProofAsList() {
+		return DataIntegrityProof.getFromJsonLDObjectAsList(this);
 	}
 }

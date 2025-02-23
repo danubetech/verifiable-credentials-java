@@ -1,7 +1,7 @@
 package com.danubetech.verifiablecredentials;
 
+import com.danubetech.dataintegrity.verifier.RsaSignature2018LdVerifier;
 import com.danubetech.verifiablecredentials.validation.Validation;
-import info.weboftrust.ldsignatures.verifier.RsaSignature2018LdVerifier;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;

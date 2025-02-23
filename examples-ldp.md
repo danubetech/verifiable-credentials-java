@@ -60,7 +60,7 @@ Process finished with exit code 0
     signer.setCreated(new Date());
     signer.setProofPurpose(LDSecurityKeywords.JSONLD_TERM_ASSERTIONMETHOD);
     signer.setVerificationMethod(URI.create("did:example:76e12ec712ebc6f1c221ebfeb1f#keys-1"));
-    LdProof ldProof = signer.sign(verifiableCredential);
+    DataIntegrityProof dataIntegrityProof = signer.sign(verifiableCredential);
 
     System.out.println(verifiableCredential.toJson(true));
 

@@ -1,11 +1,11 @@
 package com.danubetech.verifiablecredentials;
 
+import com.danubetech.dataintegrity.DataIntegrityProof;
+import com.danubetech.dataintegrity.signer.RsaSignature2018LdSigner;
+import com.danubetech.dataintegrity.suites.DataIntegritySuites;
+import com.danubetech.dataintegrity.verifier.RsaSignature2018LdVerifier;
 import com.danubetech.verifiablecredentials.validation.Validation;
 import foundation.identity.jsonld.JsonLDUtils;
-import info.weboftrust.ldsignatures.LdProof;
-import info.weboftrust.ldsignatures.signer.RsaSignature2018LdSigner;
-import info.weboftrust.ldsignatures.suites.SignatureSuites;
-import info.weboftrust.ldsignatures.verifier.RsaSignature2018LdVerifier;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
@@ -33,14 +33,14 @@ public class SignCredentialTest {
 		signer.setCreated(created);
 		signer.setDomain(domain);
 		signer.setNonce(nonce);
-		LdProof ldProof = signer.sign(verifiableCredential, true, false);
+		DataIntegrityProof dataIntegrityProof = signer.sign(verifiableCredential, true, false);
 
-		assertEquals(SignatureSuites.SIGNATURE_SUITE_RSASIGNATURE2018.getTerm(), ldProof.getType());
-		assertEquals(verificationMethod, ldProof.getVerificationMethod());
-		assertEquals(created, ldProof.getCreated());
-		assertEquals(domain, ldProof.getDomain());
-		assertEquals(nonce, ldProof.getNonce());
-		assertEquals("eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..Sn-LB5t_x-kh9mUDq1DaS1GScj3PY_2fMnNnhq09x-ZBf6_EzYfvgFOpEvdLUwxkJiEt7B2x-LGg7bp-o7UEGCbIxWdGUTG7BGAsKsU18hUwOHrVNZ6VHovbxeFgK0iNMn0MObDiGdQbYMG8C71m3AvquUP00-2UiDcqNxmGAYg5tHv7SHXLEgvaz7SnIkBklj1yj_TMXreSGa_okbXFYxh7SkMfFcxHbBFShr0Fzd8DTn8tr_WvPHR7Tx3bkJHmqFx9Wo-0e7FkLeICsgmBKa5Hzz-y_1yEQPsDaZRRsbXfBD4krL7WTplJtAwnQ5Sy-L9cwZzNhCQC6KsggGjTgQ", ldProof.getJws());
+		assertEquals(DataIntegritySuites.DATA_INTEGRITY_SUITE_RSASIGNATURE2018.getTerm(), dataIntegrityProof.getType());
+		assertEquals(verificationMethod, dataIntegrityProof.getVerificationMethod());
+		assertEquals(created, dataIntegrityProof.getCreated());
+		assertEquals(domain, dataIntegrityProof.getDomain());
+		assertEquals(nonce, dataIntegrityProof.getNonce());
+		assertEquals("eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJSUzI1NiJ9..Sn-LB5t_x-kh9mUDq1DaS1GScj3PY_2fMnNnhq09x-ZBf6_EzYfvgFOpEvdLUwxkJiEt7B2x-LGg7bp-o7UEGCbIxWdGUTG7BGAsKsU18hUwOHrVNZ6VHovbxeFgK0iNMn0MObDiGdQbYMG8C71m3AvquUP00-2UiDcqNxmGAYg5tHv7SHXLEgvaz7SnIkBklj1yj_TMXreSGa_okbXFYxh7SkMfFcxHbBFShr0Fzd8DTn8tr_WvPHR7Tx3bkJHmqFx9Wo-0e7FkLeICsgmBKa5Hzz-y_1yEQPsDaZRRsbXfBD4krL7WTplJtAwnQ5Sy-L9cwZzNhCQC6KsggGjTgQ", dataIntegrityProof.getJws());
 
 		Validation.validate(verifiableCredential);
 

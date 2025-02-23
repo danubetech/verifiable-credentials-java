@@ -1,6 +1,7 @@
 package com.danubetech.verifiablecredentials;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.danubetech.dataintegrity.DataIntegrityProof;
 import com.danubetech.verifiablecredentials.credentialstatus.CredentialStatus;
 import com.danubetech.verifiablecredentials.extensions.CredentialSchema;
 import com.danubetech.verifiablecredentials.extensions.Evidence;
@@ -11,7 +12,6 @@ import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import foundation.identity.jsonld.JsonLDObject;
 import foundation.identity.jsonld.JsonLDUtils;
-import info.weboftrust.ldsignatures.LdProof;
 
 import java.io.Reader;
 import java.net.URI;
@@ -46,7 +46,7 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 		private List<CredentialStatus> credentialStatus;
 		private String name;
 		private String description;
-		private List<LdProof> ldProof;
+		private List<DataIntegrityProof> dataIntegrityProof;
 
 		//extensions
 
@@ -76,7 +76,7 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 			if (this.credentialStatus != null) this.credentialStatus.forEach(credentialStatus -> credentialStatus.addToJsonLDObject(this.jsonLdObject));
 			if (this.name != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_NAME, this.name);
 			if (this.description != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_NAME, this.description);
-			if (this.ldProof != null) this.ldProof.forEach(ldProof -> ldProof.addToJsonLDObject(this.jsonLdObject));
+			if (this.dataIntegrityProof != null) this.dataIntegrityProof.forEach(dataIntegrityProof -> dataIntegrityProof.addToJsonLDObject(this.jsonLdObject));
 
 			// add extensions
 			if (this.credentialSchema != null) this.credentialSchema.forEach(credentialSchema -> credentialSchema.addToJsonLDObject(this.jsonLdObject));
@@ -134,15 +134,15 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 			return (B) this;
 		}
 
-		public B ldProof(LdProof ldProof) {
-			if (this.ldProof == null) this.ldProof = new ArrayList<>();
-			this.ldProof.add(ldProof);
+		public B dataIntegrityProof(DataIntegrityProof dataIntegrityProof) {
+			if (this.dataIntegrityProof == null) this.dataIntegrityProof = new ArrayList<>();
+			this.dataIntegrityProof.add(dataIntegrityProof);
 			return (B) this;
 		}
 
-		public B ldProof(Collection<LdProof> ldProof) {
-			if (this.ldProof == null) this.ldProof = new ArrayList<>();
-			this.ldProof.addAll(ldProof);
+		public B dataIntegrityProof(Collection<DataIntegrityProof> dataIntegrityProof) {
+			if (this.dataIntegrityProof == null) this.dataIntegrityProof = new ArrayList<>();
+			this.dataIntegrityProof.addAll(dataIntegrityProof);
 			return (B) this;
 		}
 
@@ -274,12 +274,12 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 		return JsonLDUtils.jsonLdGetString(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_DESCRIPTION);
 	}
 
-	public LdProof getLdProof() {
-		return LdProof.getFromJsonLDObject(this);
+	public DataIntegrityProof getDataIntegrityProof() {
+		return DataIntegrityProof.getFromJsonLDObject(this);
 	}
 
-	public List<LdProof> getLdProofAsList() {
-		return LdProof.getFromJsonLDObjectAsList(this);
+	public List<DataIntegrityProof> getDataIntegrityProofAsList() {
+		return DataIntegrityProof.getFromJsonLDObjectAsList(this);
 	}
 
 	public CredentialSchema getCredentialSchema() {
