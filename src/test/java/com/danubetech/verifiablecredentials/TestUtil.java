@@ -2,8 +2,8 @@ package com.danubetech.verifiablecredentials;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.bitcoinj.core.Base58;
-import org.bitcoinj.core.ECKey;
+import org.bitcoinj.base.Base58;
+import org.bitcoinj.crypto.ECKey;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

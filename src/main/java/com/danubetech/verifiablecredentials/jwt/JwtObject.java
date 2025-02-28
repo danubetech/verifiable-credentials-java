@@ -8,7 +8,7 @@ import com.danubetech.keyformats.crypto.impl.*;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.util.JSONObjectUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
-import org.bitcoinj.core.ECKey;
+import org.bitcoinj.crypto.ECKey;
 import org.erdtman.jcs.JsonCanonicalizer;
 
 import java.io.IOException;

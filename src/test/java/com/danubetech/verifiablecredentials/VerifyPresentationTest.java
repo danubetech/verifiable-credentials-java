@@ -8,7 +8,7 @@ import com.danubetech.keyformats.crypto.provider.impl.JavaRandomProvider;
 import com.danubetech.keyformats.crypto.provider.impl.JavaSHA256Provider;
 import com.danubetech.keyformats.crypto.provider.impl.TinkEd25519Provider;
 import com.danubetech.verifiablecredentials.validation.Validation;
-import org.bitcoinj.core.Base58;
+import org.bitcoinj.base.Base58;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
