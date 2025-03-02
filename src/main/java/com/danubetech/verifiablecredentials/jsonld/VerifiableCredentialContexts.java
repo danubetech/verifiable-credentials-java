@@ -4,7 +4,7 @@ import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jsonld.http.media.MediaType;
 import com.apicatalog.jsonld.loader.DocumentLoader;
-import com.danubetech.dataintegrity.jsonld.LDSecurityContexts;
+import com.danubetech.dataintegrity.jsonld.DataIntegrityContexts;
 import foundation.identity.jsonld.ConfigurableDocumentLoader;
 
 import java.net.URI;
@@ -33,7 +33,7 @@ public class VerifiableCredentialContexts {
 
             CONTEXTS = new HashMap<>();
 
-            CONTEXTS.putAll(LDSecurityContexts.CONTEXTS);
+            CONTEXTS.putAll(DataIntegrityContexts.CONTEXTS);
 
             CONTEXTS.put(JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1,
                     JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("credentials-v1.jsonld"))));

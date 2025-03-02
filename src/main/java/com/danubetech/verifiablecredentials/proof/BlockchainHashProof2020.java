@@ -2,7 +2,7 @@ package com.danubetech.verifiablecredentials.proof;
 
 import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.danubetech.dataintegrity.DataIntegrityProof;
-import com.danubetech.dataintegrity.jsonld.LDSecurityKeywords;
+import com.danubetech.dataintegrity.jsonld.DataIntegrityKeywords;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -16,7 +16,7 @@ public class BlockchainHashProof2020 extends DataIntegrityProof {
 
 	public static final URI[] DEFAULT_JSONLD_CONTEXTS = { VerifiableCredentialContexts.JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 };
 	public static final String[] DEFAULT_JSONLD_TYPES = { VerifiableCredentialKeywords.JSONLD_TERM_BLOCKCHAIN_HASH_PROOF_2020 };
-	public static final String DEFAULT_JSONLD_PREDICATE = LDSecurityKeywords.JSONLD_TERM_PROOF;
+	public static final String DEFAULT_JSONLD_PREDICATE = DataIntegrityKeywords.JSONLD_TERM_PROOF;
 	public static final DocumentLoader DEFAULT_DOCUMENT_LOADER = VerifiableCredentialContexts.DOCUMENT_LOADER;
 
 	@JsonCreator
