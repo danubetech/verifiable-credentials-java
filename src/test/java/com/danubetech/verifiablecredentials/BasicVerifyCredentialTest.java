@@ -1,6 +1,8 @@
 package com.danubetech.verifiablecredentials;
 
 import com.danubetech.dataintegrity.verifier.RsaSignature2018LdVerifier;
+import com.danubetech.verifiablecredentials.util.TestKeys;
+import com.danubetech.verifiablecredentials.util.TestUtil;
 import com.danubetech.verifiablecredentials.validation.Validation;
 import org.junit.jupiter.api.Test;
 
@@ -9,16 +11,16 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class VerifyCredentialTest {
+public class BasicVerifyCredentialTest {
 
 	@Test
 	void testVerify() throws Throwable {
 
-		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyCredentialTest.class.getResourceAsStream("signed.good.vc.jsonld"))));
+		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(Objects.requireNonNull(BasicVerifyCredentialTest.class.getResourceAsStream("signed.good.vc.jsonld"))));
 
 		Validation.validate(verifiableCredential);
 
-		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
+		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestKeys.testRSAPublicKey);
 		boolean verify = verifier.verify(verifiableCredential);
 
 		assertTrue(verify);
@@ -32,11 +34,11 @@ public class VerifyCredentialTest {
 	@Test
 	void testBadVerify() throws Throwable {
 
-		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyCredentialTest.class.getResourceAsStream("signed.bad.vc.jsonld"))));
+		VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(new InputStreamReader(Objects.requireNonNull(BasicVerifyCredentialTest.class.getResourceAsStream("signed.bad.vc.jsonld"))));
 
 		Validation.validate(verifiableCredential);
 
-		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestUtil.testRSAPublicKey);
+		RsaSignature2018LdVerifier verifier = new RsaSignature2018LdVerifier(TestKeys.testRSAPublicKey);
 		boolean verify = verifier.verify(verifiableCredential);
 
 		assertFalse(verify);

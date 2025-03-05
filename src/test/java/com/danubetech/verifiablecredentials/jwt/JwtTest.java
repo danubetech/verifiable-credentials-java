@@ -1,8 +1,9 @@
-package com.danubetech.verifiablecredentials;
+package com.danubetech.verifiablecredentials.jwt;
 
-import com.danubetech.verifiablecredentials.jwt.FromJwtConverter;
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
-import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
+import com.danubetech.verifiablecredentials.CredentialSubject;
+import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.danubetech.verifiablecredentials.util.TestKeys;
+import com.danubetech.verifiablecredentials.util.TestUtil;
 import com.nimbusds.jose.jwk.RSAKey;
 import foundation.identity.jsonld.JsonLDUtils;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,7 @@ public class JwtTest {
 	static final RSAKey rsaKey;
 
 	static {
-
-		rsaKey = new RSAKey.Builder(TestUtil.testRSAPublicKey).privateKey(TestUtil.testRSAPrivateKey.getPrivate()).build();
+		rsaKey = new RSAKey.Builder(TestKeys.testRSAPublicKey).privateKey(TestKeys.testRSAPrivateKey.getPrivate()).build();
 	}
 
 	@Test
@@ -55,15 +55,15 @@ public class JwtTest {
 		assertNotNull(jwtString);
 		assertNotNull(jwtPayload);
 
-		assertEquals(TestUtil.read(VerifyCredentialTest.class.getResourceAsStream("jwt.vc.jsonld")).trim(), jwtString.trim());
-		assertEquals(TestUtil.read(VerifyCredentialTest.class.getResourceAsStream("jwt.payload.vc.jsonld")).trim(), jwtPayload.trim());
+		assertEquals(TestUtil.read(JwtTest.class.getResourceAsStream("jwt.vc.jsonld")).trim(), jwtString.trim());
+		assertEquals(TestUtil.read(JwtTest.class.getResourceAsStream("jwt.payload.vc.jsonld")).trim(), jwtPayload.trim());
 	}
 
 	@Test
 	void testVerify() throws Exception {
 
-		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromCompactSerialization(TestUtil.read(VerifyCredentialTest.class.getResourceAsStream("jwt.vc.jsonld")));
-		if (! jwtVerifiableCredential.verify_RSA_RS256(TestUtil.testRSAPublicKey)) throw new GeneralSecurityException("Invalid signature.");
+		JwtVerifiableCredential jwtVerifiableCredential = JwtVerifiableCredential.fromCompactSerialization(TestUtil.read(JwtTest.class.getResourceAsStream("jwt.vc.jsonld")));
+		if (! jwtVerifiableCredential.verify_RSA_RS256(TestKeys.testRSAPublicKey)) throw new GeneralSecurityException("Invalid signature.");
 
 		String jwtPayload = jwtVerifiableCredential.getJwsObject().getPayload().toString();
 		String jwtPayloadVerifiableCredential = jwtVerifiableCredential.getPayloadObject().toJson();
@@ -71,7 +71,7 @@ public class JwtTest {
 		assertNotNull(jwtPayload);
 		assertNotNull(jwtPayloadVerifiableCredential);
 
-		assertEquals(TestUtil.read(VerifyCredentialTest.class.getResourceAsStream("jwt.payload.vc.jsonld")).trim(), jwtPayload.trim());
+		assertEquals(TestUtil.read(JwtTest.class.getResourceAsStream("jwt.payload.vc.jsonld")).trim(), jwtPayload.trim());
 
 		VerifiableCredential verifiableCredential = FromJwtConverter.fromJwtVerifiableCredential(jwtVerifiableCredential);
 

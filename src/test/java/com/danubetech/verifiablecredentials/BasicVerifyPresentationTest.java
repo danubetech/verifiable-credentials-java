@@ -18,7 +18,7 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class VerifyPresentationTest {
+public class BasicVerifyPresentationTest {
 
 	final static byte[] publicKeyPresentation1;
 	final static byte[] publicKeyPresentation2;
@@ -43,10 +43,10 @@ public class VerifyPresentationTest {
 			publicKeyCredential1 = Base58.decode("5TVraf9itbKXrRvt2DSS95Gw4vqU3CHAdetoufdcKazA");
 			publicKeyCredential2 = Base58.decode("5yKdnU7ToTjAoRNDzfuzVTfWBH38qyhE1b9xh4v8JaWF");
 
-			verifiablePresentationGood1 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyPresentationTest.class.getResourceAsStream("signed.good.vp1.jsonld"))));
-			verifiablePresentationGood2 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyPresentationTest.class.getResourceAsStream("signed.good.vp2.jsonld"))));
-			verifiablePresentationBad1 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyPresentationTest.class.getResourceAsStream("signed.bad.vp1.jsonld"))));
-			verifiablePresentationBad2 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(VerifyPresentationTest.class.getResourceAsStream("signed.bad.vp2.jsonld"))));
+			verifiablePresentationGood1 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(BasicVerifyPresentationTest.class.getResourceAsStream("signed.good.vp1.jsonld"))));
+			verifiablePresentationGood2 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(BasicVerifyPresentationTest.class.getResourceAsStream("signed.good.vp2.jsonld"))));
+			verifiablePresentationBad1 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(BasicVerifyPresentationTest.class.getResourceAsStream("signed.bad.vp1.jsonld"))));
+			verifiablePresentationBad2 = VerifiablePresentation.fromJson(new InputStreamReader(Objects.requireNonNull(BasicVerifyPresentationTest.class.getResourceAsStream("signed.bad.vp2.jsonld"))));
 			verifiableCredentialGood1 = verifiablePresentationGood1.getVerifiableCredential();
 			verifiableCredentialGood2 = verifiablePresentationGood2.getVerifiableCredential();
 			verifiableCredentialBad1 = verifiablePresentationBad1.getVerifiableCredential();

@@ -1,35 +1,32 @@
-package com.danubetech.verifiablecredentials;
+package com.danubetech.verifiablecredentials.util;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.bitcoinj.base.Base58;
 import org.bitcoinj.crypto.ECKey;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-public class TestUtil {
+public class TestKeys {
 
-	static final String testEd25519PrivateKeyString =
+	public static final String testEd25519PrivateKeyString =
 			"43bt2CEvmvm538bQ6YAnpfWTq5xisAB5Kqz7uiob9sabHsZp2HtFEFXRPGa5Mvdhw5xPEABrLduxFu5vt3AViEgF";
 
-	static final String testEd25519PublicKeyString =
+	public static final String testEd25519PublicKeyString =
 			"FyfKP2HvTKqDZQzvyL38yXH7bExmwofxHf2NR5BrcGf1";
 
-	static final String testSecp256k1PrivateKeyString =
+	public static final String testSecp256k1PrivateKeyString =
 			"2ff4e6b73bc4c4c185c68b2c378f6b233978a88d3c8ed03df536f707f084e24e";
 
-	static final String testSecp256k1PublicKeyString =
+	public static final String testSecp256k1PublicKeyString =
 			"0343f9455cd248e24c262b1341bbe37cea360e1c5ce526e5d1a71373ba6e557018";
 
-	static final String testRSAPrivateKeyString =
-            """
+	public static final String testRSAPrivateKeyString =
+                    """
                     -----BEGIN PRIVATE KEY-----
                     MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC2lLVmZ9UpU/kq
                     h8iEwE/S1JZziqWHp+baWtlKS4rFSMRpaPNlLOzvaAQgbGtpa6wx2hG5XnjGxZHJ
@@ -60,8 +57,8 @@ public class TestUtil {
                     -----END PRIVATE KEY-----
                     """;
 
-	static final String testRSAPublicKeyString =
-            """
+	public static final String testRSAPublicKeyString =
+                    """
                     -----BEGIN PUBLIC KEY-----
                     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtpS1ZmfVKVP5KofIhMBP
                     0tSWc4qlh6fm2lrZSkuKxUjEaWjzZSzs72gEIGxraWusMdoRuV54xsWRyf5KeZT0
@@ -73,12 +70,12 @@ public class TestUtil {
                     -----END PUBLIC KEY-----
                     """;
 
-	static final byte[] testEd25519PrivateKey;
-	static final byte[] testEd25519PublicKey;
-	static final ECKey testSecp256k1PrivateKey;
-	static final ECKey testSecp256k1PublicKey;
-	static final KeyPair testRSAPrivateKey;
-	static final RSAPublicKey testRSAPublicKey;
+	public static final byte[] testEd25519PrivateKey;
+	public static final byte[] testEd25519PublicKey;
+	public static final ECKey testSecp256k1PrivateKey;
+	public static final ECKey testSecp256k1PublicKey;
+	public static final KeyPair testRSAPrivateKey;
+	public static final RSAPublicKey testRSAPublicKey;
 
 	static {
 
@@ -86,61 +83,28 @@ public class TestUtil {
 
 			testEd25519PrivateKey = Base58.decode(testEd25519PrivateKeyString);
 			testEd25519PublicKey = Base58.decode(testEd25519PublicKeyString);
-		} catch (Exception ex) {
-
-			throw new RuntimeException(ex.getMessage(), ex);
-		}
-
-		try {
 
 			testSecp256k1PrivateKey = ECKey.fromPrivate(Hex.decodeHex(testSecp256k1PrivateKeyString.toCharArray()));
 			testSecp256k1PublicKey = ECKey.fromPublicOnly(Hex.decodeHex(testSecp256k1PublicKeyString.toCharArray()));
+
+			String testRSAPublicKeyPEM = testRSAPublicKeyString;
+			testRSAPublicKeyPEM = testRSAPublicKeyPEM.replace("-----BEGIN PUBLIC KEY-----", "").replace("\n", "");
+			testRSAPublicKeyPEM = testRSAPublicKeyPEM.replace("-----END PUBLIC KEY-----", "");
+			byte[] testRSAPublicKeyEncoded = Base64.decodeBase64(testRSAPublicKeyPEM);
+			X509EncodedKeySpec testRSAPublicKeySpec = new X509EncodedKeySpec(testRSAPublicKeyEncoded);
+			KeyFactory testRSAPublicKeyKeyFactory = KeyFactory.getInstance("RSA");
+			testRSAPublicKey = (RSAPublicKey) testRSAPublicKeyKeyFactory.generatePublic(testRSAPublicKeySpec);
+
+			String testRSAPrivateKeyPEM = testRSAPrivateKeyString;
+			testRSAPrivateKeyPEM = testRSAPrivateKeyPEM.replace("-----BEGIN PRIVATE KEY-----", "").replace("\n", "");
+			testRSAPrivateKeyPEM = testRSAPrivateKeyPEM.replace("-----END PRIVATE KEY-----", "");
+			byte[] testRSAPrivateKeyEncoded = Base64.decodeBase64(testRSAPrivateKeyPEM);
+			PKCS8EncodedKeySpec testRSAPrivateKeySpec = new PKCS8EncodedKeySpec(testRSAPrivateKeyEncoded);
+			KeyFactory testRSAPrivateKeyKeyFactory = KeyFactory.getInstance("RSA");
+			testRSAPrivateKey = new KeyPair(testRSAPublicKey, testRSAPrivateKeyKeyFactory.generatePrivate(testRSAPrivateKeySpec));
 		} catch (Exception ex) {
 
 			throw new RuntimeException(ex.getMessage(), ex);
 		}
-
-		try {
-
-			String pem = testRSAPublicKeyString;
-			pem = pem.replace("-----BEGIN PUBLIC KEY-----", "").replace("\n", "");
-			pem = pem.replace("-----END PUBLIC KEY-----", "");
-
-			byte[] encoded = Base64.decodeBase64(pem);
-
-			X509EncodedKeySpec spec = new X509EncodedKeySpec(encoded);
-			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-			testRSAPublicKey = (RSAPublicKey) keyFactory.generatePublic(spec);
-		} catch (Exception ex) {
-
-			throw new RuntimeException(ex.getMessage(), ex);
-		}
-
-		try {
-
-			String pem = testRSAPrivateKeyString;
-			pem = pem.replace("-----BEGIN PRIVATE KEY-----", "").replace("\n", "");
-			pem = pem.replace("-----END PRIVATE KEY-----", "");
-
-			byte[] encoded = Base64.decodeBase64(pem);
-
-			PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encoded);
-			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-			testRSAPrivateKey = new KeyPair(testRSAPublicKey, keyFactory.generatePrivate(spec));
-		} catch (Exception ex) {
-
-			throw new RuntimeException(ex.getMessage(), ex);
-		}
-	}
-
-	static String read(InputStream inputStream) throws Exception {
-
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-		StringBuilder buffer = new StringBuilder();
-
-		String line;
-		while ((line = reader.readLine()) != null) buffer.append(line).append("\n");
-
-		return buffer.toString();
 	}
 }
