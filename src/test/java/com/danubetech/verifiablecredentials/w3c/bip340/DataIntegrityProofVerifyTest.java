@@ -22,8 +22,6 @@ public class DataIntegrityProofVerifyTest {
 
 	final static byte[] publicKeyCredential1;
 	final static byte[] publicKeyCredential2;
-	final static byte[] publicKeyCredential3;
-	final static byte[] publicKeyCredential4;
 
 	final static VerifiableCredentialV2 verifiableCredentialGood1;
 	final static VerifiableCredentialV2 verifiableCredentialGood2;
@@ -32,10 +30,8 @@ public class DataIntegrityProofVerifyTest {
 
 		try {
 
-			publicKeyCredential1 = TestUtil.removeMulticodec(Multibase.decode("z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
-			publicKeyCredential2 = TestUtil.removeMulticodec(Multibase.decode("z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
-			publicKeyCredential3 = TestUtil.removeMulticodec(Multibase.decode("z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
-			publicKeyCredential4 = TestUtil.removeMulticodec(Multibase.decode("z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
+			publicKeyCredential1 = TestUtil.removeMulticodec(Multibase.decode("zQ3shcJDnkBjY3XqD4WVKktWQZqgQSrYzhaTo6gxcs6GXjUuM"));
+			publicKeyCredential2 = TestUtil.removeMulticodec(Multibase.decode("zQ3shcJDnkBjY3XqD4WVKktWQZqgQSrYzhaTo6gxcs6GXjUuM"));
 
 			verifiableCredentialGood1 = VerifiableCredentialV2.fromJson(new InputStreamReader(Objects.requireNonNull(DataIntegrityProofVerifyTest.class.getResourceAsStream("signed.good.DataIntegrityProof.1.jsonld"))));
 			verifiableCredentialGood2 = VerifiableCredentialV2.fromJson(new InputStreamReader(Objects.requireNonNull(DataIntegrityProofVerifyTest.class.getResourceAsStream("signed.good.DataIntegrityProof.2.jsonld"))));

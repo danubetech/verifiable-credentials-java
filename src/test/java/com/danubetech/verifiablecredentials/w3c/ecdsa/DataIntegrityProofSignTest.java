@@ -99,6 +99,9 @@ public class DataIntegrityProofSignTest {
 
 		Validation.validate(verifiableCredentialGood1);
 		Validation.validate(verifiableCredentialGood2);
+		Validation.validate(verifiableCredentialGood3);
+		Validation.validate(verifiableCredentialGood4);
+		Validation.validate(verifiableCredentialGood5);
 	}
 
 	/*

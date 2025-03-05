@@ -7,6 +7,7 @@ import com.danubetech.keyformats.PrivateKeyBytes;
 import com.danubetech.keyformats.PublicKeyBytes;
 import com.danubetech.keyformats.crypto.ByteSigner;
 import com.danubetech.keyformats.crypto.ByteVerifier;
+import com.danubetech.keyformats.crypto.impl.secp256k1_ES256KS_PrivateKeySigner;
 import com.danubetech.keyformats.crypto.impl.secp256k1_ES256KS_PublicKeyVerifier;
 import com.danubetech.keyformats.crypto.impl.secp256k1_ES256K_PrivateKeySigner;
 import com.danubetech.keyformats.crypto.provider.*;
@@ -41,11 +42,11 @@ public class DataIntegrityProofSignTest {
 
 		try {
 
-			privateKeyCredential1 = TestUtil.removeMulticodec(Multibase.decode("z3u2en7t5LR2WtQH5PfFqMqwVHBeXouLzo6haApm8XHqvjxq"));
-			privateKeyCredential2 = TestUtil.removeMulticodec(Multibase.decode("z3u2en7t5LR2WtQH5PfFqMqwVHBeXouLzo6haApm8XHqvjxq"));
+			privateKeyCredential1 = TestUtil.removeMulticodec(Multibase.decode("z3vLhXkdoZmXj6TwZoG5D8CXvDQ4AzYeZHLusAR5RU5K56zk"));
+			privateKeyCredential2 = TestUtil.removeMulticodec(Multibase.decode("z3vLhXkdoZmXj6TwZoG5D8CXvDQ4AzYeZHLusAR5RU5K56zk"));
 
-			publicKeyCredential1 = TestUtil.removeMulticodec(Multibase.decode("z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
-			publicKeyCredential2 = TestUtil.removeMulticodec(Multibase.decode("z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
+			publicKeyCredential1 = TestUtil.removeMulticodec(Multibase.decode("zQ3shcJDnkBjY3XqD4WVKktWQZqgQSrYzhaTo6gxcs6GXjUuM"));
+			publicKeyCredential2 = TestUtil.removeMulticodec(Multibase.decode("zQ3shcJDnkBjY3XqD4WVKktWQZqgQSrYzhaTo6gxcs6GXjUuM"));
 
 			verifiableCredentialGood1 = VerifiableCredentialV2.fromJson(new InputStreamReader(Objects.requireNonNull(DataIntegrityProofSignTest.class.getResourceAsStream("unsigned.good.DataIntegrityProof.1.jsonld"))));
 			verifiableCredentialGood2 = VerifiableCredentialV2.fromJson(new InputStreamReader(Objects.requireNonNull(DataIntegrityProofSignTest.class.getResourceAsStream("unsigned.good.DataIntegrityProof.2.jsonld"))));
@@ -80,12 +81,12 @@ public class DataIntegrityProofSignTest {
 	void testSignCredential1() throws Exception {
 		DataIntegrityProofLdSigner signer = new DataIntegrityProofLdSigner(byteSignerSecp256k1(privateKeyCredential1));
 		DataIntegrityProofLdVerifier verifier = new DataIntegrityProofLdVerifier(byteVerifierSecp256k1(publicKeyCredential1));
-		signer.setCryptosuite("eddsa-rdfc-2022");
+		signer.setCryptosuite("bip340-rdfc-2025");
 		signer.setCreated(JsonLDUtils.stringToDate("2023-02-24T23:36:38Z"));
 		signer.setProofPurpose("assertionMethod");
-		signer.setVerificationMethod(URI.create("did:key:z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2#z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
+		signer.setVerificationMethod(URI.create("did:key:z6DtcgBo65Ms1qzug5JAgVZH3sEpH7vp4q6D2T3cdHnyBFGj#z6DtcgBo65Ms1qzug5JAgVZH3sEpH7vp4q6D2T3cdHnyBFGj"));
 		DataIntegrityProof dataIntegrityProof = signer.sign(verifiableCredentialGood1);
-		assertEquals("z2YwC8z3ap7yx1nZYCg4L3j3ApHsF8kgPdSb5xoS1VR7vPG3F561B52hYnQF9iseabecm3ijx4K1FBTQsCZahKZme", dataIntegrityProof.getProofValue());
+		assertEquals("z4csLXc5E3KGSTBYwC5D4WzixkFWeMcWbjPnC6AHzWrLDrpZsqZoj4JXJEBRx4JShCL8RbDb8NwqhbuPfYU7muFyY", dataIntegrityProof.getProofValue());
 		assertTrue(verifier.verify(verifiableCredentialGood1));
 	}
 
@@ -93,12 +94,12 @@ public class DataIntegrityProofSignTest {
 	void testSignCredential2() throws Exception {
 		DataIntegrityProofLdSigner signer = new DataIntegrityProofLdSigner(byteSignerSecp256k1(privateKeyCredential2));
 		DataIntegrityProofLdVerifier verifier = new DataIntegrityProofLdVerifier(byteVerifierSecp256k1(publicKeyCredential2));
-		signer.setCryptosuite("eddsa-rdfc-2022");
+		signer.setCryptosuite("bip340-jcs-2025");
 		signer.setCreated(JsonLDUtils.stringToDate("2023-02-24T23:36:38Z"));
 		signer.setProofPurpose("assertionMethod");
 		signer.setVerificationMethod(URI.create("did:key:z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2#z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
 		DataIntegrityProof dataIntegrityProof = signer.sign(verifiableCredentialGood2);
-		assertEquals("zeuuS9pi2ZR8Q41bFFJKS9weSWkwa7pRcxHTHzxjDEHtVSZp3D9Rm3JdzT82EQpmXMb9wvfFJLuDPeSXZaRX1q1c", dataIntegrityProof.getProofValue());
+		assertEquals("z3P1WFufkFdaA9HM9jd4SYrGFbYYKzymhoYoqLHSG2zVfhjaTXFtdiQ1EwBt8X11x6rPccMdQxmhcYTfd6btY2nWt", dataIntegrityProof.getProofValue());
 		assertTrue(verifier.verify(verifiableCredentialGood2));
 	}
 
@@ -107,7 +108,7 @@ public class DataIntegrityProofSignTest {
 	 */
 
 	private static ByteSigner byteSignerSecp256k1(byte[] privateKeyBytes) {
-		return new secp256k1_ES256K_PrivateKeySigner(PrivateKeyBytes.bytes_to_secp256k1PrivateKey(privateKeyBytes));
+		return new secp256k1_ES256KS_PrivateKeySigner(PrivateKeyBytes.bytes_to_secp256k1PrivateKey(privateKeyBytes));
 	}
 
 	private static ByteVerifier byteVerifierSecp256k1(byte[] publicKeyBytes) {
