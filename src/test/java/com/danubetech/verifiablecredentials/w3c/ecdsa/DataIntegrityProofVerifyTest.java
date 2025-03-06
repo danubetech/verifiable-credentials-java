@@ -101,8 +101,7 @@ public class DataIntegrityProofVerifyTest {
 		assertTrue(verifier.verify(verifiableCredentialGood3));
 	}
 
-	// @Test:
-	// Skip this, test vector seems broken: https://www.w3.org/TR/vc-di-ecdsa/#enhanced-example-for-representation-ecdsa-rdfc-2019-with-curve-p-384
+	@Test
 	void testVerifyGoodCredential4() throws Exception {
 		DataIntegrityProofLdVerifier verifier = new DataIntegrityProofLdVerifier(byteVerifierP384(publicKeyCredential4));
 		assertTrue(verifier.verify(verifiableCredentialGood4));
