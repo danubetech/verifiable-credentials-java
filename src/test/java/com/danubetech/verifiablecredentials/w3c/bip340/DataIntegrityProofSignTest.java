@@ -77,7 +77,7 @@ public class DataIntegrityProofSignTest {
 	 * CREDENTIAL
 	 */
 
-	//@Test
+	@Test
 	void testSignCredential1() throws Exception {
 		DataIntegrityProofLdSigner signer = new DataIntegrityProofLdSigner(byteSignerSecp256k1(privateKeyCredential1));
 		DataIntegrityProofLdVerifier verifier = new DataIntegrityProofLdVerifier(byteVerifierSecp256k1(publicKeyCredential1));
@@ -90,14 +90,14 @@ public class DataIntegrityProofSignTest {
 		assertTrue(verifier.verify(verifiableCredentialGood1));
 	}
 
-	//@Test
+	@Test
 	void testSignCredential2() throws Exception {
 		DataIntegrityProofLdSigner signer = new DataIntegrityProofLdSigner(byteSignerSecp256k1(privateKeyCredential2));
 		DataIntegrityProofLdVerifier verifier = new DataIntegrityProofLdVerifier(byteVerifierSecp256k1(publicKeyCredential2));
 		signer.setCryptosuite("bip340-jcs-2025");
 		signer.setCreated(JsonLDUtils.stringToDate("2023-02-24T23:36:38Z"));
 		signer.setProofPurpose("assertionMethod");
-		signer.setVerificationMethod(URI.create("did:key:z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2#z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"));
+		signer.setVerificationMethod(URI.create("did:key:z6DtcgBo65Ms1qzug5JAgVZH3sEpH7vp4q6D2T3cdHnyBFGj#z6DtcgBo65Ms1qzug5JAgVZH3sEpH7vp4q6D2T3cdHnyBFGj"));
 		DataIntegrityProof dataIntegrityProof = signer.sign(verifiableCredentialGood2);
 		assertEquals("z3P1WFufkFdaA9HM9jd4SYrGFbYYKzymhoYoqLHSG2zVfhjaTXFtdiQ1EwBt8X11x6rPccMdQxmhcYTfd6btY2nWt", dataIntegrityProof.getProofValue());
 		assertTrue(verifier.verify(verifiableCredentialGood2));

@@ -62,13 +62,13 @@ public class DataIntegrityProofVerifyTest {
 	 * GOOD CREDENTIAL
 	 */
 
-	//@Test
+	@Test
 	void testVerifyGoodCredential1() throws Exception {
 		DataIntegrityProofLdVerifier verifier = new DataIntegrityProofLdVerifier(byteVerifierSecp256k1(publicKeyCredential1));
 		assertTrue(verifier.verify(verifiableCredentialGood1));
 	}
 
-	//@Test
+	@Test
 	void testVerifyGoodCredential2() throws Exception {
 		DataIntegrityProofLdVerifier verifier = new DataIntegrityProofLdVerifier(byteVerifierSecp256k1(publicKeyCredential2));
 		assertTrue(verifier.verify(verifiableCredentialGood2));
