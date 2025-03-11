@@ -53,7 +53,7 @@ Verifiable Presentations with Linked Data Proofs:
     
     Ed25519Signature2018LdSigner signer2 = new Ed25519Signature2018LdSigner(testEd25519PrivateKey2);
     signer2.setCreated(new Date());
-    signer2.setProofPurpose(LDSecurityKeywords.JSONLD_TERM_AUTHENTICATION);
+    signer2.setProofPurpose(DataIntegrityKeywords.JSONLD_TERM_AUTHENTICATION);
     signer2.setVerificationMethod(URI.create("did:key:z6MkwBZ6oiJ71ovCohPfdsgBrQinMXnFn6wJxVZHpZEpSh8x#z6MkwBZ6oiJ71ovCohPfdsgBrQinMXnFn6wJxVZHpZEpSh8x"));
     signer2.setDomain("example.com");
     signer2.setNonce("343s$FSFDa-");

@@ -58,7 +58,7 @@ Process finished with exit code 0
 
     Ed25519Signature2018LdSigner signer = new Ed25519Signature2018LdSigner(testEd25519PrivateKey);
     signer.setCreated(new Date());
-    signer.setProofPurpose(LDSecurityKeywords.JSONLD_TERM_ASSERTIONMETHOD);
+    signer.setProofPurpose(DataIntegrityKeywords.JSONLD_TERM_ASSERTIONMETHOD);
     signer.setVerificationMethod(URI.create("did:example:76e12ec712ebc6f1c221ebfeb1f#keys-1"));
     DataIntegrityProof dataIntegrityProof = signer.sign(verifiableCredential);
 
