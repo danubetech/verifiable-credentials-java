@@ -69,7 +69,7 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 			super.build();
 
 			// add JSON-LD properties
-			if (this.issuer != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, this.issuer);
+			if (this.issuer != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, this.issuer instanceof URI ? JsonLDUtils.uriToString((URI) this.issuer) : this.issuer);
 			if (this.validFrom != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_VALIDFROM, JsonLDUtils.dateToString(this.validFrom));
 			if (this.validUntil != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_VALIDUNTIL, JsonLDUtils.dateToString(this.validUntil));
 			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLdObject);
