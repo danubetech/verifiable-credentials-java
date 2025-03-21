@@ -16,6 +16,7 @@ public class VerifiableCredentialContexts {
 
     public static final URI JSONLD_CONTEXT_W3C_2018_CREDENTIALS_V1 = URI.create("https://www.w3.org/2018/credentials/v1");
     public static final URI JSONLD_CONTEXT_W3C_CREDENTIALS_V2 = URI.create("https://www.w3.org/ns/credentials/v2");
+    public static final URI JSONLD_CONTEXT_W3C_CREDENTIALS_UNDEFINED_TERMS_V2 = URI.create("https://www.w3.org/ns/credentials/undefined-terms/v2");
     public static final URI JSONLD_CONTEXT_W3C_2018_CREDENTIALS_EXAMPLES_V1 = URI.create("https://www.w3.org/2018/credentials/examples/v1");
     public static final URI JSONLD_CONTEXT_W3C_CREDENTIALS_EXAMPLES_V2 = URI.create("https://www.w3.org/ns/credentials/examples/v2");
     public static final URI JSONLD_CONTEXT_W3C_NS_ODRL = URI.create("https://www.w3.org/ns/odrl.jsonld");
@@ -39,6 +40,8 @@ public class VerifiableCredentialContexts {
                     JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("credentials-v1.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_W3C_CREDENTIALS_V2,
                     JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("credentials-v2.jsonld"))));
+            CONTEXTS.put(JSONLD_CONTEXT_W3C_CREDENTIALS_UNDEFINED_TERMS_V2,
+                    JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("credentials-undefined-terms-v2.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_W3C_2018_CREDENTIALS_EXAMPLES_V1,
                     JsonDocument.of(MediaType.JSON_LD, Objects.requireNonNull(VerifiableCredentialContexts.class.getResourceAsStream("credentials-examples-v1.jsonld"))));
             CONTEXTS.put(JSONLD_CONTEXT_W3C_CREDENTIALS_EXAMPLES_V2,
