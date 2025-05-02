@@ -153,7 +153,7 @@ public class VerifiablePresentation extends JsonLDObject {
 		} else if (verifiableCredentialObject instanceof String) {
 			return (String) verifiableCredentialObject;
 		}
-		return null;
+		throw new IllegalArgumentException("Cannot get JWT verifiable credential: " + verifiableCredentialObject);
 	}
 
 	public DataIntegrityProof getDataIntegrityProof() {
