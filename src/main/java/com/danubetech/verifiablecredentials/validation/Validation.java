@@ -13,28 +13,21 @@ import java.util.Map;
 public class Validation {
 
     private static void validateTrue(boolean valid) {
-
         if (! valid) throw new RuntimeException();
     }
 
     private static void validateUrl(URI uri) {
-
         try {
-
             if (! uri.isAbsolute()) throw new URISyntaxException("Not absolute.", uri.toString());
         } catch (URISyntaxException ex) {
-
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }
 
     private static void validateRun(Runnable runnable, String message) throws IllegalStateException {
-
         try {
-
             runnable.run();
         } catch (Exception ex) {
-
             if (ex.getMessage() != null && ! ex.getMessage().isEmpty()) message = message + " (" + ex.getMessage().trim() + ")";
             throw new IllegalStateException(message, ex);
         }
@@ -75,7 +68,6 @@ public class Validation {
         validateRun(() -> validateTrue(verifiablePresentation.getVerifiableCredential() != null || verifiablePresentation.getJwtVerifiableCredentialString() != null), "Bad or missing 'verifiableCredential'.");
     }
 
-
     public static void validate(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
 
         foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
@@ -88,7 +80,6 @@ public class Validation {
 
         validateRun(() -> validateTrue(!verifiableCredential.getTypes().isEmpty()), "Bad or missing 'type'.");
         validateRun(() -> validateTrue(verifiableCredential.getTypes().contains(VerifiableCredential.DEFAULT_JSONLD_TYPES[0])), "'type' must contain 'VerifiableCredential': " + verifiableCredential.getTypes());
-
 
         //Issuer validation
         validateIssuer(verifiableCredential);
@@ -104,13 +95,13 @@ public class Validation {
     private static void validateIssuer(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
 
         validateRun(() -> validateTrue(verifiableCredential.getIssuer() != null), "Bad or missing 'issuer'.");
-        if(verifiableCredential.getIssuer() instanceof String )validateRun(() -> validateUrl(URI.create(verifiableCredential.getIssuer().toString())), "'issuer' must be a valid URI.");
-        else if(verifiableCredential.getIssuer() instanceof Map<?,?>) validateRun(()-> validateUrl(URI.create(((Map<String,Object>)verifiableCredential.getIssuer()).get("id").toString())), "'issuer' must contain be a valid 'id'.");
-        else validateRun(()-> validateTrue(false),"'issuer' must be a valid URI or object containing an 'id' property.");
+        if (verifiableCredential.getIssuer() instanceof String issuerString) validateRun(() -> validateUrl(URI.create(issuerString)), "'issuer' must be a valid URI.");
+        else if (verifiableCredential.getIssuer() instanceof Map<?,?> issuerMap) validateRun(()-> validateUrl(URI.create(((Map<String,Object>) issuerMap).get("id").toString())), "'issuer' must contain be a valid 'id'.");
+        else validateRun(() -> validateTrue(false),"'issuer' must be a valid URI or object containing an 'id' property.");
     }
 
     private static void validateStatus(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
-        if(verifiableCredential.getCredentialStatus() == null) return;
+        if (verifiableCredential.getCredentialStatus() == null) return;
         verifiableCredential.getCredentialStatusAsList().forEach(Validation::validateCredentialStatus);
     }
 
