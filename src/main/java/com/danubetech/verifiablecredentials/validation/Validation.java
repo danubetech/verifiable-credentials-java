@@ -91,7 +91,7 @@ public class Validation {
 
         validateRun(() -> validateTrue(! verifiablePresentation.getTypes().isEmpty()), "Bad or missing 'type'.");
         validateRun(() -> validateTrue(verifiablePresentation.getTypes().contains(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])), "type must contain VerifiablePresentation: " + verifiablePresentation.getTypes());
-        validateOneOfRuns(List.of(() -> validateTrue(verifiablePresentation.getVerifiableCredential() != null), () -> validateTrue(verifiablePresentation.getJwtVerifiableCredentialString() != null)), "Bad or missing 'verifiableCredential'.");
+        validateOneOfRuns(List.of(() -> validateTrue(verifiablePresentation.getVerifiableCredentialAsList() != null), () -> validateTrue(verifiablePresentation.getJwtVerifiableCredentialString() != null)), "Bad or missing 'verifiableCredential'.");
     }
 
     public static void validate(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
