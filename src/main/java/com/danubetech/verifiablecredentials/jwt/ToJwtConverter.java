@@ -199,7 +199,7 @@ public class ToJwtConverter {
             jwtPayloadBuilder.notBeforeTime(issuanceDate);
             if (includeIat) jwtPayloadBuilder.issueTime(issuanceDate);
             if (!preserveVerifiableCredentialProperties) {
-                JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_ISSUANCEDATE);
+                JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_VALIDFROM);
             }
         }
 
@@ -207,7 +207,7 @@ public class ToJwtConverter {
         if (expirationDate != null) {
             jwtPayloadBuilder.expirationTime(expirationDate);
             if (!preserveVerifiableCredentialProperties) {
-                JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_EXPIRATIONDATE);
+                JsonLDUtils.jsonLdRemove(payloadVerifiableCredential, VerifiableCredentialKeywords.JSONLD_TERM_VALIDUNTIL);
             }
         }
 
