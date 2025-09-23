@@ -42,7 +42,7 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 		private Object issuer;
 		private Date validFrom;
 		private Date validUntil;
-		private CredentialSubject credentialSubject;
+		private List<CredentialSubject> credentialSubject;
 		private List<CredentialStatus> credentialStatus;
 		private String name;
 		private String description;
@@ -72,7 +72,7 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 			if (this.issuer != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_ISSUER, this.issuer instanceof URI ? JsonLDUtils.uriToString((URI) this.issuer) : this.issuer);
 			if (this.validFrom != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_VALIDFROM, JsonLDUtils.dateToString(this.validFrom));
 			if (this.validUntil != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_VALIDUNTIL, JsonLDUtils.dateToString(this.validUntil));
-			if (this.credentialSubject != null) this.credentialSubject.addToJsonLDObject(this.jsonLdObject);
+			if (this.credentialSubject != null) this.credentialSubject.forEach(credentialSubject -> credentialSubject.addToJsonLDObject(this.jsonLdObject));
 			if (this.credentialStatus != null) this.credentialStatus.forEach(credentialStatus -> credentialStatus.addToJsonLDObject(this.jsonLdObject));
 			if (this.name != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_NAME, this.name);
 			if (this.description != null) JsonLDUtils.jsonLdAdd(this.jsonLdObject, VerifiableCredentialKeywords.JSONLD_TERM_NAME, this.description);
@@ -108,7 +108,8 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 		}
 
 		public B credentialSubject(CredentialSubject credentialSubject) {
-			this.credentialSubject = credentialSubject;
+			if(this.credentialSubject == null) this.credentialSubject = new ArrayList<>();
+			this.credentialSubject.add(credentialSubject);
 			return (B) this;
 		}
 
@@ -256,6 +257,10 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 
 	public CredentialSubject getCredentialSubject() {
 		return CredentialSubject.getFromJsonLDObject(this);
+	}
+
+	public List<CredentialSubject> getCredentialSubjectAsList() {
+		return CredentialSubject.getFromJsonLDObjectAsList(this);
 	}
 
 	public CredentialStatus getCredentialStatus() {
