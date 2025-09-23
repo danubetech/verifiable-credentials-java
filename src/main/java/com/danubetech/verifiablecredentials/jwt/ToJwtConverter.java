@@ -4,6 +4,7 @@ import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiableCredentialV2;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
+import com.danubetech.verifiablecredentials.VerifiablePresentationV2;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.nimbusds.jwt.JWTClaimsSet;
 import foundation.identity.jsonld.JsonLDKeywords;
@@ -236,5 +237,46 @@ public class ToJwtConverter {
     public static JwtVerifiableCredentialV2 toJwtVerifiableCredentialV2(VerifiableCredentialV2 verifiableCredential) {
 
         return toJwtVerifiableCredentialV2(verifiableCredential, null, false, false);
+    }
+
+    public static JwtVerifiablePresentationV2 toJwtVerifiablePresentation(VerifiablePresentationV2 verifiablePresentation, String aud) {
+
+        JWTClaimsSet.Builder jwtPayloadBuilder = new JWTClaimsSet.Builder();
+
+        VerifiablePresentationV2 payloadVerifiablePresentation = VerifiablePresentationV2.builder()
+                .defaultContexts(false)
+                .defaultTypes(false)
+                .build();
+
+        JsonLDUtils.jsonLdAddAll(payloadVerifiablePresentation, verifiablePresentation.getJsonObject());
+
+        URI id = verifiablePresentation.getId();
+        if (id != null) {
+            jwtPayloadBuilder.jwtID(id.toString());
+            JsonLDUtils.jsonLdRemove(payloadVerifiablePresentation, JsonLDKeywords.JSONLD_TERM_ID);
+        }
+
+        URI holder = verifiablePresentation.getHolder();
+        if (holder != null) {
+            jwtPayloadBuilder.issuer(holder.toString());
+            jwtPayloadBuilder.subject(holder.toString());
+            JsonLDUtils.jsonLdRemove(payloadVerifiablePresentation, VerifiableCredentialKeywords.JSONLD_TERM_HOLDER);
+        }
+
+        if (aud != null) {
+            jwtPayloadBuilder.audience(aud);
+        }
+
+        Map<String, Object> vpContent = new LinkedHashMap<>(payloadVerifiablePresentation.getJsonObject());
+        jwtPayloadBuilder.claim(JwtKeywords.JWT_CLAIM_VP, vpContent);
+
+        JWTClaimsSet jwtPayload = jwtPayloadBuilder.build();
+
+        return new JwtVerifiablePresentationV2(jwtPayload, payloadVerifiablePresentation, null, null);
+    }
+
+    public static JwtVerifiablePresentationV2 toJwtVerifiablePresentation(VerifiablePresentationV2 verifiablePresentation) {
+
+        return toJwtVerifiablePresentation(verifiablePresentation, null);
     }
 }
