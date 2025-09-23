@@ -4,6 +4,7 @@ import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiableCredentialV2;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
+import com.danubetech.verifiablecredentials.VerifiablePresentationV2;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
 import com.nimbusds.jwt.JWTClaimsSet;
 import foundation.identity.jsonld.JsonLDUtils;
@@ -66,9 +67,7 @@ public class FromJwtConverter {
             verifiableCredentialBuilder.expirationDate(expirationTime);
         }
 
-        VerifiableCredential verifiableCredential = verifiableCredentialBuilder.build();
-
-        return verifiableCredential;
+        return verifiableCredentialBuilder.build();
     }
 
     public static VerifiablePresentation fromJwtVerifiablePresentation(JwtVerifiablePresentation jwtVerifiablePresentation) {
@@ -92,9 +91,7 @@ public class FromJwtConverter {
             verifiablePresentationBuilder.holder(URI.create(issuer));
         }
 
-        VerifiablePresentation verifiablePresentation = verifiablePresentationBuilder.build();
-
-        return verifiablePresentation;
+        return verifiablePresentationBuilder.build();
     }
 
     public static VerifiablePresentation fromJwtVerifiableCredentialToVerifiablePresentation(JwtVerifiableCredential jwtVerifiableCredential) {
@@ -160,4 +157,29 @@ public class FromJwtConverter {
 
         return verifiableCredentialBuilder.build();
     }
+
+    public static VerifiablePresentationV2 fromJwtVerifiablePresentationV2(JwtVerifiablePresentationV2 jwtVerifiablePresentation) {
+
+        VerifiablePresentationV2 payloadVerifiablePresentation = VerifiablePresentationV2.fromJson(jwtVerifiablePresentation.getPayloadObject().toString());
+
+        VerifiablePresentationV2.Builder<? extends VerifiablePresentationV2.Builder<?>> verifiablePresentationBuilder = VerifiablePresentationV2.builder()
+                .base(payloadVerifiablePresentation)
+                .defaultContexts(false)
+                .defaultTypes(false);
+
+        JWTClaimsSet payload = jwtVerifiablePresentation.getPayload();
+
+        String jwtId = payload.getJWTID();
+        if (jwtId != null && payloadVerifiablePresentation.getId() == null) {
+            verifiablePresentationBuilder.id(URI.create(jwtId));
+        }
+
+        String issuer = payload.getIssuer();
+        if (issuer != null && payloadVerifiablePresentation.getHolder() == null) {
+            verifiablePresentationBuilder.holder(URI.create(issuer));
+        }
+
+        return  verifiablePresentationBuilder.build();
+    }
+
 }

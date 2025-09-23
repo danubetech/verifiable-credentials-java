@@ -156,6 +156,16 @@ public class VerifiablePresentationV2 extends JsonLDObject {
 		return null;
 	}
 
+	public List<String> getJwtVerifiableCredentialStringAsList() {
+		Object verifiableCredentialObject = this.getJsonObject().get(VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL);
+		if (verifiableCredentialObject instanceof List<?> && ! ((List<?>) verifiableCredentialObject).isEmpty() && ((List<?>) verifiableCredentialObject).get(0) instanceof String) {
+			return (List<String>) verifiableCredentialObject;
+		} else if (verifiableCredentialObject instanceof String) {
+			return  List.of((String) verifiableCredentialObject);
+		}
+		throw new IllegalArgumentException("Cannot get JWT verifiable credential: " + verifiableCredentialObject);
+	}
+
 	public DataIntegrityProof getDataIntegrityProof() {
 		return DataIntegrityProof.getFromJsonLDObject(this);
 	}
