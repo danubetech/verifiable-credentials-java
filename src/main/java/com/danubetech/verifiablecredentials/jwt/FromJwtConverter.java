@@ -12,6 +12,7 @@ import foundation.identity.jsonld.JsonLDUtils;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 public class FromJwtConverter {
 
@@ -110,7 +111,9 @@ public class FromJwtConverter {
     public static VerifiableCredentialV2 fromJwtVerifiableCredentialV2(JwtVerifiableCredentialV2 jwtVerifiableCredential) {
 
         VerifiableCredentialV2 payloadVerifiableCredential = VerifiableCredentialV2.fromJson(jwtVerifiableCredential.getPayloadObject().toString());
-        CredentialSubject payloadCredentialSubject = payloadVerifiableCredential.getCredentialSubject();
+
+        List<CredentialSubject> credentialSubjects = payloadVerifiableCredential.getCredentialSubjectAsList();
+
         CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
 
         VerifiableCredentialV2.Builder<? extends VerifiableCredentialV2.Builder<?>> verifiableCredentialBuilder = VerifiableCredentialV2.builder()
@@ -125,20 +128,18 @@ public class FromJwtConverter {
             verifiableCredentialBuilder.id(URI.create(jwtId));
         }
 
-        if (payloadCredentialSubject != null) {
-
+        for(CredentialSubject cs : credentialSubjects) {
             CredentialSubject.Builder<? extends CredentialSubject.Builder<?>> credentialSubjectBuilder = CredentialSubject.builder()
-                    .base(payloadCredentialSubject);
+                    .base(cs);
 
             String subject = payload.getSubject();
-            if (subject != null && payloadCredentialSubject.getId() == null) {
+            if (subject != null && cs.getId() == null) {
                 credentialSubjectBuilder.id(URI.create(subject));
             }
-
             CredentialSubject credentialSubject = credentialSubjectBuilder.build();
-
             verifiableCredentialBuilder.credentialSubject(credentialSubject);
         }
+
 
         String issuer = payload.getIssuer();
         if (issuer != null && payloadVerifiableCredential.getIssuer() == null) {

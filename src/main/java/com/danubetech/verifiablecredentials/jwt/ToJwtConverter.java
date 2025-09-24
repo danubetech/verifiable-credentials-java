@@ -175,15 +175,30 @@ public class ToJwtConverter {
         }
 
         CredentialSubject credentialSubject = verifiableCredential.getCredentialSubject();
+        var credentialSubjectList = verifiableCredential.getCredentialSubjectAsList();
         if (credentialSubject != null && credentialSubject.getId() != null) {
             jwtPayloadBuilder.subject(credentialSubject.getId().toString());
-            if (!preserveVerifiableCredentialProperties) {
-                CredentialSubject payloadCredentialSubject = CredentialSubject.builder()
-                        .base(credentialSubject)
-                        .build();
-                JsonLDUtils.jsonLdRemove(payloadCredentialSubject, JsonLDKeywords.JSONLD_TERM_ID);
-                CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
-                payloadCredentialSubject.addToJsonLDObject(payloadVerifiableCredential);
+            if(credentialSubjectList.size()>1){
+                if (!preserveVerifiableCredentialProperties) {
+                    CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
+                    for(CredentialSubject subject: credentialSubjectList){
+                        CredentialSubject payloadCredentialSubject = CredentialSubject.builder()
+                                .base(subject)
+                                .build();
+                        JsonLDUtils.jsonLdRemove(payloadCredentialSubject, JsonLDKeywords.JSONLD_TERM_ID);
+
+                        payloadCredentialSubject.addToJsonLDObjectAsJsonArray(payloadVerifiableCredential);
+                    }
+                }
+            }else{
+                if (!preserveVerifiableCredentialProperties) {
+                    CredentialSubject payloadCredentialSubject = CredentialSubject.builder()
+                            .base(credentialSubject)
+                            .build();
+                    JsonLDUtils.jsonLdRemove(payloadCredentialSubject, JsonLDKeywords.JSONLD_TERM_ID);
+                    CredentialSubject.removeFromJsonLdObject(payloadVerifiableCredential);
+                    payloadCredentialSubject.addToJsonLDObject(payloadVerifiableCredential);
+                }
             }
         }
 
@@ -239,7 +254,7 @@ public class ToJwtConverter {
         return toJwtVerifiableCredentialV2(verifiableCredential, null, false, false);
     }
 
-    public static JwtVerifiablePresentationV2 toJwtVerifiablePresentation(VerifiablePresentationV2 verifiablePresentation, String aud) {
+    public static JwtVerifiablePresentationV2 toJwtVerifiablePresentationV2(VerifiablePresentationV2 verifiablePresentation, String aud) {
 
         JWTClaimsSet.Builder jwtPayloadBuilder = new JWTClaimsSet.Builder();
 
@@ -275,8 +290,8 @@ public class ToJwtConverter {
         return new JwtVerifiablePresentationV2(jwtPayload, payloadVerifiablePresentation, null, null);
     }
 
-    public static JwtVerifiablePresentationV2 toJwtVerifiablePresentation(VerifiablePresentationV2 verifiablePresentation) {
+    public static JwtVerifiablePresentationV2 toJwtVerifiablePresentationV2(VerifiablePresentationV2 verifiablePresentation) {
 
-        return toJwtVerifiablePresentation(verifiablePresentation, null);
+        return toJwtVerifiablePresentationV2(verifiablePresentation, null);
     }
 }
