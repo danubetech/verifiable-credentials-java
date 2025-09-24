@@ -113,6 +113,12 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 			return (B) this;
 		}
 
+		public B credentialSubject(Collection<CredentialSubject> credentialSubject) {
+			if (this.credentialSubject == null) this.credentialSubject = new ArrayList<>();
+			this.credentialSubject.addAll(credentialSubject);
+			return (B) this;
+		}
+
 		public B credentialStatus(CredentialStatus credentialStatus) {
 			if (this.credentialStatus == null) this.credentialStatus = new ArrayList<>();
 			this.credentialStatus.add(credentialStatus);
@@ -256,7 +262,7 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 	}
 
 	public CredentialSubject getCredentialSubject() {
-		return CredentialSubject.getFromJsonLDObject(this);
+		return this.getCredentialSubjectAsList().get(0);
 	}
 
 	public List<CredentialSubject> getCredentialSubjectAsList() {
