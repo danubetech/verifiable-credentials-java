@@ -30,7 +30,7 @@ public class JwtVerifiableCredentialV2 extends JwtWrappingObject<VerifiableCrede
 		if (jsonObject == null) return null;
 
 		VerifiableCredentialV2 payloadVerifiableCredential = VerifiableCredentialV2.fromJsonObject(new LinkedHashMap<>(jsonObject));
-
+		if(!payloadVerifiableCredential.getContexts().contains(VerifiableCredentialV2.DEFAULT_JSONLD_CONTEXTS[0])) throw new ParseException("The 'vc' claim must contain the default context v2",0);
 		return new JwtVerifiableCredentialV2(jwtPayload, payloadVerifiableCredential, signedJWT, compactSerialization);
 	}
 }
