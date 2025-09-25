@@ -63,7 +63,71 @@ public class Validation {
     public static void validate(VerifiableCredential verifiableCredential) throws IllegalStateException {
 
         foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
+        validateVerifiableCredentialProperties(verifiableCredential);
+    }
 
+    public static void validate(VerifiableCredential verifiableCredential, boolean jsonLdValidation) throws IllegalStateException {
+
+        if(jsonLdValidation)foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
+        validateVerifiableCredentialProperties(verifiableCredential);
+    }
+
+    public static void validate(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
+
+        foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
+        validateVerifiablePresentationProperties(verifiablePresentation);
+    }
+
+    public static void validate(VerifiablePresentation verifiablePresentation, boolean jsonLdValidation) throws IllegalStateException {
+
+        if(jsonLdValidation)foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
+        validateVerifiablePresentationProperties(verifiablePresentation);
+    }
+
+    public static void validate(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
+
+        foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
+        validateVerifiableCredentialV2Properties(verifiableCredential);
+    }
+
+    public static void validate(VerifiableCredentialV2 verifiableCredential, boolean jsonLdValidation) throws IllegalStateException {
+
+        if(jsonLdValidation)foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
+        validateVerifiableCredentialV2Properties(verifiableCredential);
+    }
+
+    public static void validate(VerifiablePresentationV2 verifiablePresentation) throws IllegalStateException {
+
+        foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
+        validateVerifiablePresentationV2Properties(verifiablePresentation);
+    }
+
+    public static void validate(VerifiablePresentationV2 verifiablePresentation, boolean jsonLdValidation) throws IllegalStateException {
+
+        if(jsonLdValidation)foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
+        validateVerifiablePresentationV2Properties(verifiablePresentation);
+    }
+
+
+    private static void validateIssuer(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
+
+        validateRun(() -> validateTrue(verifiableCredential.getIssuer() != null), "Bad or missing 'issuer'.");
+        if (verifiableCredential.getIssuer() instanceof String issuerString) validateRun(() -> validateUrl(URI.create(issuerString)), "'issuer' must be a valid URI.");
+        else if (verifiableCredential.getIssuer() instanceof Map<?,?> issuerMap) validateRun(()-> validateUrl(URI.create(((Map<String,Object>) issuerMap).get("id").toString())), "'issuer' must contain be a valid 'id'.");
+        else validateRun(() -> validateTrue(false),"'issuer' must be a valid URI or object containing an 'id' property.");
+    }
+
+    private static void validateStatus(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
+        if (verifiableCredential.getCredentialStatus() == null) return;
+        verifiableCredential.getCredentialStatusAsList().forEach(Validation::validateCredentialStatus);
+    }
+
+    private static void validateCredentialStatus(CredentialStatus credentialStatus) throws IllegalStateException {
+        validateRun(() -> validateTrue(credentialStatus.getType() != null), "Bad or missing 'credentialStatus Type'.");
+    }
+
+
+    private static void validateVerifiableCredentialProperties(VerifiableCredential verifiableCredential){
         validateRun(() -> validateTrue(verifiableCredential.getJsonObject() != null), "Bad or missing JSON object.");
         validateRun(() -> validateTrue(!verifiableCredential.getContexts().isEmpty()), "Bad or missing '@context'.");
         validateRun(() -> validateUrl(verifiableCredential.getContexts().get(0)), "@context must be a valid URI: " + verifiableCredential.getContexts().get(0));
@@ -80,25 +144,7 @@ public class Validation {
         validateRun(() -> validateTrue(verifiableCredential.getCredentialSubject() != null), "Bad or missing 'credentialSubject'.");
     }
 
-    public static void validate(VerifiablePresentation verifiablePresentation) throws IllegalStateException {
-
-        foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
-
-        validateRun(() -> validateTrue(verifiablePresentation.getJsonObject() != null), "Bad or missing JSON object.");
-        validateRun(() -> validateTrue(! verifiablePresentation.getContexts().isEmpty()), "Bad or missing '@context'.");
-        validateRun(() -> validateUrl(verifiablePresentation.getContexts().get(0)), "@context must be a valid URI: " + verifiablePresentation.getContexts().get(0));
-        validateRun(() -> validateTrue(VerifiableCredential.DEFAULT_JSONLD_CONTEXTS[0].equals(verifiablePresentation.getContexts().get(0))), "First value of @context must be " + VerifiableCredential.DEFAULT_JSONLD_CONTEXTS[0] + ": " + verifiablePresentation.getContexts().get(0));
-        validateRun(() -> { if (verifiablePresentation.getId() != null) validateUrl(verifiablePresentation.getId()); }, "'id' must be a valid URI.");
-
-        validateRun(() -> validateTrue(! verifiablePresentation.getTypes().isEmpty()), "Bad or missing 'type'.");
-        validateRun(() -> validateTrue(verifiablePresentation.getTypes().contains(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])), "type must contain VerifiablePresentation: " + verifiablePresentation.getTypes());
-        validateOneOfRuns(List.of(() -> validateTrue(verifiablePresentation.getVerifiableCredentialAsList() != null), () -> validateTrue(verifiablePresentation.getJwtVerifiableCredentialString() != null)), "Bad or missing 'verifiableCredential'.");
-    }
-
-    public static void validate(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
-
-        foundation.identity.jsonld.validation.Validation.validate(verifiableCredential);
-
+    private static void validateVerifiableCredentialV2Properties(VerifiableCredentialV2 verifiableCredential){
         validateRun(() -> validateTrue(verifiableCredential.getJsonObject() != null), "Bad or missing JSON object.");
         validateRun(() -> validateTrue(!verifiableCredential.getContexts().isEmpty()), "Bad or missing '@context'.");
         validateRun(() -> validateUrl(verifiableCredential.getContexts().get(0)), "@context must be a valid URI: " + verifiableCredential.getContexts().get(0));
@@ -119,10 +165,19 @@ public class Validation {
         validateStatus(verifiableCredential);
     }
 
-    public static void validate(VerifiablePresentationV2 verifiablePresentation) throws IllegalStateException {
+    private static void validateVerifiablePresentationProperties(VerifiablePresentation verifiablePresentation){
+        validateRun(() -> validateTrue(verifiablePresentation.getJsonObject() != null), "Bad or missing JSON object.");
+        validateRun(() -> validateTrue(! verifiablePresentation.getContexts().isEmpty()), "Bad or missing '@context'.");
+        validateRun(() -> validateUrl(verifiablePresentation.getContexts().get(0)), "@context must be a valid URI: " + verifiablePresentation.getContexts().get(0));
+        validateRun(() -> validateTrue(VerifiableCredential.DEFAULT_JSONLD_CONTEXTS[0].equals(verifiablePresentation.getContexts().get(0))), "First value of @context must be " + VerifiableCredential.DEFAULT_JSONLD_CONTEXTS[0] + ": " + verifiablePresentation.getContexts().get(0));
+        validateRun(() -> { if (verifiablePresentation.getId() != null) validateUrl(verifiablePresentation.getId()); }, "'id' must be a valid URI.");
 
-        foundation.identity.jsonld.validation.Validation.validate(verifiablePresentation);
+        validateRun(() -> validateTrue(! verifiablePresentation.getTypes().isEmpty()), "Bad or missing 'type'.");
+        validateRun(() -> validateTrue(verifiablePresentation.getTypes().contains(VerifiablePresentation.DEFAULT_JSONLD_TYPES[0])), "type must contain VerifiablePresentation: " + verifiablePresentation.getTypes());
+        validateOneOfRuns(List.of(() -> validateTrue(verifiablePresentation.getVerifiableCredentialAsList() != null), () -> validateTrue(verifiablePresentation.getJwtVerifiableCredentialString() != null)), "Bad or missing 'verifiableCredential'.");
+    }
 
+    private static void validateVerifiablePresentationV2Properties(VerifiablePresentationV2 verifiablePresentation){
         validateRun(() -> validateTrue(verifiablePresentation.getJsonObject() != null), "Bad or missing JSON object.");
         validateRun(() -> validateTrue(! verifiablePresentation.getContexts().isEmpty()), "Bad or missing '@context'.");
         validateRun(() -> validateUrl(verifiablePresentation.getContexts().get(0)), "@context must be a valid URI: " + verifiablePresentation.getContexts().get(0));
@@ -134,20 +189,4 @@ public class Validation {
         validateOneOfRuns(List.of(() -> validateTrue(verifiablePresentation.getVerifiableCredentialAsList() != null), () -> validateTrue(verifiablePresentation.getJwtVerifiableCredentialString() != null)), "Bad or missing 'verifiableCredential'.");
     }
 
-    private static void validateIssuer(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
-
-        validateRun(() -> validateTrue(verifiableCredential.getIssuer() != null), "Bad or missing 'issuer'.");
-        if (verifiableCredential.getIssuer() instanceof String issuerString) validateRun(() -> validateUrl(URI.create(issuerString)), "'issuer' must be a valid URI.");
-        else if (verifiableCredential.getIssuer() instanceof Map<?,?> issuerMap) validateRun(()-> validateUrl(URI.create(((Map<String,Object>) issuerMap).get("id").toString())), "'issuer' must contain be a valid 'id'.");
-        else validateRun(() -> validateTrue(false),"'issuer' must be a valid URI or object containing an 'id' property.");
-    }
-
-    private static void validateStatus(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
-        if (verifiableCredential.getCredentialStatus() == null) return;
-        verifiableCredential.getCredentialStatusAsList().forEach(Validation::validateCredentialStatus);
-    }
-
-    private static void validateCredentialStatus(CredentialStatus credentialStatus) throws IllegalStateException {
-        validateRun(() -> validateTrue(credentialStatus.getType() != null), "Bad or missing 'credentialStatus Type'.");
-    }
 }
