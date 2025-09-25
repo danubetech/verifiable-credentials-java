@@ -1,5 +1,6 @@
 package com.danubetech.verifiablecredentials.jwt;
 
+import com.danubetech.verifiablecredentials.VerifiableCredentialV2;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.VerifiablePresentationV2;
 import com.nimbusds.jose.JWSObject;
@@ -30,7 +31,7 @@ public class JwtVerifiablePresentationV2 extends JwtWrappingObject<VerifiablePre
 		if (jsonObject == null) return null;
 
 		VerifiablePresentationV2 payloadVerifiablePresentation = VerifiablePresentationV2.fromJsonObject(new LinkedHashMap<>(jsonObject));
-
+		if(!payloadVerifiablePresentation.getContexts().contains(VerifiableCredentialV2.DEFAULT_JSONLD_CONTEXTS[0])) throw new ParseException("The 'vc' claim must contain the default context v2",0);
 		return new JwtVerifiablePresentationV2(jwtPayload, payloadVerifiablePresentation, signedJWT, compactSerialization);
 	}
 }
