@@ -44,6 +44,10 @@ public class VerifiableCredentialKeywords {
     public static final String JSONLD_TERM_STATUSLISTCREDENTIAL = "statusListCredential";
     public static final String JSONLD_TERM_STATUSPURPOSE = "statusPurpose";
 
+    public static final String JSONLD_TERM_BITSTRING_STATUS_LIST_ENTRY = "BitstringStatusListEntry";
+    public static final String JSONLD_TERM_STATUSSIZE = "statusSize";
+    public static final String JSONLD_TERM_STATUSMESSAGE = "statusMessage";
+    public static final String JSONLD_TERM_STATUSREFERENCE = "statusReference";
     /*
      * https://www.w3.org/ns/credentials/v2
      */
