@@ -112,7 +112,7 @@ public class Validation {
     private static void validateIssuer(VerifiableCredentialV2 verifiableCredential) throws IllegalStateException {
 
         validateRun(() -> validateTrue(verifiableCredential.getIssuer() != null), "Bad or missing 'issuer'.");
-        if (verifiableCredential.getIssuer() instanceof String issuerString) validateRun(() -> validateUrl(URI.create(issuerString)), "'issuer' must be a valid URI.");
+        if (verifiableCredential.getIssuer() instanceof URI issuerUri) validateRun(() -> validateUrl(issuerUri), "'issuer' must be a valid URI.");
         else if (verifiableCredential.getIssuer() instanceof Map<?,?> issuerMap) validateRun(()-> validateUrl(URI.create(((Map<String,Object>) issuerMap).get("id").toString())), "'issuer' must contain be a valid 'id'.");
         else validateRun(() -> validateTrue(false),"'issuer' must be a valid URI or object containing an 'id' property.");
     }

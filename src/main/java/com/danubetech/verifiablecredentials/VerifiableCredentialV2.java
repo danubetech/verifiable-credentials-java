@@ -245,12 +245,17 @@ public class VerifiableCredentialV2 extends JsonLDObject {
 	 */
 
 	public Object getIssuer() {
-		return JsonLDUtils.jsonLdGetJsonValue(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
+		Object issuer = JsonLDUtils.jsonLdGetJsonValue(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
+		if (issuer instanceof String issuerString) return JsonLDUtils.stringToUri(issuerString);
+        if (issuer instanceof Map<?, ?> issuerMap) return issuerMap;
+		return null;
 	}
 
 	public URI getIssuerUri() {
 		Object issuer = JsonLDUtils.jsonLdGetJsonValue(this.getJsonObject(), VerifiableCredentialKeywords.JSONLD_TERM_ISSUER);
-		return (issuer instanceof String) ? URI.create(issuer.toString()) : URI.create((((Map<String,Object>)issuer).get(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER)).toString());
+		if (issuer instanceof String issuerString) return JsonLDUtils.stringToUri(issuerString);
+		if (issuer instanceof Map<?, ?> issuerMap) return JsonLDUtils.stringToUri((String) issuerMap.get(VerifiableCredentialKeywords.JSONLD_TERM_ISSUER));
+		return null;
 	}
 
 	public Date getValidFrom() {
