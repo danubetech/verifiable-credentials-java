@@ -99,7 +99,7 @@ public class DataIntegrityProofSignTest {
 		signer.setProofPurpose("assertionMethod");
 		signer.setVerificationMethod(URI.create("did:key:z6DtcgBo65Ms1qzug5JAgVZH3sEpH7vp4q6D2T3cdHnyBFGj#z6DtcgBo65Ms1qzug5JAgVZH3sEpH7vp4q6D2T3cdHnyBFGj"));
 		DataIntegrityProof dataIntegrityProof = signer.sign(verifiableCredentialGood2);
-		assertEquals("z3P1WFufkFdaA9HM9jd4SYrGFbYYKzymhoYoqLHSG2zVfhjaTXFtdiQ1EwBt8X11x6rPccMdQxmhcYTfd6btY2nWt", dataIntegrityProof.getProofValue());
+		assertEquals("z374wrwJM7cWaG8mN8vdRQZMaK9CMtUR7svDGBD9DkEV3cW1jYUV2bVmMh7gRrQpJPSdADJuH9ERZjdrjWwM5EyBp", dataIntegrityProof.getProofValue());
 		assertTrue(verifier.verify(verifiableCredentialGood2));
 	}
 
