@@ -69,6 +69,15 @@ public class JwtObject {
 		return this.compactSerialization;
 	}
 
+	public String sign(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		JWSAlgorithm alg = JWSAlgorithm.parse(signer.getAlgorithm());
+		return this.sign(new JWSSignerAdapter(signer, alg), alg, kid, canonicalize);
+	}
+
+	public String sign(ByteSigner signer) throws JOSEException {
+		return this.sign(signer, null, false);
+	}
+
 	public String sign_RSA_PS256(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
 		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.PS256), JWSAlgorithm.PS256, kid, canonicalize);
 	}
@@ -293,6 +302,10 @@ public class JwtObject {
 
 	private boolean verify(JWSVerifier jwsVerifier) throws JOSEException {
 		return this.jwsObject.verify(jwsVerifier);
+	}
+
+	public boolean verify(ByteVerifier verifier) throws JOSEException {
+		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.parse(verifier.getAlgorithm())));
 	}
 
 	public boolean verify_RSA_PS256(ByteVerifier verifier) throws JOSEException {
