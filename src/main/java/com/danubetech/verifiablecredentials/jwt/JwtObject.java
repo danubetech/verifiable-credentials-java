@@ -9,6 +9,8 @@ import com.nimbusds.jose.*;
 import com.nimbusds.jose.util.JSONObjectUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.bitcoinj.crypto.ECKey;
+import org.bouncycastle.crypto.params.MLDSAPrivateKeyParameters;
+import org.bouncycastle.crypto.params.MLDSAPublicKeyParameters;
 import org.erdtman.jcs.JsonCanonicalizer;
 
 import java.io.IOException;
@@ -235,6 +237,53 @@ public class JwtObject {
 		return this.sign_P_521_ES512(privateKey, null, false);
 	}
 
+	public String sign_MLDSA44(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.parse("ML-DSA-44")), JWSAlgorithm.parse("ML-DSA-44"), kid, canonicalize);
+	}
+
+	public String sign_MLDSA44(ByteSigner signer) throws JOSEException {
+		return this.sign_MLDSA44(signer, null, false);
+	}
+
+	public String sign_MLDSA44(MLDSAPrivateKeyParameters privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_MLDSA44(new MLDSA44_PrivateKeySigner(privateKey), kid, canonicalize);
+	}
+
+	public String sign_MLDSA44(MLDSAPrivateKeyParameters privateKey) throws JOSEException {
+		return this.sign_MLDSA44(privateKey, null, false);
+	}
+
+	public String sign_MLDSA65(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.parse("ML-DSA-65")), JWSAlgorithm.parse("ML-DSA-65"), kid, canonicalize);
+	}
+
+	public String sign_MLDSA65(ByteSigner signer) throws JOSEException {
+		return this.sign_MLDSA65(signer, null, false);
+	}
+
+	public String sign_MLDSA65(MLDSAPrivateKeyParameters privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_MLDSA65(new MLDSA65_PrivateKeySigner(privateKey), kid, canonicalize);
+	}
+
+	public String sign_MLDSA65(MLDSAPrivateKeyParameters privateKey) throws JOSEException {
+		return this.sign_MLDSA65(privateKey, null, false);
+	}
+
+	public String sign_MLDSA87(ByteSigner signer, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign(new JWSSignerAdapter(signer, JWSAlgorithm.parse("ML-DSA-87")), JWSAlgorithm.parse("ML-DSA-87"), kid, canonicalize);
+	}
+
+	public String sign_MLDSA87(ByteSigner signer) throws JOSEException {
+		return this.sign_MLDSA87(signer, null, false);
+	}
+
+	public String sign_MLDSA87(MLDSAPrivateKeyParameters privateKey, String kid, boolean canonicalize) throws JOSEException {
+		return this.sign_MLDSA87(new MLDSA87_PrivateKeySigner(privateKey), kid, canonicalize);
+	}
+
+	public String sign_MLDSA87(MLDSAPrivateKeyParameters privateKey) throws JOSEException {
+		return this.sign_MLDSA87(privateKey, null, false);
+	}
 
 
 
@@ -328,6 +377,30 @@ public class JwtObject {
 
 	public boolean verify_P_521_ES512(com.nimbusds.jose.jwk.ECKey publicKey) throws JOSEException {
 		return this.verify(new com.nimbusds.jose.crypto.ECDSAVerifier(publicKey));
+	}
+
+	public boolean verify_MLDSA44(ByteVerifier verifier) throws JOSEException {
+		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.parse("ML-DSA-44")));
+	}
+
+	public boolean verify_MLDSA44(MLDSAPublicKeyParameters publicKey) throws JOSEException {
+		return this.verify_MLDSA44(new MLDSA44_PublicKeyVerifier(publicKey));
+	}
+
+	public boolean verify_MLDSA65(ByteVerifier verifier) throws JOSEException {
+		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.parse("ML-DSA-65")));
+	}
+
+	public boolean verify_MLDSA65(MLDSAPublicKeyParameters publicKey) throws JOSEException {
+		return this.verify_MLDSA65(new MLDSA65_PublicKeyVerifier(publicKey));
+	}
+
+	public boolean verify_MLDSA87(ByteVerifier verifier) throws JOSEException {
+		return this.verify(new JWSVerifierAdapter(verifier, JWSAlgorithm.parse("ML-DSA-87")));
+	}
+
+	public boolean verify_MLDSA87(MLDSAPublicKeyParameters publicKey) throws JOSEException {
+		return this.verify_MLDSA87(new MLDSA87_PublicKeyVerifier(publicKey));
 	}
 
 	/*
